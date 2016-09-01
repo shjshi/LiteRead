@@ -162,6 +162,36 @@ class LoggerInterceptor implements Interceptor {
     }
 </code></pre>
 
+### RecyclerView的上拉加载更多
+
+#### 通过viewtype判断当前item是否为loadmore项
+
+<pre><code>
+ @Override
+    public int getItemViewType(int position) {
+        if ( getItemCount() > 1&&position == getItemCount() - 1) {
+            needLoadMore = true;
+            return LOAD_MORE;
+        } else {
+            needLoadMore = false;
+            return NO_LOAD_MORE;
+        }
+    }
+</code></pre>
+
+#### 因为在数据列表中额外加入了loadmore项,因此列表总长度为list.size()+1.
+
+#### 在bindViewHolder中判断是否应该加载loadmore项
+<pre><code>
+ if (viewType != LOAD_MORE) {
+            itemView = LayoutInflater.from(context).inflate(R.layout.image_list_item, parent, false);
+            ...
+        } else {
+            itemView = LayoutInflater.from(context).inflate(R.layout.load_more_view, parent, false);
+            ...
+        }
+</code></pre>
+
 ### 特别鸣谢:
 
 [rxAndroid](https://github.com/ReactiveX/RxAndroid)
