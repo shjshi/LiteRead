@@ -67,15 +67,15 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
             doRefresh();
         }
     }
+
     private void doRefresh() {
         getVideoList();
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.setRefreshing(true);
-        }
     }
+
     private boolean shouldRefreshOnVisibilityChange(boolean isVisibleToUser) {
         return isVisibleToUser && !isRefreshed;
     }
+
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -110,6 +110,9 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     private void getVideoList() {
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(true);
+        }
         subscriber = new Subscriber<Element>() {
             @Override
             public void onCompleted() {

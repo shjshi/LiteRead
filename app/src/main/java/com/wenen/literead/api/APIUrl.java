@@ -10,4 +10,5 @@ public class APIUrl {
     public static String BUGLY_APPID="38ba92cd04";
     public static String DOUYU_BASE_URL = "http://www.douyu.com";
     public static String DOUYU_API_URL="http://www.douyu.com/lapi/live/getPlay/";
+    public static String GANK_IO_URL="http://gank.io/api/";
 }

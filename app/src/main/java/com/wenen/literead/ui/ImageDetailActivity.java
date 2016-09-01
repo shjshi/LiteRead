@@ -1,36 +1,37 @@
 package com.wenen.literead.ui;
 
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v13.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.wenen.literead.R;
+import com.wenen.literead.adapter.image.ImageDetailsAdapter;
+import com.wenen.literead.api.APIUrl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.UUID;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class ImageDetailActivity extends BaseActivity {
 
@@ -38,33 +39,28 @@ public class ImageDetailActivity extends BaseActivity {
     Toolbar toolbar;
     @Bind(R.id.container)
     ViewPager container;
-    /**
-     * The {@link PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    @Bind(R.id.fab)
+    FloatingActionButton fab;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
+
+    private ImageDetailsAdapter mSectionsPagerAdapter;
     public ArrayList<String> listl;
     public String title;
     public int position;
     private int currentPage;
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
 
-    public ImageDetailActivity() {
-    }
+    private ViewPager mViewPager;
+    public static final String PICTURE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath()
+            + "/liteRead/pictures/";
+    private static final int DOWNLOAD_SUCCESS = 0x123;
+    private static final int DOWNLOAD_ERROR = 0x124;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_detail);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,11 +72,128 @@ public class ImageDetailActivity extends BaseActivity {
         title = getIntent().getStringExtra("title");
         position = getIntent().getIntExtra("position", 0);
         currentPage = position;
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getFragmentManager(), listl, title, position);
+        mSectionsPagerAdapter = new ImageDetailsAdapter(getSupportFragmentManager(), listl, title, position);
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(position);
+
         mViewPager.setOffscreenPageLimit(listl.size());
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                ImageDetailActivity.this.position = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
+                downLoadFile(APIUrl.imgUrl + listl.get(position));
+            }
+        });
+    }
+
+    private void downLoadFile(final String url) {
+        // TODO Auto-generated method stub
+        new Thread(new Runnable() {
+            URL myFileURL = null;
+            Bitmap bitmap = null;
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                try {
+                    myFileURL = new URL(url);
+                    HttpURLConnection connection = (HttpURLConnection) myFileURL
+                            .openConnection();
+                    connection.setConnectTimeout(6000);
+                    connection.setDoInput(true);
+                    connection.setUseCaches(true);
+                    InputStream is = connection.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(is);
+                    is.close();
+                    File file = new File(createPictureDir(), UUID
+                            .randomUUID() + ".jpg");
+                    if (file.exists()) {
+                        file.delete();
+                    }
+                    try {
+                        FileOutputStream fOut = new FileOutputStream(file);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+                        fOut.flush();
+                        fOut.close();
+                        Message msg = new Message();
+                        msg.obj = file.getAbsolutePath();
+                        msg.what = DOWNLOAD_SUCCESS;
+                        handler.sendMessage(msg);
+                    } catch (FileNotFoundException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        Message msg = new Message();
+                        msg.obj = e.toString();
+                        msg.what = DOWNLOAD_ERROR;
+                        handler.sendMessage(msg);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                        Message msg = new Message();
+                        msg.obj = e.toString();
+                        msg.what = DOWNLOAD_ERROR;
+                        handler.sendMessage(msg);
+                    }
+                } catch (MalformedURLException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    Message msg = new Message();
+                    msg.obj = e.toString();
+                    msg.what = DOWNLOAD_ERROR;
+                    handler.sendMessage(msg);
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                    Message msg = new Message();
+                    msg.obj = e.toString();
+                    msg.what = DOWNLOAD_ERROR;
+                    handler.sendMessage(msg);
+                }
+            }
+        }).start();
+    }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
+            switch (msg.what) {
+                case DOWNLOAD_SUCCESS:
+                    showSnackBar(indeterminateHorizontalProgressToolbar, "图片已保存至：" + msg.obj.toString(), null);
+                    break;
+                case DOWNLOAD_ERROR:
+                    showSnackBar(indeterminateHorizontalProgressToolbar, "图片保存失败：" + msg.obj.toString(), null);
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+    public File createPictureDir() {
+        File pictureDir = new File(PICTURE_DIR);
+        if (!pictureDir.exists()) {
+            pictureDir.mkdirs();
+        }
+        return pictureDir;
     }
 
     @Override
@@ -104,98 +217,5 @@ public class ImageDetailActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static class PlaceholderFragment extends Fragment {
-        @Bind(R.id.iv_image)
-        ImageView ivImage;
-        private ImageLoader imageLoader = ImageLoader.getInstance();
-        private DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.mipmap.noimage)
-                .showImageOnFail(R.mipmap.noimage)
-                .showImageForEmptyUri(R.mipmap.lks_for_blank_url)
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .considerExifParams(true)
-                .build();
-        private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
-        private static String imgUrl = "http://tnfs.tngou.net/img";
 
-        public PlaceholderFragment() {
-        }
-        public static PlaceholderFragment newInstance(ArrayList<String> list, int position) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt("position", position);
-            args.putStringArrayList("list", list);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_image_detail, container, false);
-            ButterKnife.bind(this, rootView);
-            imageLoader.displayImage(imgUrl + this.getArguments().getStringArrayList("list").get(this.getArguments().getInt("position")), ivImage, options, animateFirstListener);
-            return rootView;
-        }
-
-        @Override
-        public void onDestroyView() {
-            super.onDestroyView();
-            ButterKnife.unbind(this);
-        }
-    }
-
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-        ArrayList<String> list;
-        String title;
-        int position;
-
-        public SectionsPagerAdapter(FragmentManager fm, ArrayList<String> list, String title, int position) {
-            super(fm);
-            this.list = list;
-            this.title = title;
-            this.position = position;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(list, position);
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return list.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "SECTION 1";
-                case 1:
-                    return "SECTION 2";
-                case 2:
-                    return "SECTION 3";
-            }
-            return null;
-        }
-    }
-
-    private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
-        static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
-
-        @Override
-        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            if (loadedImage != null) {
-                ImageView imageView = (ImageView) view;
-                boolean firstDisplay = !displayedImages.contains(imageUri);
-                if (firstDisplay) {
-                    FadeInBitmapDisplayer.animate(imageView, 500);
-                    displayedImages.add(imageUri);
-                }
-            }
-        }
-    }
 }

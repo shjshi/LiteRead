@@ -2,6 +2,7 @@ package com.wenen.literead.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,6 +33,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     SwipeRefreshLayout swipeRefreshLayout;
     private Subscriber subscriber;
     private boolean isRefreshed = false;
+    private boolean loadMore;
     /**
      * URL
      */
@@ -72,6 +74,24 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
         rclImageList.setAdapter(mAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        rclImageList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (mAdapter != null) {
+                    if (mAdapter.needLoadMore()) {
+                        page++;
+                        getImgThumbleList(id, page);
+                        loadMore = true;
+                    }
+                }
+            }
+        });
         return view;
     }
 
@@ -95,10 +115,8 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     private void doRefresh() {
+        page = 1;
         getImgThumbleList(id, page);
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.setRefreshing(true);
-        }
     }
 
     private boolean shouldRefreshOnVisibilityChange(boolean isVisibleToUser) {
@@ -119,6 +137,9 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     private void getImgThumbleList(int id, int page) {
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(true);
+        }
         subscriber = new Subscriber<ImageListModel>() {
             @Override
             public void onCompleted() {
@@ -131,12 +152,23 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
 
             @Override
             public void onError(Throwable e) {
-                Log.e("error", e.getMessage().toString());
+                if (swipeRefreshLayout != null)
+                    swipeRefreshLayout.setRefreshing(false);
+                if (loadMore) {
+                    mAdapter.setIsLoadMore(false);
+                }
+                Snackbar.make(rclImageList, "数据加载失败", Snackbar.LENGTH_INDEFINITE).setAction("点击重试", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getImgThumbleList(ImageListFragment.this.id, ImageListFragment.this.page);
+                    }
+                });
             }
 
             @Override
             public void onNext(ImageListModel imageListModel) {
-                list.clear();
+                if (!loadMore)
+                    list.clear();
                 for (ImageListModel.TngouEntity tnEntity : imageListModel.tngou
                         ) {
                     list.add(tnEntity);

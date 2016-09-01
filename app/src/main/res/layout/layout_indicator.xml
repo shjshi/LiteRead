@@ -40,7 +40,7 @@
             android:layout_marginTop="20dp"
             android:gravity="center_horizontal"
             android:text="加载失败,点击重新加载!"
-            android:textColor="@color/cube_mints_black"
+            android:textColor="@color/black_overlay"
             android:textSize="@dimen/details_text_size" />
     </LinearLayout>
 

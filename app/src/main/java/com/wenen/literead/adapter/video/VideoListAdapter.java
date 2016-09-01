@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
+import com.wenen.literead.adapter.ClickResponseListener;
 import com.wenen.literead.model.video.VideoListModel;
 import com.wenen.literead.ui.VideoPlayerActivity;
 
@@ -46,7 +47,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Card
     public CardViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final Context context = parent.getContext();
         View itemView = LayoutInflater.from(context).inflate(R.layout.image_list_item, parent, false);
-        return new CardViewHolder(itemView, new CardViewHolder.ClickResponseListener() {
+        return new CardViewHolder(itemView, new ClickResponseListener() {
             @Override
             public void onWholeClick(int position) {
                 if (position != -1) {
@@ -93,11 +94,6 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Card
         @Override
         public void onClick(View view) {
             mClickResponseListener.onWholeClick(getAdapterPosition());
-        }
-
-        public interface ClickResponseListener {
-            void onWholeClick(int position);
-
         }
 
     }

@@ -25,7 +25,6 @@ public class VideoPlayerActivity extends BaseActivity {
         setContentView(R.layout.activity_video_player);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        //getVideo(getIntent().getStringExtra("roomId"));
         toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

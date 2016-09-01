@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -58,7 +57,6 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -79,9 +77,8 @@ public class MainActivity extends BaseActivity
             } else
                 mainPager.getAdapter().notifyDataSetChanged();
             mainPager.setOffscreenPageLimit(titleList.size());
-            setProgressBarISvisible(false);
+            setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
         }
-
     }
 
     @Override
@@ -93,14 +90,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onResume() {
         super.onResume();
-    }
-
-    private void setProgressBarISvisible(boolean iSvisible) {
-        if (iSvisible) {
-            indeterminateHorizontalProgressToolbar.setVisibility(View.VISIBLE);
-        } else {
-            indeterminateHorizontalProgressToolbar.setVisibility(View.GONE);
-        }
+        toolbar.setTitle(getString(R.string.app_name));
     }
 
     @Override
@@ -125,8 +115,10 @@ public class MainActivity extends BaseActivity
             intent.putExtra("title", "直播");
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-
-
+            Intent intent = new Intent();
+            intent.setClass(this, ArticleListActivity.class);
+            intent.putExtra("title", "Android开发");
+            startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -159,7 +151,7 @@ public class MainActivity extends BaseActivity
 
 
     private void getIMGTypeList() {
-        setProgressBarISvisible(true);
+        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
         subscriber = new Subscriber<ImageTypeListModel>() {
             @Override
             public void onCompleted() {
@@ -169,38 +161,46 @@ public class MainActivity extends BaseActivity
                 } else
                     mainPager.getAdapter().notifyDataSetChanged();
                 mainPager.setOffscreenPageLimit(titleList.size());
-                setProgressBarISvisible(false);
+                setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
             }
 
             @Override
             public void onError(Throwable e) {
                 Log.e("error", e.getMessage().toString());
-                setProgressBarISvisible(false);
+                setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
                 mainPagerTabs.setVisibility(View.GONE);
-                Snackbar.make(mainPager, "数据获取失败!", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("点击重试", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                mainPagerTabs.setVisibility(View.VISIBLE);
-                                getIMGTypeList();
-                            }
-                        }).show();
+                showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
+                        getIMGTypeList();
+                    }
+                });
 
             }
 
             @Override
             public void onNext(ImageTypeListModel imageTypeListModel) {
-                for (ImageTypeListModel.TngouEntity tnEntity : imageTypeListModel.tngou
-                        ) {
-                    Log.e("Title", tnEntity.title);
-                    titleList.add(tnEntity.title);
-                    ImageListFragment imageListFragment = new ImageListFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("id", tnEntity.id);
-                    imageListFragment.setArguments(bundle);
-                    Log.e("id", tnEntity.id + "");
-                    fragments.add(imageListFragment);
-                }
+                if (imageTypeListModel.status) {
+                    for (ImageTypeListModel.TngouEntity tnEntity : imageTypeListModel.tngou
+                            ) {
+                        Log.e("Title", tnEntity.title);
+                        titleList.add(tnEntity.title);
+                        ImageListFragment imageListFragment = new ImageListFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("id", tnEntity.id);
+                        imageListFragment.setArguments(bundle);
+                        Log.e("id", tnEntity.id + "");
+                        fragments.add(imageListFragment);
+                    }
+                }else
+                    showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
+                            getIMGTypeList();
+                        }
+                    });
             }
         };
         HttpClient.getSingle(APIUrl.TIANGOU_IMG_URL).getIMGTypeList(subscriber);

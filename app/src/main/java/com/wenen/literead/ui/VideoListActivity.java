@@ -70,7 +70,7 @@ public class VideoListActivity extends BaseActivity {
             } else
                 mainPager.getAdapter().notifyDataSetChanged();
             mainPager.setOffscreenPageLimit(titleList.size());
-            setProgressBarISvisible(false);
+            setProgressBarISvisible(indeterminateHorizontalProgressToolbar,false);
         }
     }
 
@@ -88,7 +88,7 @@ public class VideoListActivity extends BaseActivity {
     }
 
     private void getVideoList() {
-        setProgressBarISvisible(true);
+        setProgressBarISvisible(indeterminateHorizontalProgressToolbar,true);
         subscriber = new Subscriber<Element>() {
             @Override
             public void onCompleted() {
@@ -98,14 +98,14 @@ public class VideoListActivity extends BaseActivity {
                 } else
                     mainPager.getAdapter().notifyDataSetChanged();
                 mainPager.setOffscreenPageLimit(titleList.size());
-                setProgressBarISvisible(false);
+                setProgressBarISvisible(indeterminateHorizontalProgressToolbar,false);
             }
 
             @Override
             public void onError(Throwable e) {
                 if (e != null)
                     Log.e("next", e.toString());
-                setProgressBarISvisible(false);
+                setProgressBarISvisible(indeterminateHorizontalProgressToolbar,false);
                 mainPagerTabs.setVisibility(View.GONE);
                 Snackbar.make(mainPager, "数据获取失败!", Snackbar.LENGTH_INDEFINITE)
                         .setAction("点击重试", new View.OnClickListener() {
@@ -137,13 +137,7 @@ public class VideoListActivity extends BaseActivity {
                 getVideoList("/directory", subscriber);
     }
 
-    private void setProgressBarISvisible(boolean iSvisible) {
-        if (iSvisible) {
-            indeterminateHorizontalProgressToolbar.setVisibility(View.VISIBLE);
-        } else {
-            indeterminateHorizontalProgressToolbar.setVisibility(View.GONE);
-        }
-    }
+
 
     private class MainPageViewAdapter extends FragmentStatePagerAdapter {
 
@@ -155,6 +149,7 @@ public class VideoListActivity extends BaseActivity {
         public Fragment getItem(int position) {
             Log.e("fragments", position + fragments.get(position).getArguments().getString("url"));
             return fragments.get(position);
+
         }
 
         @Override

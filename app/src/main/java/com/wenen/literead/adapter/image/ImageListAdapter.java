@@ -2,7 +2,6 @@ package com.wenen.literead.adapter.image;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,24 +10,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
+import com.wenen.literead.adapter.ClickResponseListener;
+import com.wenen.literead.adapter.LoadMoreViewHolder;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.model.image.ImageListModel;
 import com.wenen.literead.ui.ThumbleActivity;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by Wen_en on 16/8/15.
  */
-public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.CardViewHolder> {
+public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<ImageListModel.TngouEntity> list;
+    private static final int LOAD_MORE = 0;
+    private static final int NO_LOAD_MORE = 1;
+    private boolean needLoadMore;
 
     public ImageListAdapter(ArrayList<ImageListModel.TngouEntity> list) {
         this.list = list;
@@ -46,39 +45,68 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Card
 
     @Override
     public long getItemId(int position) {
-        return list.get(position).hashCode();
+        if (position == getItemCount() - 1)
+            return position;
+        else
+            return list.get(position).hashCode();
+
     }
 
     @Override
-    public CardViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
+    public int getItemViewType(int position) {
+        if ( getItemCount() > 1&&position == getItemCount() - 1) {
+            needLoadMore = true;
+            return LOAD_MORE;
+        } else {
+            needLoadMore = false;
+            return NO_LOAD_MORE;
+        }
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final Context context = parent.getContext();
-        View itemView = LayoutInflater.from(context).inflate(R.layout.image_list_item, parent, false);
-        return new CardViewHolder(itemView, new CardViewHolder.ClickResponseListener() {
-            @Override
-            public void onWholeClick(int position) {
-                if (position != -1) {
-                    Intent intent = new Intent(context, ThumbleActivity.class);
-                    intent.putExtra("id", list.get(position).id);
-                    intent.putExtra("title", list.get(position).title);
-                    context.startActivity(intent);
+        View itemView = null;
+        if (viewType != LOAD_MORE) {
+            itemView = LayoutInflater.from(context).inflate(R.layout.image_list_item, parent, false);
+            return new CardViewHolder(itemView, new ClickResponseListener() {
+                @Override
+                public void onWholeClick(int position) {
+                    if (position != -1) {
+                        Log.e("size", list.size() + "");
+                        Intent intent = new Intent(context, ThumbleActivity.class);
+                        intent.putExtra("id", list.get(position).id);
+                        intent.putExtra("title", list.get(position).title);
+                        context.startActivity(intent);
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            itemView = LayoutInflater.from(context).inflate(R.layout.load_more_view, parent, false);
+            return new LoadMoreViewHolder(itemView, new ClickResponseListener() {
+                @Override
+                public void onWholeClick(int position) {
+
+                }
+            });
+        }
     }
 
     @Override
-    public void onBindViewHolder(CardViewHolder holder, int position) {
-        // for (int i = 0; i < list.size(); i++) {
-        Log.e("imageListModelAdapter", list.get(position).title);
-        //}
-        ImageLoaderConfig.imageLoader.displayImage(APIUrl.imgUrl + list.get(position).img, holder.thumbleImg, ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
-        holder.thumbleCount.setText("照片数量:" + list.get(position).size + "");
-        holder.thumbleTitle.setText(list.get(position).title);
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof CardViewHolder && getItemCount() > 1) {
+            ImageLoaderConfig.imageLoader.displayImage(APIUrl.imgUrl + list.get(position).img, ((CardViewHolder) holder).thumbleImg, ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
+            ((CardViewHolder) holder).thumbleCount.setText("照片数量:" + list.get(position).size + "");
+            ((CardViewHolder) holder).thumbleTitle.setText(list.get(position).title);
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        if (!list.isEmpty())
+            return list.size() + 1;
+        else return 0;
     }
 
     public static class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -100,27 +128,12 @@ public class ImageListAdapter extends RecyclerView.Adapter<ImageListAdapter.Card
         public void onClick(View view) {
             mClickResponseListener.onWholeClick(getAdapterPosition());
         }
-
-        public interface ClickResponseListener {
-            void onWholeClick(int position);
-
-        }
-
     }
 
-    private static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
-        static final List<String> displayedImages = Collections.synchronizedList(new LinkedList<String>());
-
-        @Override
-        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            if (loadedImage != null) {
-                ImageView imageView = (ImageView) view;
-                boolean firstDisplay = !displayedImages.contains(imageUri);
-                if (firstDisplay) {
-                    FadeInBitmapDisplayer.animate(imageView, 500);
-                    displayedImages.add(imageUri);
-                }
-            }
-        }
+    public boolean needLoadMore() {
+        return needLoadMore;
+    }
+    public void setIsLoadMore(boolean needLoadMore) {
+        this.needLoadMore = needLoadMore;
     }
 }

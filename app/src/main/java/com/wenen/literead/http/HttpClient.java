@@ -6,6 +6,7 @@ import com.litesuits.android.log.Log;
 import com.litesuits.common.assist.Network;
 import com.wenen.literead.LiteReadApplication;
 import com.wenen.literead.api.APIUrl;
+import com.wenen.literead.retrofitInterface.article.ArticleList;
 import com.wenen.literead.retrofitInterface.image.IMG;
 import com.wenen.literead.retrofitInterface.image.IMGThumbleList;
 import com.wenen.literead.retrofitInterface.image.IMGTypeList;
@@ -17,7 +18,6 @@ import org.jsoup.nodes.Element;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
 import okhttp3.CacheControl;
@@ -53,22 +53,15 @@ public class HttpClient {
     }
 
     public static String BASE_URL = "";
-    private static final int DEFAULT_TIMEOUT = 5;
     private static Retrofit retrofit;
-    private CacheControl.Builder cacheBuilder;
-    private CacheControl cacheControl;
     private static OkHttpClient client;
     private File httpCacheDirectory;
     private int cacheSize;
     private Cache cache;
 
     private HttpClient() {
-        cacheBuilder = new CacheControl.Builder();
-        cacheBuilder.maxAge(0, TimeUnit.SECONDS);//这个是控制缓存的最大生命时间
-        cacheBuilder.maxStale(365, TimeUnit.DAYS);//这个是控制缓存的过时时间
-        cacheControl = cacheBuilder.build();
         httpCacheDirectory = new File(LiteReadApplication.mContext.getCacheDir(), "responses");
-        cacheSize = 30 * 1024 * 1024; // 10 MiB
+        cacheSize = 30 * 1024 * 1024; // 30 MiB
         cache = new Cache(httpCacheDirectory, cacheSize);
         client = new OkHttpClient.Builder()
                 .addInterceptor(new LoggerInterceptor("HTTP"))
@@ -116,7 +109,7 @@ public class HttpClient {
             logForRequest(request);
             if (!Network.isConnected(LiteReadApplication.mContext)) {
                 request = request.newBuilder()
-                        .cacheControl(cacheControl)
+                        .cacheControl(CacheControl.FORCE_CACHE)
                         .build();
                 Log.e("NoNetwork", "无网络");
             } else
@@ -171,7 +164,7 @@ public class HttpClient {
 
                 Log.e(tag, "========response'log=======end");
             } catch (Exception e) {
-//            e.printStackTrace();
+                e.printStackTrace();
             }
 
             return response;
@@ -301,5 +294,13 @@ public class HttpClient {
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
 
+    }
+
+    public void getArticleList(String TypePath, int PageCount, int page, Subscriber<Object> subscriber) {
+        updateRetrofit();
+        ArticleList articleList = retrofit.create(ArticleList.class);
+        articleList.getArticleList(TypePath, PageCount, page).subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 }

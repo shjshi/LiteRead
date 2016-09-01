@@ -1,98 +1,50 @@
 package com.wenen.literead.ui;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.wenen.literead.R;
-
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
  * Created by Wen_en on 16/8/16.
  */
 public class BaseActivity extends AppCompatActivity {
-    private View indicatorView;
-    private View failureView;
-    private TextView failureText;
-    private MaterialProgressBar indicator;
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        indicatorView = getLayoutInflater().inflate(R.layout.layout_indicator, null);
-        failureView = indicatorView.findViewById(R.id.ll_failure_hint);
-        failureText = (TextView) indicatorView
-                .findViewById(R.id.tv_failure_hint);
-        indicator = (MaterialProgressBar) indicatorView
-                .findViewById(R.id.indeterminate_progress_small_library);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
     }
 
-    public void showToast(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-    }
-    /**
-     * 取消全屏滚动进度条，显示失败信息并绑定点击监听器
-     *
-     * @param failureInfo
-     * @param clickListener
-     */
-    public void showFailureInfo(String failureInfo,
-                                View.OnClickListener clickListener) {
-        failureView.setVisibility(View.VISIBLE);
-        failureView.setOnClickListener(clickListener);
-        failureText.setText(failureInfo);
-        indicator.setVisibility(View.GONE);
+    public void showSnackBar(@NonNull View view, String msg, View.OnClickListener onClickListener) {
+        if (msg == null)
+            msg = "数据加载失败";
+        if (onClickListener != null)
+            Snackbar.make(view, msg, Snackbar.LENGTH_INDEFINITE)
+                    .setAction("点击重试", onClickListener).show();
+        else
+            Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
+                    .show();
     }
 
-    /**
-     * 取消全屏滚动进度条，显示失败信息并绑定点击监听器
-     *
-     * @param failureInfoId
-     * @param clickListener
-     */
-    public void showFailureInfo(int failureInfoId, View.OnClickListener clickListener) {
-        failureView.setVisibility(View.VISIBLE);
-        failureView.setOnClickListener(clickListener);
-        failureText.setText(failureInfoId);
-        indicator.clearAnimation();
-        indicator.setVisibility(View.GONE);
-    }
-
-    /**
-     * 取消全屏滚动进度条
-     *
-     * @param parentID
-     */
-    public void dismissIndicatorWrapper(int parentID) {
-        indicator.clearAnimation();
-        View parent = findViewById(parentID);
-        if (parent != null)
-            ((ViewGroup) parent.getParent()).removeView(indicatorView);
-        parent.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * 显示全屏滚动进度条
-     *
-     * @param parentID
-     */
-    public void showIndicatorWrapper(int parentID) {
-        if (failureView.getVisibility() == View.VISIBLE) {
-            failureView.setVisibility(View.GONE);
-            indicator.setVisibility(View.VISIBLE);
+    public void setProgressBarISvisible(View view, boolean iSvisible) {
+        if (iSvisible) {
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
         }
-        View parent = findViewById(parentID);
-        final ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        if (((ViewGroup) parent.getParent()).findViewById(R.id.rl_indicator) == null) {
-            ((ViewGroup) parent.getParent()).addView(indicatorView, lp);
-        }
-        parent.setVisibility(View.INVISIBLE);
     }
-
 }

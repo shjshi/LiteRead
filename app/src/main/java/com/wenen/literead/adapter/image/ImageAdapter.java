@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
+import com.wenen.literead.adapter.ClickResponseListener;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.model.image.ImageModel;
 import com.wenen.literead.ui.ImageDetailActivity;
@@ -56,7 +57,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final Context context = parent.getContext();
         View itemView = LayoutInflater.from(context).inflate(R.layout.image_item, parent, false);
-        return new ImageViewHolder(itemView, new ImageViewHolder.ClickResponseListener() {
+        return new ImageViewHolder(itemView, new ClickResponseListener() {
             @Override
             public void onWholeClick(int position) {
                 Intent intent = new Intent(context, ImageDetailActivity.class);
@@ -105,10 +106,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             clickResponseListener.onWholeClick(getAdapterPosition());
         }
 
-        public interface ClickResponseListener {
-            void onWholeClick(int position);
-
-        }
     }
 
 }

@@ -4,18 +4,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@mipmap/ic_action_youtube"
             android:title="直播" />
+        <item
+            android:id="@+id/nav_share"
+            android:icon="@mipmap/ic_action_android"
+            android:title="AndroidDev" />
     </group>
-
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="分享" />
-
-        </menu>
-    </item>
 
 </menu>
