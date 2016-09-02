@@ -28,6 +28,7 @@
             android:layout_height="wrap_content">
 
             <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+                android:visibility="gone"
                 android:id="@+id/indeterminate_horizontal_progress_toolbar"
                 style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
                 android:layout_width="match_parent"

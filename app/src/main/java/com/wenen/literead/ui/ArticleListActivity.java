@@ -11,6 +11,7 @@ import com.wenen.literead.R;
 import com.wenen.literead.adapter.article.ArticleListAdapter;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
+import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.article.ArticleListModel;
 
 import java.util.ArrayList;
@@ -87,11 +88,10 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
     }
 
     private void getArticleList(String typePath, int pageCount, int page) {
-        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
-        subscriber = new Subscriber<ArticleListModel>() {
+        subscriber = new HttpSubscriber<ArticleListModel>(indeterminateHorizontalProgressToolbar) {
             @Override
             public void onCompleted() {
-                setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
+                super.onCompleted();
                 if (swipeRefreshLayout != null) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -101,11 +101,11 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
 
             @Override
             public void onError(Throwable e) {
-                setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
+                super.onError(e);
                 if (swipeRefreshLayout != null) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
-                if (adapter.needLoadMore()) {
+                if (loadMore) {
                     isError = true;
                     adapter.updateModel(list, isError);
                 } else
@@ -119,6 +119,7 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
 
             @Override
             public void onNext(ArticleListModel articleListModel) {
+                super.onNext(articleListModel);
                 if (!loadMore) {
                     list.clear();
                 }

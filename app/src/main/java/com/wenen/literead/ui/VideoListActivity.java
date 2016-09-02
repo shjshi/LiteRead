@@ -16,6 +16,7 @@ import com.wenen.literead.R;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.fragment.VideoListFragment;
 import com.wenen.literead.http.HttpClient;
+import com.wenen.literead.http.HttpSubscriber;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -70,7 +71,6 @@ public class VideoListActivity extends BaseActivity {
             } else
                 mainPager.getAdapter().notifyDataSetChanged();
             mainPager.setOffscreenPageLimit(titleList.size());
-            setProgressBarISvisible(indeterminateHorizontalProgressToolbar,false);
         }
     }
 
@@ -88,24 +88,23 @@ public class VideoListActivity extends BaseActivity {
     }
 
     private void getVideoList() {
-        setProgressBarISvisible(indeterminateHorizontalProgressToolbar,true);
-        subscriber = new Subscriber<Element>() {
+        subscriber = new HttpSubscriber<Element>(indeterminateHorizontalProgressToolbar) {
             @Override
             public void onCompleted() {
+                super.onCompleted();
                 if (mainPager.getAdapter() == null) {
                     mainPageViewAdapter = new MainPageViewAdapter(getSupportFragmentManager());
                     mainPager.setAdapter(mainPageViewAdapter);
                 } else
                     mainPager.getAdapter().notifyDataSetChanged();
                 mainPager.setOffscreenPageLimit(titleList.size());
-                setProgressBarISvisible(indeterminateHorizontalProgressToolbar,false);
             }
 
             @Override
             public void onError(Throwable e) {
+                super.onError(e);
                 if (e != null)
                     Log.e("next", e.toString());
-                setProgressBarISvisible(indeterminateHorizontalProgressToolbar,false);
                 mainPagerTabs.setVisibility(View.GONE);
                 Snackbar.make(mainPager, "数据获取失败!", Snackbar.LENGTH_INDEFINITE)
                         .setAction("点击重试", new View.OnClickListener() {
@@ -120,7 +119,7 @@ public class VideoListActivity extends BaseActivity {
 
             @Override
             public void onNext(Element type) {
-                Log.e("next##############", "next#######");
+                super.onNext(type);
                 Elements elements = type.select("a.btn");
                 for (Element element : elements) {
                     titleList.add(element.text());

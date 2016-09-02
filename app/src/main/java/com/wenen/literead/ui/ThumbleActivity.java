@@ -17,6 +17,7 @@ import com.wenen.literead.R;
 import com.wenen.literead.adapter.image.ImageAdapter;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
+import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.image.ImageModel;
 
 import java.util.ArrayList;
@@ -111,29 +112,28 @@ public class ThumbleActivity extends BaseActivity {
     }
 
     private void getImage(final int id) {
-        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
-        subscribers = new Subscriber<ImageModel>() {
+        subscribers = new HttpSubscriber<ImageModel>(indeterminateHorizontalProgressToolbar) {
             @Override
             public void onCompleted() {
+                super.onCompleted();
                 mAdapter.getRandomHeight(listEntities);
                 mAdapter.updateList(listEntities);
-                setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
             }
 
             @Override
             public void onError(Throwable e) {
-                setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
+                super.onError(e);
                 showSnackBar(indeterminateHorizontalProgressToolbar, e.toString(), new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         getImage(id);
-                        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
                     }
                 });
             }
 
             @Override
             public void onNext(ImageModel imageModel) {
+                super.onNext(imageModel);
                 listEntities.clear();
                 for (ImageModel.ListEntity listEntitie : imageModel.list
                         ) {

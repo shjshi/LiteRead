@@ -21,6 +21,7 @@ import com.wenen.literead.R;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.fragment.ImageListFragment;
 import com.wenen.literead.http.HttpClient;
+import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.image.ImageTypeListModel;
 
 import java.util.ArrayList;
@@ -77,7 +78,6 @@ public class MainActivity extends BaseActivity
             } else
                 mainPager.getAdapter().notifyDataSetChanged();
             mainPager.setOffscreenPageLimit(titleList.size());
-            setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
         }
     }
 
@@ -151,28 +151,25 @@ public class MainActivity extends BaseActivity
 
 
     private void getIMGTypeList() {
-        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
-        subscriber = new Subscriber<ImageTypeListModel>() {
+        subscriber = new HttpSubscriber<ImageTypeListModel>(indeterminateHorizontalProgressToolbar) {
             @Override
             public void onCompleted() {
+                super.onCompleted();
                 if (mainPager.getAdapter() == null) {
                     mainPageViewAdapter = new MainPageViewAdapter(getSupportFragmentManager());
                     mainPager.setAdapter(mainPageViewAdapter);
                 } else
                     mainPager.getAdapter().notifyDataSetChanged();
                 mainPager.setOffscreenPageLimit(titleList.size());
-                setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
             }
 
             @Override
             public void onError(Throwable e) {
-                Log.e("error", e.getMessage().toString());
-                setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
+                super.onError(e);
                 mainPagerTabs.setVisibility(View.GONE);
                 showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
                         getIMGTypeList();
                     }
                 });
@@ -181,6 +178,7 @@ public class MainActivity extends BaseActivity
 
             @Override
             public void onNext(ImageTypeListModel imageTypeListModel) {
+                super.onNext(imageTypeListModel);
                 if (imageTypeListModel.status) {
                     for (ImageTypeListModel.TngouEntity tnEntity : imageTypeListModel.tngou
                             ) {
@@ -197,7 +195,6 @@ public class MainActivity extends BaseActivity
                     showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
                             getIMGTypeList();
                         }
                     });

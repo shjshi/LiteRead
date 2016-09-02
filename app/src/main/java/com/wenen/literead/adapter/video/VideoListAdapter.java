@@ -63,9 +63,7 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Card
 
     @Override
     public void onBindViewHolder(CardViewHolder holder, int position) {
-        // for (int i = 0; i < list.size(); i++) {
         Log.e("imageListModelAdapter", list.get(position).title);
-        //}
         ImageLoaderConfig.imageLoader.displayImage(list.get(position).imageUrl, holder.thumbleImg, ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
         holder.thumbleCount.setText(list.get(position).author);
         holder.thumbleTitle.setText(list.get(position).title);
