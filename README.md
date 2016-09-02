@@ -193,6 +193,64 @@ class LoggerInterceptor implements Interceptor {
         }
 </code></pre>
 
+#### 封装Subscriber统一处理错误log以及进度条展示
+
+<pre><code>
+ public class HttpSubscriber<T> extends Subscriber<T> {
+    private View view;
+
+     public HttpSubscriber() {
+     }
+
+     public HttpSubscriber(View view) {
+         this.view = view;
+         setProgressBarISvisible(view, true);
+     }
+
+     @Override
+     public void onCompleted() {
+         setProgressBarISvisible(view, false);
+     }
+
+
+     @Override
+     public void onError(Throwable e) {
+         setProgressBarISvisible(view, false);
+         if (e instanceof SocketTimeoutException) {
+             Log.e(e.toString());
+         } else if (e instanceof HttpException) {
+             HttpException httpException = (HttpException) e;
+             Log.e(httpException.code() + "");
+             Log.e(httpException.message() + "");
+             if (httpException.response() != null && httpException.response().errorBody() != null) {
+                 try {
+                     Log.e(httpException.response().message());
+                     String bodyStr = httpException.response().errorBody().string();
+                     Log.e(bodyStr);
+                 } catch (IOException e1) {
+                     e1.printStackTrace();
+                 }
+             }
+         }
+     }
+
+     @Override
+     public void onNext(T t) {
+     }
+
+     public void setProgressBarISvisible(View view, boolean iSvisible) {
+         if (view != null)
+             if (iSvisible) {
+                 view.setVisibility(View.VISIBLE);
+             } else {
+                 view.setVisibility(View.GONE);
+             }
+     }
+ }
+</code></pre>
+
+#### 提供一个带参的构造方法传入ProgressBar以及在没有ProgressBar的时候使用的无参构造方法
+
 ### 特别鸣谢:
 
 [rxAndroid](https://github.com/ReactiveX/RxAndroid)

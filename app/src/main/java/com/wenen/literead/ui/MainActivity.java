@@ -170,6 +170,7 @@ public class MainActivity extends BaseActivity
                 showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        mainPagerTabs.setVisibility(View.VISIBLE);
                         getIMGTypeList();
                     }
                 });

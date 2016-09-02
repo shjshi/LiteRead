@@ -39,6 +39,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
      */
     private int id = 1;
     private int page = 1;
+    private int rows = 5;
     private ArrayList<ImageListModel.TngouEntity> list = new ArrayList<>();
     private ImageListAdapter mAdapter;
     private boolean hasLoad;
@@ -49,6 +50,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
         if (savedInstanceState != null) {
             id = savedInstanceState.getInt("id");
             page = savedInstanceState.getInt("page");
+            rows = savedInstanceState.getInt("rows");
         } else
             id = getArguments().getInt("id");
         page = 1;
@@ -60,6 +62,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
         super.onSaveInstanceState(outState);
         outState.putInt("id", id);
         outState.putInt("page", page);
+        outState.putInt("rows", rows);
     }
 
     @Nullable
@@ -74,6 +77,8 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
         rclImageList.setAdapter(mAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(true);
         rclImageList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -86,7 +91,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
                 if (mAdapter != null) {
                     if (mAdapter.needLoadMore()) {
                         page++;
-                        getImgThumbleList(id, page);
+                        getImgThumbleList(id, page, rows);
                         loadMore = true;
                     }
                 }
@@ -100,7 +105,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
         super.onResume();
         Log.e("id_page", "id=" + id + "page=" + page);
         if (!hasLoad)
-            getImgThumbleList(id, page);
+            getImgThumbleList(id, page, rows);
     }
 
     @Override
@@ -116,7 +121,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
 
     private void doRefresh() {
         page = 1;
-        getImgThumbleList(id, page);
+        getImgThumbleList(id, page, rows);
     }
 
     private boolean shouldRefreshOnVisibilityChange(boolean isVisibleToUser) {
@@ -136,10 +141,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
         ButterKnife.unbind(this);
     }
 
-    private void getImgThumbleList(int id, int page) {
-        if (swipeRefreshLayout != null) {
-            swipeRefreshLayout.setRefreshing(true);
-        }
+    private void getImgThumbleList(int id, int page, int rows) {
         subscriber = new Subscriber<ImageListModel>() {
             @Override
             public void onCompleted() {
@@ -160,7 +162,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
                 Snackbar.make(rclImageList, "数据加载失败", Snackbar.LENGTH_INDEFINITE).setAction("点击重试", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        getImgThumbleList(ImageListFragment.this.id, ImageListFragment.this.page);
+                        getImgThumbleList(ImageListFragment.this.id, ImageListFragment.this.page, ImageListFragment.this.rows);
                     }
                 });
             }
@@ -175,6 +177,6 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
                 }
             }
         };
-        HttpClient.getSingle(APIUrl.TIANGOU_IMG_URL).getIMGThumbleList(id, page, subscriber);
+        HttpClient.getSingle(APIUrl.TIANGOU_IMG_URL).getIMGThumbleList(id, page, rows, subscriber);
     }
 }

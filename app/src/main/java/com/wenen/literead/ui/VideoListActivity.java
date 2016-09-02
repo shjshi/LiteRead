@@ -2,7 +2,6 @@ package com.wenen.literead.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -106,15 +105,13 @@ public class VideoListActivity extends BaseActivity {
                 if (e != null)
                     Log.e("next", e.toString());
                 mainPagerTabs.setVisibility(View.GONE);
-                Snackbar.make(mainPager, "数据获取失败!", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("点击重试", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                mainPagerTabs.setVisibility(View.VISIBLE);
-                                getVideoList();
-                            }
-                        }).show();
-
+                showSnackBar(mainPager, "数据获取失败!", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mainPagerTabs.setVisibility(View.VISIBLE);
+                        getVideoList();
+                    }
+                });
             }
 
             @Override
@@ -135,7 +132,6 @@ public class VideoListActivity extends BaseActivity {
         HttpClient.getSingle(APIUrl.DOUYU_BASE_URL).
                 getVideoList("/directory", subscriber);
     }
-
 
 
     private class MainPageViewAdapter extends FragmentStatePagerAdapter {

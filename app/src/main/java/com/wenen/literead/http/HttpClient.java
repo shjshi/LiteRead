@@ -244,10 +244,10 @@ public class HttpClient {
      * @param page
      * @param subscriber
      */
-    public void getIMGThumbleList(int id, int page, Subscriber<Object> subscriber) {
+    public void getIMGThumbleList(int id, int page,int rows, Subscriber<Object> subscriber) {
         updateRetrofit();
         IMGThumbleList imgThumbleList = retrofit.create(IMGThumbleList.class);
-        imgThumbleList.getImgThumbleList(APIUrl.apikey, id, page).subscribeOn(Schedulers.io())
+        imgThumbleList.getImgThumbleList(APIUrl.apikey, id, page,rows).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }

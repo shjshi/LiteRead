@@ -15,5 +15,7 @@ public interface IMGThumbleList {
     Observable<ImageListModel> getImgThumbleList(
             @Header("apikey") String apikey,
             @Query("id") int id,
-            @Query("page") int page);
+            @Query("page") int page,
+            @Query("rows") int rows);
+
 }
