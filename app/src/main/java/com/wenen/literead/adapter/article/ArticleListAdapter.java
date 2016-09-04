@@ -145,9 +145,6 @@ public class ArticleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         return needLoadMore;
     }
 
-    public void setIsLoadMore(boolean needLoadMore) {
-        this.needLoadMore = needLoadMore;
-    }
 
 
 }

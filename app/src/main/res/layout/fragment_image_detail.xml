@@ -6,7 +6,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.wenen.literead.ui.ImageDetailActivity$PlaceholderFragment">
+    tools:context="com.wenen.literead.ui.ImageDetailActivity$ImageDetailsFragment">
 
     <ImageView
         android:id="@+id/iv_image"

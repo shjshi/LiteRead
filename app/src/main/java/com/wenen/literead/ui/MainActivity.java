@@ -33,9 +33,7 @@ import rx.Subscriber;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    /**
-     * URL
-     */
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.main_pager_tabs)
@@ -148,7 +146,6 @@ public class MainActivity extends BaseActivity
         }
 
     }
-
 
     private void getIMGTypeList() {
         subscriber = new HttpSubscriber<ImageTypeListModel>(indeterminateHorizontalProgressToolbar) {
