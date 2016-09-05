@@ -11,6 +11,8 @@ import com.wenen.literead.retrofitInterface.image.IMG;
 import com.wenen.literead.retrofitInterface.image.IMGThumbleList;
 import com.wenen.literead.retrofitInterface.image.IMGTypeList;
 import com.wenen.literead.retrofitInterface.video.Video;
+import com.wenen.literead.retrofitInterface.zhihu.ZhihuDetail;
+import com.wenen.literead.retrofitInterface.zhihu.ZhihuList;
 import com.wenen.literead.web.GetWebObservable;
 
 import org.jsoup.nodes.Document;
@@ -244,10 +246,10 @@ public class HttpClient {
      * @param page
      * @param subscriber
      */
-    public void getIMGThumbleList(int id, int page,int rows, Subscriber<Object> subscriber) {
+    public void getIMGThumbleList(int id, int page, int rows, Subscriber<Object> subscriber) {
         updateRetrofit();
         IMGThumbleList imgThumbleList = retrofit.create(IMGThumbleList.class);
-        imgThumbleList.getImgThumbleList(APIUrl.apikey, id, page,rows).subscribeOn(Schedulers.io())
+        imgThumbleList.getImgThumbleList(APIUrl.apikey, id, page, rows).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
@@ -300,6 +302,21 @@ public class HttpClient {
         updateRetrofit();
         ArticleList articleList = retrofit.create(ArticleList.class);
         articleList.getArticleList(TypePath, PageCount, page).subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+    }
+
+    public void getZhihuList(String path, Subscriber<Object> subscriber) {
+        updateRetrofit();
+        ZhihuList zhihuList = retrofit.create(ZhihuList.class);
+        zhihuList.getZhihuList(path).subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+    }
+    public void getZhihuDetail(int path, Subscriber<Object> subscriber) {
+        updateRetrofit();
+        ZhihuDetail zhihuDetail = retrofit.create(ZhihuDetail.class);
+        zhihuDetail.getZhihuDetail(path).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }

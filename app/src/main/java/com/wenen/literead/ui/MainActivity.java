@@ -117,6 +117,11 @@ public class MainActivity extends BaseActivity
             intent.setClass(this, ArticleListActivity.class);
             intent.putExtra("title", "Android开发");
             startActivity(intent);
+        } else if (id == R.id.nav_zhihu) {
+            Intent intent = new Intent();
+            intent.setClass(this, ZhihuListActivity.class);
+            intent.putExtra("title", getString(R.string.zhihu_daily));
+            startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -189,7 +194,7 @@ public class MainActivity extends BaseActivity
                         Log.e("id", tnEntity.id + "");
                         fragments.add(imageListFragment);
                     }
-                }else
+                } else
                     showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {

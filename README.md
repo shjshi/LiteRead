@@ -8,16 +8,19 @@
 
 ### 直播数据来源于[斗鱼](www.douyu.com),目前因为直播地址的加密,只解析到了直播列表
 
+### 知乎日报数据来源于[知乎](www.zhihu.com)
+
 ## 截图
 
-![](/img/Screenshot_2016-09-01-23-05-48.jpeg)
-![](/img/Screenshot_2016-09-01-23-06-07.jpeg)
-![](/img/Screenshot_2016-09-01-23-06-32.jpeg)
-
-![](/img/Screenshot_2016-09-01-23-06-51.jpeg)
-![](/img/Screenshot_2016-09-01-23-07-12.jpeg)
-![](/img/Screenshot_2016-09-01-23-07-30.jpeg)
-
+<img src="/img/Screenshot_2016-09-01-23-05-48.jpeg" width="60%"/>
+<img src="/img/Screenshot_2016-09-05-15-32-23.jpeg" width="60%"/>
+<img src="/img/Screenshot_2016-09-01-23-06-32.jpeg" width="60%"/>
+<img src="/img/Screenshot_2016-09-01-23-06-51.jpeg" width="60%"/>
+<img src="/img/Screenshot_2016-09-01-23-07-12.jpeg" width="60%"/>
+<img src="/img/Screenshot_2016-09-01-23-07-30.jpeg" width="60%"/>
+<img src="/img/Screenshot_2016-09-01-23-05-48.jpeg" width="60%"/>
+<img src="/img/Screenshot_2016-09-05-15-28-44.jpeg" width="60%"/>
+<img src="/img/Screenshot_2016-09-05-15-28-51.jpeg" width="60%"/>
 
 ### okhttp拦截器(包括日志打印以及HTTP缓存)
 

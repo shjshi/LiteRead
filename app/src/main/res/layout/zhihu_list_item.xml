@@ -6,24 +6,23 @@
     style="@style/cardStyle"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="4dp">
-
     <RelativeLayout
         style="@style/cardRelativeLayoutStyle"
         tools:ignore="UselessParent">
 
         <ImageView
-            android:id="@+id/iv_video_img"
+            android:id="@+id/iv_zhihu_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_alignParentLeft="true"
             android:scaleType="centerCrop" />
 
         <TextView
-            android:id="@+id/tv_video_title"
+            android:id="@+id/tv_zhihu_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/iv_video_img"
+            android:layout_toRightOf="@+id/iv_zhihu_img"
             android:textSize="@dimen/title_text_size"
             android:textStyle="bold" />
 
