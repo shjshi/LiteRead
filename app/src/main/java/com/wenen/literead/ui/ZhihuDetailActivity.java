@@ -126,6 +126,4 @@ public class ZhihuDetailActivity extends BaseActivity {
         };
         HttpClient.getSingle(APIUrl.ZHIHU_BASE_URL).getZhihuDetail(id, subscriber);
     }
-
-
 }

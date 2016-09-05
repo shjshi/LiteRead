@@ -12,15 +12,15 @@
 
 ## 截图
 
-<img src="/img/Screenshot_2016-09-01-23-05-48.jpeg" width="60%"/>
-<img src="/img/Screenshot_2016-09-05-15-32-23.jpeg" width="60%"/>
-<img src="/img/Screenshot_2016-09-01-23-06-32.jpeg" width="60%"/>
-<img src="/img/Screenshot_2016-09-01-23-06-51.jpeg" width="60%"/>
-<img src="/img/Screenshot_2016-09-01-23-07-12.jpeg" width="60%"/>
-<img src="/img/Screenshot_2016-09-01-23-07-30.jpeg" width="60%"/>
-<img src="/img/Screenshot_2016-09-01-23-05-48.jpeg" width="60%"/>
-<img src="/img/Screenshot_2016-09-05-15-28-44.jpeg" width="60%"/>
-<img src="/img/Screenshot_2016-09-05-15-28-51.jpeg" width="60%"/>
+<img src="/img/Screenshot_2016-09-01-23-05-48.jpeg" width="30%"/>
+<img src="/img/Screenshot_2016-09-05-15-32-23.jpeg" width="30%"/>
+<img src="/img/Screenshot_2016-09-01-23-06-32.jpeg" width="30%"/>
+<img src="/img/Screenshot_2016-09-01-23-06-51.jpeg" width="30%"/>
+<img src="/img/Screenshot_2016-09-01-23-07-12.jpeg" width="30%"/>
+<img src="/img/Screenshot_2016-09-01-23-07-30.jpeg" width="30%"/>
+<img src="/img/Screenshot_2016-09-01-23-05-48.jpeg" width="30%"/>
+<img src="/img/Screenshot_2016-09-05-15-28-44.jpeg" width="30%"/>
+<img src="/img/Screenshot_2016-09-05-15-28-51.jpeg" width="30%"/>
 
 ### okhttp拦截器(包括日志打印以及HTTP缓存)
 
