@@ -13,7 +13,7 @@ import com.wenen.literead.R;
 import com.wenen.literead.adapter.ClickResponseListener;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.model.image.ImageModel;
-import com.wenen.literead.ui.ImageDetailActivity;
+import com.wenen.literead.ui.image.ImageDetailActivity;
 
 import java.util.ArrayList;
 import java.util.List;

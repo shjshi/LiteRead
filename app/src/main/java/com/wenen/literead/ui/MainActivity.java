@@ -2,7 +2,6 @@ package com.wenen.literead.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -19,10 +18,14 @@ import android.view.View;
 
 import com.wenen.literead.R;
 import com.wenen.literead.api.APIUrl;
-import com.wenen.literead.fragment.ImageListFragment;
+import com.wenen.literead.fragment.image.ImageListFragment;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.image.ImageTypeListModel;
+import com.wenen.literead.ui.article.ArticleListActivity;
+import com.wenen.literead.ui.github.GitLogin;
+import com.wenen.literead.ui.video.VideoListActivity;
+import com.wenen.literead.ui.zhihu.ZhihuListActivity;
 
 import java.util.ArrayList;
 
@@ -77,11 +80,12 @@ public class MainActivity extends BaseActivity
                 mainPager.getAdapter().notifyDataSetChanged();
             mainPager.setOffscreenPageLimit(titleList.size());
         }
+
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
         outState.putStringArrayList("titleList", titleList);
     }
 
@@ -105,22 +109,23 @@ public class MainActivity extends BaseActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Intent intent = new Intent();
         if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent();
             intent.setClass(this, VideoListActivity.class);
-            intent.putExtra("title", "直播");
+            intent.putExtra("title", getString(R.string.video));
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-            Intent intent = new Intent();
             intent.setClass(this, ArticleListActivity.class);
-            intent.putExtra("title", "Android开发");
+            intent.putExtra("title", getString(R.string.android_dev));
             startActivity(intent);
         } else if (id == R.id.nav_zhihu) {
-            Intent intent = new Intent();
             intent.setClass(this, ZhihuListActivity.class);
             intent.putExtra("title", getString(R.string.zhihu_daily));
+            startActivity(intent);
+        }else if (id==R.id.nav_git){
+            intent.setClass(this, GitLogin.class);
+            intent.putExtra("title", "GitHub");
             startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

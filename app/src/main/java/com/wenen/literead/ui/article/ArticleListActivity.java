@@ -1,4 +1,4 @@
-package com.wenen.literead.ui;
+package com.wenen.literead.ui.article;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +13,7 @@ import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.article.ArticleListModel;
+import com.wenen.literead.ui.BaseActivity;
 
 import java.util.ArrayList;
 

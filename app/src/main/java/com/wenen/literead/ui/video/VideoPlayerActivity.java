@@ -1,4 +1,4 @@
-package com.wenen.literead.ui;
+package com.wenen.literead.ui.video;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -8,6 +8,7 @@ import com.wenen.literead.R;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.model.video.VideoModel;
+import com.wenen.literead.ui.BaseActivity;
 import com.wenen.literead.utils.MD5;
 
 import butterknife.Bind;

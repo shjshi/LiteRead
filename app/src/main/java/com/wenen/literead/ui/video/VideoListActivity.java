@@ -1,4 +1,4 @@
-package com.wenen.literead.ui;
+package com.wenen.literead.ui.video;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -13,9 +13,10 @@ import android.view.View;
 
 import com.wenen.literead.R;
 import com.wenen.literead.api.APIUrl;
-import com.wenen.literead.fragment.VideoListFragment;
+import com.wenen.literead.fragment.video.VideoListFragment;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
+import com.wenen.literead.ui.BaseActivity;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;

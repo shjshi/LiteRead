@@ -1,4 +1,4 @@
-package com.wenen.literead.ui;
+package com.wenen.literead.ui.image;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.image.ImageModel;
+import com.wenen.literead.ui.BaseActivity;
 
 import java.util.ArrayList;
 

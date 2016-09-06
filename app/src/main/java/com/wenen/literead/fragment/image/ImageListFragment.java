@@ -1,4 +1,4 @@
-package com.wenen.literead.fragment;
+package com.wenen.literead.fragment.image;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.image.ImageListAdapter;
 import com.wenen.literead.api.APIUrl;
+import com.wenen.literead.fragment.BaseFragment;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.model.image.ImageListModel;
 

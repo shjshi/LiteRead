@@ -1,4 +1,4 @@
-package com.wenen.literead.ui;
+package com.wenen.literead.ui.image;
 
 
 import android.graphics.Bitmap;
@@ -17,6 +17,7 @@ import android.view.View;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.image.ImageDetailsAdapter;
 import com.wenen.literead.api.APIUrl;
+import com.wenen.literead.ui.BaseActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;

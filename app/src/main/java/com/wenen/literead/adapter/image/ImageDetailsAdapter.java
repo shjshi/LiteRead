@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.wenen.literead.fragment.ImageDetailsFragment;
+import com.wenen.literead.fragment.image.ImageDetailsFragment;
 
 import java.util.ArrayList;
 

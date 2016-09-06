@@ -1,5 +1,6 @@
-package com.wenen.literead.ui;
+package com.wenen.literead.ui.zhihu;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -18,6 +19,7 @@ import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.zhihu.ZhihuDetailModel;
+import com.wenen.literead.ui.BaseActivity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -29,8 +31,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import rx.Subscriber;
 
 public class ZhihuDetailActivity extends BaseActivity {
-
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.toolbar_layout)
@@ -102,26 +102,44 @@ public class ZhihuDetailActivity extends BaseActivity {
             @Override
             public void onNext(ZhihuDetailModel zhihuDetailModel) {
                 super.onNext(zhihuDetailModel);
-                document = Jsoup.parse(zhihuDetailModel.body);
+                if (zhihuDetailModel.type == 0)
+                    document = Jsoup.parse(zhihuDetailModel.body);
+                else
+                    showSnackBar(indeterminateHorizontalProgressToolbar, "此为站外文章,无法获取详情", null);
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
+                showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getZhihuDetail();
+                    }
+                });
             }
 
             @Override
             public void onCompleted() {
                 super.onCompleted();
-                Log.e("document", document.outerHtml());
-                Elements elements = document.select("h2.question-title");
-                ImageLoaderConfig.imageLoader.displayImage(document.select("img.avatar").first().text(), ivAuthor,
-                        ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
-                tvZhihuDetailTitle.setText(elements.first().text());
-                ImageLoaderConfig.imageLoader.displayImage(document.select("img.avatar").first().attr("src"), ivAuthor, ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
-                tvAuthor.setText(document.select("span.author").first().text());
-                content = document.select("div.content").first().html();
-                tvZhihuDetail.setText(Html.fromHtml(content, new URLImageGetter(content, ZhihuDetailActivity.this, tvZhihuDetail, ImageLoaderConfig.options), null));
+                if (document != null) {
+                    Log.e("document", document.outerHtml());
+                    Elements elements = document.select("h2.question-title");
+                    tvZhihuDetailTitle.setText(elements.first().text());
+                    if (document.select("img.avatar") != null && document.select("img.avatar").first() != null)
+                        ImageLoaderConfig.imageLoader.displayImage(document.select("img.avatar").first().attr("src"), ivAuthor,
+                                ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
+                    if (document.select("span.author") != null && document.select("span.author").first() != null)
+                        tvAuthor.setText(document.select("span.author").first().text());
+                    if (document.select("div.content") != null && document.select("div.content").first() != null)
+                        content = document.select("div.content").first().html();
+                    if (Build.VERSION.SDK_INT < 24) {
+                        tvZhihuDetail.setText(Html.fromHtml(content, new URLImageGetter(content,
+                                ZhihuDetailActivity.this, tvZhihuDetail, ImageLoaderConfig.options), null));
+                    } else
+                        tvZhihuDetail.setText(Html.fromHtml(content, 0, new URLImageGetter(content,
+                                ZhihuDetailActivity.this, tvZhihuDetail, ImageLoaderConfig.options), null));
+                }
             }
         };
         HttpClient.getSingle(APIUrl.ZHIHU_BASE_URL).getZhihuDetail(id, subscriber);

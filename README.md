@@ -6,9 +6,11 @@
 
 ### Android干货分享来源于[Gank.io](http://gank.io/api)
 
-### 直播数据来源于[斗鱼](www.douyu.com),目前因为直播地址的加密,只解析到了直播列表
+### 直播数据来源于[斗鱼](http://www.douyu.com),目前因为直播地址的加密,只解析到了直播列表
 
-### 知乎日报数据来源于[知乎](www.zhihu.com)
+### 知乎日报数据来源于[知乎](http://www.zhihu.com)
+
+### TODO:GitHubClient
 
 ## 截图
 

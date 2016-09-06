@@ -1,4 +1,4 @@
-package com.wenen.literead.fragment;
+package com.wenen.literead.fragment.image;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

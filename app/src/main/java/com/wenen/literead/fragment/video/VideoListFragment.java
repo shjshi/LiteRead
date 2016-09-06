@@ -1,4 +1,4 @@
-package com.wenen.literead.fragment;
+package com.wenen.literead.fragment.video;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.video.VideoListAdapter;
 import com.wenen.literead.api.APIUrl;
+import com.wenen.literead.fragment.BaseFragment;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.model.video.VideoListModel;
 
