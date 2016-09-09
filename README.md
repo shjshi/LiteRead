@@ -10,7 +10,9 @@
 
 ### 知乎日报数据来源于[知乎](http://www.zhihu.com)
 
-### TODO:GitHubClient
+### GitHub数据来源于[GitHub](https://www.github.com)
+
+### TODO:MVP
 
 ## 截图
 
@@ -23,7 +25,7 @@
 <img src="/img/Screenshot_2016-09-01-23-05-48.jpeg" width="30%"/>
 <img src="/img/Screenshot_2016-09-05-15-28-44.jpeg" width="30%"/>
 <img src="/img/Screenshot_2016-09-05-15-28-51.jpeg" width="30%"/>
-
+<img src="/img/Screenshot_2016-09-09-10-22-38.jpeg" width="30%"/>
 ### okhttp拦截器(包括日志打印以及HTTP缓存)
 
 <pre><code>
