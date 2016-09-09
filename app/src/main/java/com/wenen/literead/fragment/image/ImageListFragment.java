@@ -105,8 +105,6 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     public void onResume() {
         super.onResume();
         Log.e("id_page", "id=" + id + "page=" + page);
-        if (!hasLoad)
-            getImgThumbleList(id, page, rows);
     }
 
     @Override
@@ -126,7 +124,6 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     }
 
     private boolean shouldRefreshOnVisibilityChange(boolean isVisibleToUser) {
-        Log.e("id_page", "id=" + id + "page=" + page);
         return isVisibleToUser && !isRefreshed;
     }
 

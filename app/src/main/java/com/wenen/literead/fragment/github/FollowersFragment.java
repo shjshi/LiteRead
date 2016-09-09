@@ -28,7 +28,6 @@ import com.wenen.literead.model.github.GithubFollowModel;
 import com.wenen.literead.model.github.GithubUser;
 import com.wenen.literead.model.github.StartedModel;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -71,23 +70,6 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            position = getArguments().getInt("position");
-            switch (position) {
-                case 0:
-                    path = "followers";
-                    break;
-                case 1:
-                    path = "following";
-                    break;
-                case 2:
-                    path = "starred";
-                    break;
-                case 3:
-                    path = "repos";
-                    break;
-            }
-        }
     }
 
     @Override
@@ -107,13 +89,6 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
         return view;
     }
 
-    public File createPictureDir() {
-        File pictureDir = new File(PICTURE_DIR);
-        if (!pictureDir.exists()) {
-            pictureDir.mkdirs();
-        }
-        return pictureDir;
-    }
 
     private void getGitHubFollow() {
         subscriber = new HttpSubscriber<ResponseBody>() {
@@ -169,6 +144,23 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
                 gitHubFollowAdapter.updateList(list);
             }
         };
+        if (path == null && getArguments() != null) {
+            position = getArguments().getInt("position");
+            switch (position) {
+                case 0:
+                    path = "followers";
+                    break;
+                case 1:
+                    path = "following";
+                    break;
+                case 2:
+                    path = "starred";
+                    break;
+                case 3:
+                    path = "repos";
+                    break;
+            }
+        }
         HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).getGitHubFollow(GithubUser.getSingle().getName(), path, subscriber);
     }
 

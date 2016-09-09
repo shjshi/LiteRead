@@ -44,11 +44,6 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             url = savedInstanceState.getString("url");
-        } else {
-            if (getArguments() != null) {
-                url = getArguments().getString("url");
-                Log.e("urllll", url + "");
-            }
         }
     }
 
@@ -107,7 +102,7 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void onResume() {
         super.onResume();
-        getVideoList();
+
     }
 
     private void getVideoList() {
@@ -149,6 +144,8 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
                 }
             }
         };
+        if (url==null)
+            url=getArguments().getString("url");
         HttpClient.getSingle(APIUrl.DOUYU_BASE_URL).
                 getVideoList(url, subscriber);
 
