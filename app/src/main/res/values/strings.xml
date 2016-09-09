@@ -112,5 +112,6 @@
     <string name="video">直播</string>
     <string name="password">password</string>
     <string name="username">username</string>
-    <string name="login_github">Login-Github</string>
+    <string name="search_github">Search-Github</string>
+    <string name="github">github</string>
 </resources>

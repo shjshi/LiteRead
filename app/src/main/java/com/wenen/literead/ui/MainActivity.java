@@ -23,7 +23,7 @@ import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.image.ImageTypeListModel;
 import com.wenen.literead.ui.article.ArticleListActivity;
-import com.wenen.literead.ui.github.GitLogin;
+import com.wenen.literead.ui.github.GitSearch;
 import com.wenen.literead.ui.video.VideoListActivity;
 import com.wenen.literead.ui.zhihu.ZhihuListActivity;
 
@@ -124,7 +124,7 @@ public class MainActivity extends BaseActivity
             intent.putExtra("title", getString(R.string.zhihu_daily));
             startActivity(intent);
         }else if (id==R.id.nav_git){
-            intent.setClass(this, GitLogin.class);
+            intent.setClass(this, GitSearch.class);
             intent.putExtra("title", "GitHub");
             startActivity(intent);
         }

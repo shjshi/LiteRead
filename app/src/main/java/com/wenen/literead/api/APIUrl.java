@@ -12,4 +12,5 @@ public class APIUrl {
     public static String DOUYU_API_URL="http://www.douyu.com/lapi/live/getPlay/";
     public static String GANK_IO_URL="http://gank.io/api/";
     public static String ZHIHU_BASE_URL="http://news-at.zhihu.com/api/4/news/";
+    public static String GITHUB_BASE_URL="https://api.github.com/users/";
 }

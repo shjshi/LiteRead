@@ -7,6 +7,8 @@ import com.litesuits.common.assist.Network;
 import com.wenen.literead.LiteReadApplication;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.retrofitInterface.article.ArticleList;
+import com.wenen.literead.retrofitInterface.github.GitHubLogin;
+import com.wenen.literead.retrofitInterface.github.GithubFollow;
 import com.wenen.literead.retrofitInterface.image.IMG;
 import com.wenen.literead.retrofitInterface.image.IMGThumbleList;
 import com.wenen.literead.retrofitInterface.image.IMGTypeList;
@@ -313,10 +315,28 @@ public class HttpClient {
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
+
     public void getZhihuDetail(int path, Subscriber<Object> subscriber) {
         updateRetrofit();
         ZhihuDetail zhihuDetail = retrofit.create(ZhihuDetail.class);
         zhihuDetail.getZhihuDetail(path).subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+    }
+
+    public void GithubLogin(String path, Subscriber<Object> subscriber) {
+        updateRetrofit();
+        GitHubLogin gitHubLogin = retrofit.create(GitHubLogin.class);
+        gitHubLogin.GithubLogin(path).subscribeOn(Schedulers.io())
+                .unsubscribeOn(Schedulers.io()).
+                observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+
+    }
+
+    public void getGitHubFollow(String name, String path, Subscriber<Object> subscriber) {
+        updateRetrofit();
+        GithubFollow githubFollow = retrofit.create(GithubFollow.class);
+        githubFollow.getGitHubFollowing(name, path).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
