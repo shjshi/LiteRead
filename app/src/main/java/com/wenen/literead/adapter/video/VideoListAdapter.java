@@ -51,7 +51,6 @@ public class VideoListAdapter extends RecyclerView.Adapter<VideoListAdapter.Card
             @Override
             public void onWholeClick(int position) {
                 if (position != -1) {
-                    // new FinestWebView.Builder(context).show(APIUrl.DOUYU_BASE_URL + list.get(position).roomUrl);
                     Intent intent = new Intent();
                     intent.putExtra("roomId", list.get(position).roomUrl.split("/")[1]);
                     intent.setClass(context, VideoPlayerActivity.class);

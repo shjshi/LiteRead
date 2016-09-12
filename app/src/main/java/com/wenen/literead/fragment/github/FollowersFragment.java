@@ -2,7 +2,6 @@ package com.wenen.literead.fragment.github;
 
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +16,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
-import com.litesuits.android.log.Log;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.github.GitHubFollowAdapter;
 import com.wenen.literead.api.APIUrl;
@@ -52,8 +50,6 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
     private String path;
     private GitHubFollowAdapter gitHubFollowAdapter;
     private List<Object> list = new ArrayList<>();
-    public static final String PICTURE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath()
-            + "/liteRead/pictures/";
 
     public FollowersFragment() {
         // Required empty public constructor
@@ -86,9 +82,9 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
+
         return view;
     }
-
 
     private void getGitHubFollow() {
         subscriber = new HttpSubscriber<ResponseBody>() {
@@ -128,15 +124,13 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
                 hasLoad = false;
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
-                Log.e("eeeee", e.toString());
                 isRefreshed = true;
-                Snackbar.make(rclGithubList, e.toString(), Snackbar.LENGTH_INDEFINITE);
+                Snackbar.make(rclGithubList, e.toString(), Snackbar.LENGTH_INDEFINITE).show();
             }
 
             @Override
             public void onCompleted() {
                 super.onCompleted();
-                Log.e("sizeeeee", list.size());
                 isRefreshed = true;
                 hasLoad = true;
                 if (swipeRefreshLayout != null)

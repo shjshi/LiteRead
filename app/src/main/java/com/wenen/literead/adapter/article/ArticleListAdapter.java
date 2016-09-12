@@ -67,10 +67,6 @@ public class ArticleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             .progressBarColorRes(R.color.colorPrimary).toolbarColorRes(R.color.colorPrimary).titleColorRes(R.color.white)
                             .menuColorRes(R.color.white).iconDefaultColorRes(R.color.white)
                             .show(list.get(position).url);
-//                    Intent intent = new Intent();
-//                    intent.setClass(context, ZhihuDetailActivity.class);
-//                    intent.putExtra("url", list.get(position).url);
-//                    context.startActivity(intent);
                 }
             });
         } else {

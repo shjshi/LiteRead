@@ -24,7 +24,7 @@ import rx.Subscriber;
 /**
  * Created by Wen_en on 16/9/6.
  */
-public class GitSearch extends BaseActivity {
+public class GitSearchActivity extends BaseActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.indeterminate_horizontal_progress_toolbar)
@@ -95,7 +95,7 @@ public class GitSearch extends BaseActivity {
                 super.onNext(githubLoginModel);
                 updateGithubUserData(githubLoginModel);
                 githubUser.setName(username);
-                startActivity(new Intent(GitSearch.this, UserDetail.class));
+                startActivity(new Intent(GitSearchActivity.this, UserDetailActivity.class));
                 finish();
             }
         };

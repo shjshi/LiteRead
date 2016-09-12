@@ -1,6 +1,7 @@
 package com.wenen.literead.adapter.github;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,11 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.thefinestartist.finestwebview.FinestWebView;
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.ClickResponseListener;
 import com.wenen.literead.model.github.GithubFollowModel;
 import com.wenen.literead.model.github.StartedModel;
+import com.wenen.literead.ui.github.UserDetailActivity;
 
 import java.util.List;
 
@@ -45,7 +48,16 @@ public class GitHubFollowAdapter extends RecyclerView.Adapter<GitHubFollowAdapte
         return new ViewHolder(view, new ClickResponseListener() {
             @Override
             public void onWholeClick(int position) {
-
+                if (list.get(position) instanceof GithubFollowModel) {
+                    Intent intent = new Intent();
+                    intent.setClass(context, UserDetailActivity.class);
+                    intent.putExtra("username", ((GithubFollowModel) list.get(position)).login);
+                    context.startActivity(intent);
+                } else
+                    new FinestWebView.Builder(context).statusBarColorRes(R.color.colorPrimary)
+                            .progressBarColorRes(R.color.colorPrimary).toolbarColorRes(R.color.colorPrimary).titleColorRes(R.color.white)
+                            .menuColorRes(R.color.white).iconDefaultColorRes(R.color.white)
+                            .show(((StartedModel) list.get(position)).html_url);
             }
         });
     }

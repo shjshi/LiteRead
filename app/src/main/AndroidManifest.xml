@@ -50,10 +50,12 @@
             android:name=".ui.zhihu.ZhihuDetailActivity"
             android:label="@string/zhihu_daily" />
         <activity
-            android:name=".ui.github.GitSearch"
+            android:name=".ui.github.GitSearchActivity"
             android:label="GitHub" />
 
-        <activity android:name=".ui.github.UserDetail" />
+        <activity
+            android:name=".ui.github.UserDetailActivity"
+            android:launchMode="standard" />
     </application>
 
 </manifest>
