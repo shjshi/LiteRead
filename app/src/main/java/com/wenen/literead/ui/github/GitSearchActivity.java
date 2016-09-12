@@ -99,6 +99,6 @@ public class GitSearchActivity extends BaseActivity {
                 finish();
             }
         };
-        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).GithubLogin(username, subscriber);
+        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).GithubLogin(username,APIUrl.GITHUB_CLIENT_ID,APIUrl.GITHUB_CECRET, subscriber);
     }
 }

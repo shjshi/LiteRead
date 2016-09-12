@@ -57,21 +57,17 @@ public class UserDetailActivity extends BaseActivity {
         setContentView(R.layout.activity_user_detail);
         ButterKnife.bind(this);
         if (getIntent().getStringExtra("username") == null) {
-            ImageLoaderConfig.imageLoader.displayImage(githubUser.getGithubLoginModel().avatar_url, ivAvatar,
-                    ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
-            if (githubUser.getGithubLoginModel().bio != null)
-                tvBio.setText("Bio:" + githubUser.getGithubLoginModel().bio);
-            tvName.setText(githubUser.getGithubLoginModel().name);
-            if (githubUser.getGithubLoginModel().blog != null)
-                tvBlog.setText("Blog:" + githubUser.getGithubLoginModel().blog);
-            assert tbTab != null;
-            assert vpGithub != null;
-            tbTab.setupWithViewPager(vpGithub);
             if (savedInstanceState != null) {
-
+                username = savedInstanceState.getString("username");
+                githubSearch();
             } else {
-                githubPageAdapter = new GithubPageAdapter(getSupportFragmentManager());
-                vpGithub.setAdapter(githubPageAdapter);
+                ImageLoaderConfig.imageLoader.displayImage(githubUser.getGithubLoginModel().avatar_url, ivAvatar,
+                        ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
+                if (githubUser.getGithubLoginModel().bio != null)
+                    tvBio.setText("Bio:" + githubUser.getGithubLoginModel().bio);
+                tvName.setText(githubUser.getGithubLoginModel().name);
+                if (githubUser.getGithubLoginModel().blog != null)
+                    tvBlog.setText("Blog:" + githubUser.getGithubLoginModel().blog);
             }
         } else {
             username = getIntent().getStringExtra("username");
@@ -80,13 +76,14 @@ public class UserDetailActivity extends BaseActivity {
         assert tbTab != null;
         assert vpGithub != null;
         tbTab.setupWithViewPager(vpGithub);
-        if (savedInstanceState != null) {
+        githubPageAdapter = new GithubPageAdapter(getSupportFragmentManager());
+        vpGithub.setAdapter(githubPageAdapter);
+    }
 
-        } else {
-            githubPageAdapter = new GithubPageAdapter(getSupportFragmentManager());
-            vpGithub.setAdapter(githubPageAdapter);
-        }
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("username", username);
     }
 
     @Override
@@ -146,7 +143,8 @@ public class UserDetailActivity extends BaseActivity {
                 assert vpGithub != null;
                 tbTab.setupWithViewPager(vpGithub);
                 githubPageAdapter = new GithubPageAdapter(getSupportFragmentManager());
-                vpGithub.setAdapter(githubPageAdapter);
+                if (vpGithub != null)
+                    vpGithub.setAdapter(githubPageAdapter);
             }
 
             @Override
@@ -156,6 +154,6 @@ public class UserDetailActivity extends BaseActivity {
                 githubUser.setName(username);
             }
         };
-        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).GithubLogin(username, subscriber);
+        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).GithubLogin(username,APIUrl.GITHUB_CLIENT_ID,APIUrl.GITHUB_CECRET, subscriber);
     }
 }

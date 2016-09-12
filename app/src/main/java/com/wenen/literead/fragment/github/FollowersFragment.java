@@ -155,7 +155,7 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
                     break;
             }
         }
-        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).getGitHubFollow(GithubUser.getSingle().getName(), path, subscriber);
+        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).getGitHubFollow(GithubUser.getSingle().getName(), path,APIUrl.GITHUB_CLIENT_ID,APIUrl.GITHUB_CECRET, subscriber);
     }
 
     @Override

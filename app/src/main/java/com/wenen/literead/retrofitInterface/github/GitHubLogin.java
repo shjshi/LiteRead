@@ -4,6 +4,7 @@ import com.wenen.literead.model.github.GithubLoginModel;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -12,6 +13,8 @@ import rx.Observable;
 public interface GitHubLogin {
     @GET("{path}")
     Observable<GithubLoginModel> GithubLogin(
-            @Path("path") String path
+            @Path("path") String path,
+            @Query("client_id") String client_id,
+            @Query("client_secret") String client_secret
     );
 }

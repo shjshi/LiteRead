@@ -232,10 +232,10 @@ public class HttpClient {
         @Override
         public Response intercept(Chain chain) throws IOException {
             Request original = chain.request();
-            if (original.url().toString().indexOf("https://api.github.com/users/") != -1) {
-                original.newBuilder().put(RequestBody.create(JSON,
-                        APIUrl.GITHUB_CLIENT_ID));
-            }
+//            if (original.url().toString().indexOf("https://api.github.com/users/") != -1) {
+//                original.newBuilder().put(RequestBody.create(JSON,
+//                        APIUrl.GITHUB_CLIENT_ID));
+//            }
             if (!Network.isConnected(LiteReadApplication.mContext)) {
                 original = original.newBuilder()
                         .cacheControl(CacheControl.FORCE_CACHE)
@@ -355,19 +355,19 @@ public class HttpClient {
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
-    public void GithubLogin(String path, Subscriber<Object> subscriber) {
+    public void GithubLogin(String path,String client_id,String client_secret, Subscriber<Object> subscriber) {
         updateRetrofit();
         GitHubLogin gitHubLogin = retrofit.create(GitHubLogin.class);
-        gitHubLogin.GithubLogin(path).subscribeOn(Schedulers.io())
+        gitHubLogin.GithubLogin(path,client_id,client_secret).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
 
     }
 
-    public void getGitHubFollow(String name, String path, Subscriber<Object> subscriber) {
+    public void getGitHubFollow(String name, String path,String client_id,String client_secret, Subscriber<Object> subscriber) {
         updateRetrofit();
         GithubFollow githubFollow = retrofit.create(GithubFollow.class);
-        githubFollow.getGitHubFollowing(name, path).subscribeOn(Schedulers.io())
+        githubFollow.getGitHubFollowing(name, path,client_id,client_secret).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
