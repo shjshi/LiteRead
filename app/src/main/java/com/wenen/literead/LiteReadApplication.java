@@ -2,6 +2,7 @@ package com.wenen.literead;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -15,7 +16,7 @@ import com.wenen.literead.api.APIUrl;
  */
 public class LiteReadApplication extends Application {
     public static Context mContext;
-
+private SharedPreferences sp;
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .denyCacheImageMultipleSizesInMemory()
@@ -33,5 +34,6 @@ public class LiteReadApplication extends Application {
         mContext = getApplicationContext();
         initImageLoader(getApplicationContext());
         Bugly.init(getApplicationContext(), APIUrl.BUGLY_APPID, false);
+        sp = getSharedPreferences("appInfo", Context.MODE_PRIVATE);
     }
 }

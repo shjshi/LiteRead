@@ -11,7 +11,7 @@ import rx.Observable;
  */
 public interface GithubFollow {
     @GET("{name}/{path}")
-        Observable<ResponseBody> getGitHubFollowing(
+    Observable<ResponseBody> getGitHubFollowing(
             @Path("name") String name,
             @Path("path") String path,
             @Query("client_id") String client_id,

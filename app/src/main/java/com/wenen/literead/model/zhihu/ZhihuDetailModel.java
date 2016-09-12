@@ -8,7 +8,7 @@ import java.util.List;
 public class ZhihuDetailModel {
 
     /**
-     * body : <div class="main-wrap content-wrap">
+     * body : <div class="git_user_detail-wrap content-wrap">
      <div class="headline">
 
      <div class="img-place-holder"></div>

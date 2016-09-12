@@ -1,5 +1,6 @@
 package com.wenen.literead.ui.github;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -9,6 +10,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
@@ -56,11 +59,15 @@ public class UserDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
         ButterKnife.bind(this);
-        if (getIntent().getStringExtra("username") == null) {
-            if (savedInstanceState != null) {
-                username = savedInstanceState.getString("username");
+        setSupportActionBar(toolbar);
+        if (savedInstanceState!=null){
+            username = savedInstanceState.getString("username");
+            githubSearch();
+        }else {
+            if (getIntent().getStringExtra("username") != null){
+                username = getIntent().getStringExtra("username");
                 githubSearch();
-            } else {
+            }else {
                 ImageLoaderConfig.imageLoader.displayImage(githubUser.getGithubLoginModel().avatar_url, ivAvatar,
                         ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
                 if (githubUser.getGithubLoginModel().bio != null)
@@ -69,9 +76,6 @@ public class UserDetailActivity extends BaseActivity {
                 if (githubUser.getGithubLoginModel().blog != null)
                     tvBlog.setText("Blog:" + githubUser.getGithubLoginModel().blog);
             }
-        } else {
-            username = getIntent().getStringExtra("username");
-            githubSearch();
         }
         assert tbTab != null;
         assert vpGithub != null;
@@ -154,6 +158,24 @@ public class UserDetailActivity extends BaseActivity {
                 githubUser.setName(username);
             }
         };
-        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).GithubLogin(username,APIUrl.GITHUB_CLIENT_ID,APIUrl.GITHUB_CECRET, subscriber);
+        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).GithubLogin(username, APIUrl.GITHUB_CLIENT_ID, APIUrl.GITHUB_CECRET, subscriber);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_log_out:
+                githubUser.setAutoLogin(false);
+                startActivity(new Intent(this, GitSearchActivity.class));
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.git_user_detail, menu);
+        return true;
     }
 }

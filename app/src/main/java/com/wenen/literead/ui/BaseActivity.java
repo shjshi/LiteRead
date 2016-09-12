@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,24 +14,24 @@ import com.wenen.literead.R;
 import com.wenen.literead.model.github.GithubLoginModel;
 import com.wenen.literead.model.github.GithubUser;
 
+import butterknife.Bind;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+
 /**
  * Created by Wen_en on 16/8/16.
  */
 public class BaseActivity extends AppCompatActivity {
-    private Toolbar toolbar;
     public static GithubUser githubUser;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
         githubUser = GithubUser.getSingle();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     public void showSnackBar(@NonNull View view, String msg, View.OnClickListener onClickListener) {

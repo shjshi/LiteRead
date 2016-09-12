@@ -1,9 +1,6 @@
 package com.wenen.literead.http;
 
-import android.text.TextUtils;
-
 import com.litesuits.android.log.Log;
-import com.litesuits.common.assist.Network;
 import com.wenen.literead.LiteReadApplication;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.retrofitInterface.article.ArticleList;
@@ -21,19 +18,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.File;
-import java.io.IOException;
 
 import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Headers;
-import okhttp3.Interceptor;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
-import okio.Buffer;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -62,15 +49,13 @@ public class HttpClient {
     private File httpCacheDirectory;
     private int cacheSize;
     private Cache cache;
-    public MediaType JSON
-            = MediaType.parse("application/json; charset=utf-8");
 
     private HttpClient() {
         httpCacheDirectory = new File(LiteReadApplication.mContext.getCacheDir(), "responses");
         cacheSize = 30 * 1024 * 1024; // 30 MiB
         cache = new Cache(httpCacheDirectory, cacheSize);
         client = new OkHttpClient.Builder()
-                .addInterceptor(new LoggerInterceptor("HTTP")).addNetworkInterceptor(new HttpInterceptor("NETWORK"))
+                .addInterceptor(new LoggerInterceptor("LOG")).addNetworkInterceptor(new HttpInterceptor("NETWORK"))
                 .cache(cache).build();
     }
 
@@ -90,175 +75,6 @@ public class HttpClient {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .baseUrl(getBaseUrl())//主机地址
                 .build();
-    }
-
-    class LoggerInterceptor implements Interceptor {
-        public static final String TAG = "OkHttp";
-        private String tag;
-        private boolean showResponse;
-
-        public LoggerInterceptor(String tag, boolean showResponse) {
-            if (TextUtils.isEmpty(tag)) {
-                tag = TAG;
-            }
-            this.showResponse = showResponse;
-            this.tag = tag;
-        }
-
-        public LoggerInterceptor(String tag) {
-            this(tag, true);
-        }
-
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request request = chain.request();
-            logForRequest(request);
-            Response response = chain.proceed(request);
-            return logForResponse(response);
-        }
-
-        private Response logForResponse(Response response) {
-            try {
-                //===>response log
-                Log.e(tag, "========response'log=======");
-                Response.Builder builder = response.newBuilder();
-                Response clone = builder.build();
-                Log.e(tag, "url : " + clone.request().url());
-                Log.e(tag, "code : " + clone.code());
-                Log.e(tag, "protocol : " + clone.protocol());
-                if (!TextUtils.isEmpty(clone.message()))
-                    Log.e(tag, "message : " + clone.message());
-
-                if (showResponse) {
-                    ResponseBody body = clone.body();
-                    if (body != null) {
-                        MediaType mediaType = body.contentType();
-                        if (mediaType != null) {
-                            Log.e(tag, "responseBody's contentType : " + mediaType.toString());
-                            if (isText(mediaType)) {
-                                String resp = body.string();
-                                Log.e(tag, "responseBody's content : " + resp);
-
-                                body = ResponseBody.create(mediaType, resp);
-                                return response.newBuilder().body(body).build();
-                            } else {
-                                Log.e(tag, "responseBody's content : " + body.string());
-                            }
-                        }
-                    }
-                }
-
-                Log.e(tag, "========response'log=======end");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            return response;
-        }
-
-        private void logForRequest(Request request) {
-            try {
-                String url = request.url().toString();
-                Headers headers = request.headers();
-                Log.e(tag, "========request'log=======");
-                Log.e(tag, "method : " + request.method());
-                Log.e(tag, "url : " + url);
-                Log.e(tag, "pamars:" + request.toString());
-                if (headers != null && headers.size() > 0) {
-                    Log.e(tag, "headers : " + headers.toString());
-                }
-                RequestBody requestBody = request.body();
-                if (requestBody != null) {
-                    MediaType mediaType = requestBody.contentType();
-                    if (mediaType != null) {
-                        Log.e(tag, "requestBody's contentType : " + mediaType.toString());
-                        if (isText(mediaType)) {
-                            Log.e(tag, "requestBody's content : " + bodyToString(request));
-                        } else {
-                            Log.e(tag, "requestBody's content : " + bodyToString(request));
-                        }
-                    }
-                }
-                Log.e(tag, "========request'log=======end");
-            } catch (Exception e) {
-//            e.printStackTrace();
-            }
-        }
-
-        private boolean isText(MediaType mediaType) {
-            if (mediaType.type() != null && mediaType.type().equals("text")) {
-                return true;
-            }
-            if (mediaType.subtype() != null) {
-                if (mediaType.subtype().equals("json") ||
-                        mediaType.subtype().equals("xml") ||
-                        mediaType.subtype().equals("html") ||
-                        mediaType.subtype().equals("webviewhtml")
-                        )
-                    return true;
-            }
-            return false;
-        }
-
-        private String bodyToString(final Request request) {
-            try {
-                final Request copy = request.newBuilder().build();
-                final Buffer buffer = new Buffer();
-                copy.body().writeTo(buffer);
-                return buffer.readUtf8();
-            } catch (final IOException e) {
-                return "something error when show requestBody.";
-            }
-        }
-    }
-
-    class HttpInterceptor implements Interceptor {
-        public static final String TAG = "OkHttp";
-        private String tag;
-        private boolean showResponse;
-
-        public HttpInterceptor(String tag, boolean showResponse) {
-            if (TextUtils.isEmpty(tag)) {
-                tag = TAG;
-            }
-            this.showResponse = showResponse;
-            this.tag = tag;
-        }
-
-        public HttpInterceptor(String tag) {
-            this(tag, true);
-        }
-
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request original = chain.request();
-//            if (original.url().toString().indexOf("https://api.github.com/users/") != -1) {
-//                original.newBuilder().put(RequestBody.create(JSON,
-//                        APIUrl.GITHUB_CLIENT_ID));
-//            }
-            if (!Network.isConnected(LiteReadApplication.mContext)) {
-                original = original.newBuilder()
-                        .cacheControl(CacheControl.FORCE_CACHE)
-                        .build();
-                Log.e("NoNetwork", "无网络");
-            } else
-                Log.e("NoNetwork", "有网络");
-            Response response = chain.proceed(original);
-            if (Network.isConnected(LiteReadApplication.mContext)) {
-                int maxAge = 60 * 60; // read from cache for 1 minute
-                response.newBuilder()
-                        .removeHeader("Pragma")
-                        .header("Cache-Control", "public, max-age=" + maxAge)
-                        .build();
-            } else {
-                int maxStale = 60 * 60 * 24 * 28; // tolerate 4-weeks stale
-                response.newBuilder()
-                        .removeHeader("Pragma")
-                        .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-                        .build();
-            }
-            return response;
-        }
     }
 
     /**
@@ -355,19 +171,19 @@ public class HttpClient {
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
 
-    public void GithubLogin(String path,String client_id,String client_secret, Subscriber<Object> subscriber) {
+    public void GithubLogin(String path, String client_id, String client_secret, Subscriber<Object> subscriber) {
         updateRetrofit();
         GitHubLogin gitHubLogin = retrofit.create(GitHubLogin.class);
-        gitHubLogin.GithubLogin(path,client_id,client_secret).subscribeOn(Schedulers.io())
+        gitHubLogin.GithubLogin(path, client_id, client_secret).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
 
     }
 
-    public void getGitHubFollow(String name, String path,String client_id,String client_secret, Subscriber<Object> subscriber) {
+    public void getGitHubFollow(String name, String path, String client_id, String client_secret, Subscriber<Object> subscriber) {
         updateRetrofit();
         GithubFollow githubFollow = retrofit.create(GithubFollow.class);
-        githubFollow.getGitHubFollowing(name, path,client_id,client_secret).subscribeOn(Schedulers.io())
+        githubFollow.getGitHubFollowing(name, path, client_id, client_secret).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }

@@ -13,6 +13,7 @@ import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.github.GithubLoginModel;
+import com.wenen.literead.model.github.GithubUser;
 import com.wenen.literead.ui.BaseActivity;
 
 import butterknife.Bind;
@@ -42,6 +43,12 @@ public class GitSearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_git_login);
         ButterKnife.bind(this);
+        if (GithubUser.getSingle().isAutoLogin()) {
+            Intent intent = new Intent(this, UserDetailActivity.class);
+            intent.putExtra("username", githubUser.getName());
+            startActivity(intent);
+            finish();
+        }
         if (savedInstanceState == null) {
             title = getIntent().getStringExtra("title");
         } else
@@ -95,10 +102,11 @@ public class GitSearchActivity extends BaseActivity {
                 super.onNext(githubLoginModel);
                 updateGithubUserData(githubLoginModel);
                 githubUser.setName(username);
+                githubUser.setAutoLogin(true);
                 startActivity(new Intent(GitSearchActivity.this, UserDetailActivity.class));
                 finish();
             }
         };
-        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).GithubLogin(username,APIUrl.GITHUB_CLIENT_ID,APIUrl.GITHUB_CECRET, subscriber);
+        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).GithubLogin(username, APIUrl.GITHUB_CLIENT_ID, APIUrl.GITHUB_CECRET, subscriber);
     }
 }
