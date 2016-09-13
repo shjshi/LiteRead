@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".ui.image.ThumbleActivity"
+    tools:context=".presenter.image.ThumbleActivity"
     tools:showIn="@layout/activity_thumble">
 
         <android.support.v7.widget.RecyclerView

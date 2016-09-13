@@ -1,4 +1,4 @@
-package com.wenen.literead.ui.zhihu;
+package com.wenen.literead.presenter.zhihu;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.zhihu.ZhihuDetailModel;
-import com.wenen.literead.ui.BaseActivity;
+import com.wenen.literead.presenter.BaseActivity;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -59,9 +59,9 @@ public class ZhihuDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_zhihu_detail);
+       create(R.layout.activity_zhihu_detail, getLayoutInflater(), null, savedInstanceState);
+        setContentView(getRootView());
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
             id = getIntent().getIntExtra("id", 0);
             title = getIntent().getStringExtra("title");
@@ -86,13 +86,6 @@ public class ZhihuDetailActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         toolbar.setTitle(title);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
-        toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
         ImageLoaderConfig.imageLoader.displayImage(imgurl, ivImageView,
                 ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
     }

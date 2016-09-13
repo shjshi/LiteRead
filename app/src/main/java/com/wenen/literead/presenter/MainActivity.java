@@ -1,4 +1,4 @@
-package com.wenen.literead.ui;
+package com.wenen.literead.presenter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +22,10 @@ import com.wenen.literead.fragment.image.ImageListFragment;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.image.ImageTypeListModel;
-import com.wenen.literead.ui.article.ArticleListActivity;
-import com.wenen.literead.ui.github.GitSearchActivity;
-import com.wenen.literead.ui.video.VideoListActivity;
-import com.wenen.literead.ui.zhihu.ZhihuListActivity;
+import com.wenen.literead.presenter.article.ArticleListActivity;
+import com.wenen.literead.presenter.github.GitSearchActivity;
+import com.wenen.literead.presenter.video.VideoListActivity;
+import com.wenen.literead.presenter.zhihu.ZhihuListActivity;
 
 import java.util.ArrayList;
 
@@ -57,7 +57,8 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        create(R.layout.activity_main, getLayoutInflater(), null, savedInstanceState);
+        setContentView(getRootView());
         ButterKnife.bind(this);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,6 +92,7 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void onResume() {
+        canTSetToolBar(true);
         super.onResume();
         toolbar.setTitle(getString(R.string.app_name));
     }

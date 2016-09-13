@@ -1,4 +1,4 @@
-package com.wenen.literead.ui.github;
+package com.wenen.literead.presenter.github;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 
 import com.wenen.literead.R;
 import com.wenen.literead.api.APIUrl;
@@ -14,7 +13,7 @@ import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.github.GithubLoginModel;
 import com.wenen.literead.model.github.GithubUser;
-import com.wenen.literead.ui.BaseActivity;
+import com.wenen.literead.presenter.BaseActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -41,7 +40,8 @@ public class GitSearchActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_git_login);
+        create(R.layout.activity_git_login, getLayoutInflater(), null, savedInstanceState);
+        setContentView(getRootView());
         ButterKnife.bind(this);
         if (GithubUser.getSingle().isAutoLogin()) {
             Intent intent = new Intent(this, UserDetailActivity.class);
@@ -65,13 +65,6 @@ public class GitSearchActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         toolbar.setTitle(title);
-        toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
     }
 
     @OnClick(R.id.btn_login)

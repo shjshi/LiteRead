@@ -1,4 +1,4 @@
-package com.wenen.literead.ui.article;
+package com.wenen.literead.presenter.article;
 
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -13,7 +13,7 @@ import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.article.ArticleListModel;
-import com.wenen.literead.ui.BaseActivity;
+import com.wenen.literead.presenter.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,8 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_article_list);
+        create(R.layout.activity_article_list, getLayoutInflater(), null, savedInstanceState);
+        setContentView(getRootView());
         ButterKnife.bind(this);
         if (savedInstanceState == null) {
             title = getIntent().getStringExtra("title");
@@ -61,13 +62,6 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
             type = savedInstanceState.getString("type");
             pagecount = savedInstanceState.getInt("pagecount", 5);
         }
-        toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
         swipeRefreshLayout.setOnRefreshListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);

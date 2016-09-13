@@ -1,4 +1,4 @@
-package com.wenen.literead.ui.image;
+package com.wenen.literead.presenter.image;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -19,7 +19,7 @@ import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.image.ImageModel;
-import com.wenen.literead.ui.BaseActivity;
+import com.wenen.literead.presenter.BaseActivity;
 
 import java.util.ArrayList;
 
@@ -50,17 +50,11 @@ public class ThumbleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_thumble);
+        create(R.layout.activity_thumble, getLayoutInflater(), null, savedInstanceState);
+        setContentView(getRootView());
         ButterKnife.bind(this);
         title = getIntent().getStringExtra("title");
         id = getIntent().getIntExtra("id", 0);
-        toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         rclImageList.setLayoutManager(staggeredGridLayoutManager);
         mAdapter = new ImageAdapter(listEntities, title);

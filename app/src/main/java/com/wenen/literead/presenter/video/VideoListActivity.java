@@ -1,4 +1,4 @@
-package com.wenen.literead.ui.video;
+package com.wenen.literead.presenter.video;
 
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -16,7 +16,7 @@ import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.fragment.video.VideoListFragment;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
-import com.wenen.literead.ui.BaseActivity;
+import com.wenen.literead.presenter.BaseActivity;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -48,16 +48,9 @@ public class VideoListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_list);
+        create(R.layout.activity_video_list, getLayoutInflater(), null, savedInstanceState);
+        setContentView(getRootView());
         ButterKnife.bind(this);
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
         assert mainPagerTabs != null;
         assert mainPager != null;
         mainPagerTabs.setupWithViewPager(mainPager);

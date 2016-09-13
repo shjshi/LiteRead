@@ -1,30 +1,49 @@
-package com.wenen.literead.ui;
+package com.wenen.literead.presenter;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
+import com.wenen.literead.R;
 import com.wenen.literead.model.github.GithubLoginModel;
 import com.wenen.literead.model.github.GithubUser;
+import com.wenen.literead.ui.IDelegate;
 
 /**
  * Created by Wen_en on 16/8/16.
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements IDelegate {
     public static GithubUser githubUser;
+    private View view;
+    private Toolbar toolbar;
+    public IDelegate iDelegate;
+    private boolean b;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        iDelegate = this;
         githubUser = GithubUser.getSingle();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (!b) {
+            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+            toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
+        }
     }
 
     public void showSnackBar(@NonNull View view, String msg, View.OnClickListener onClickListener) {
@@ -48,5 +67,22 @@ public class BaseActivity extends AppCompatActivity {
 
     public void updateGithubUserData(GithubLoginModel githubLoginModel) {
         githubUser.setGithubLoginModel(githubLoginModel);
+    }
+
+    @Override
+    public void create(int layoutId, LayoutInflater i, ViewGroup v, Bundle b) {
+        view = i.inflate(layoutId, v, false);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    @Override
+    public View getRootView() {
+        return view;
+    }
+
+    @Override
+    public void canTSetToolBar(boolean b) {
+        this.b = b;
     }
 }

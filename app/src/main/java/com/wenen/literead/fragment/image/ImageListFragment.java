@@ -43,7 +43,6 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     private int rows = 5;
     private ArrayList<ImageListModel.TngouEntity> list = new ArrayList<>();
     private ImageListAdapter mAdapter;
-    private boolean hasLoad;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -144,7 +143,6 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
             @Override
             public void onCompleted() {
                 isRefreshed = true;
-                hasLoad = true;
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
                 mAdapter.updateList(list);

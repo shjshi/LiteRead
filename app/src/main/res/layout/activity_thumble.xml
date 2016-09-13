@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.image.ThumbleActivity">
+    tools:context=".presenter.image.ThumbleActivity">
 
     <include layout="@layout/toolbar_layout"></include>
 

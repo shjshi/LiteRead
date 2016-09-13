@@ -1,4 +1,4 @@
-package com.wenen.literead.ui.image;
+package com.wenen.literead.presenter.image;
 
 
 import android.graphics.Bitmap;
@@ -17,7 +17,7 @@ import android.view.View;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.image.ImageDetailsAdapter;
 import com.wenen.literead.api.APIUrl;
-import com.wenen.literead.ui.BaseActivity;
+import com.wenen.literead.presenter.BaseActivity;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,15 +60,9 @@ public class ImageDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_detail);
+        create(R.layout.activity_image_detail, getLayoutInflater(), null, savedInstanceState);
+        setContentView(getRootView());
         ButterKnife.bind(this);
-        toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
         listl = getIntent().getStringArrayListExtra("listUrls");
         title = getIntent().getStringExtra("title");
         position = getIntent().getIntExtra("position", 0);
