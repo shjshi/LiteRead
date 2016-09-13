@@ -49,10 +49,18 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_article_list);
         ButterKnife.bind(this);
-        if (savedInstanceState == null)
+        if (savedInstanceState == null) {
             title = getIntent().getStringExtra("title");
-        else
+            type = getIntent().getStringExtra("type");
+            pagecount = 5;
+            page = 1;
+
+        } else {
+            page = savedInstanceState.getInt("page", 1);
             title = savedInstanceState.getString("title");
+            type = savedInstanceState.getString("type");
+            pagecount = savedInstanceState.getInt("pagecount", 5);
+        }
         toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +94,9 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("title", title);
+        outState.putString("type", type);
+        outState.putInt("pagecount", pagecount);
+        outState.putInt("page", page);
     }
 
     private void getArticleList(String typePath, int pageCount, int page) {

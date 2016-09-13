@@ -28,4 +28,6 @@
     <string name="search_github">Search-Github</string>
     <string name="github">GitHub</string>
     <string name="logout">log out</string>
+    <string name="ios_dev">IOSdev</string>
+    <string name="ios_develop">IOS开发</string>
 </resources>

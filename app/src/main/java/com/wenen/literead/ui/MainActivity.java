@@ -111,21 +111,27 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         Intent intent = new Intent();
-        if (id == R.id.nav_slideshow) {
+        if (id == R.id.nav_video) {
             intent.setClass(this, VideoListActivity.class);
             intent.putExtra("title", getString(R.string.video));
             startActivity(intent);
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_android) {
             intent.setClass(this, ArticleListActivity.class);
             intent.putExtra("title", getString(R.string.android_dev));
+            intent.putExtra("type", "Android");
             startActivity(intent);
         } else if (id == R.id.nav_zhihu) {
             intent.setClass(this, ZhihuListActivity.class);
             intent.putExtra("title", getString(R.string.zhihu_daily));
             startActivity(intent);
-        }else if (id==R.id.nav_git){
+        } else if (id == R.id.nav_git) {
             intent.setClass(this, GitSearchActivity.class);
             intent.putExtra("title", "GitHub");
+            startActivity(intent);
+        } else if (id == R.id.nav_ios) {
+            intent.setClass(this, ArticleListActivity.class);
+            intent.putExtra("title", getString(R.string.ios_develop));
+            intent.putExtra("type", "iOS");
             startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

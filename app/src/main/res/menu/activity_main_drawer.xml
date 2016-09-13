@@ -3,13 +3,17 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_video"
             android:icon="@mipmap/ic_action_youtube"
             android:title="直播" />
         <item
-            android:id="@+id/nav_share"
+            android:id="@+id/nav_android"
             android:icon="@mipmap/ic_action_android"
             android:title="AndroidDev" />
+        <item
+            android:id="@+id/nav_ios"
+            android:icon="@mipmap/ic_phone_iphone"
+            android:title="IOSDev" />
         <item
             android:id="@+id/nav_zhihu"
             android:icon="@mipmap/ic_action_news"
