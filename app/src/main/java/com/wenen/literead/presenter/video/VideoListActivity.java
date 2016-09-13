@@ -48,7 +48,7 @@ public class VideoListActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        create(R.layout.activity_video_list, getLayoutInflater(), null, savedInstanceState);
+        create(R.layout.activity_video_list, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
         assert mainPagerTabs != null;

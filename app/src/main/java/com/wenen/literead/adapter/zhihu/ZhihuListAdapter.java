@@ -38,7 +38,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<ZhihuListAdapter.View
 
     public void updateList(List<ZhihuListModel.TopStoriesEntity> list) {
         setList(list);
-        notifyDataSetChanged();
+       notifyDataSetChanged();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<ZhihuListAdapter.View
                 intent.setClass(context, ZhihuDetailActivity.class);
                 intent.putExtra("id", list.get(position).id);
                 intent.putExtra("title", list.get(position).title);
-                intent.putExtra("imgUrl",list.get(position).image);
+                intent.putExtra("imgUrl", list.get(position).image);
                 context.startActivity(intent);
             }
         });

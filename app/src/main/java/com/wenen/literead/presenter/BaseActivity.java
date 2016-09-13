@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -70,10 +69,11 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
     }
 
     @Override
-    public void create(int layoutId, LayoutInflater i, ViewGroup v, Bundle b) {
-        view = i.inflate(layoutId, v, false);
+    public void create(int layoutId, ViewGroup v, Bundle b) {
+        view = getLayoutInflater().inflate(layoutId, v, false);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        if (toolbar != null)
+            setSupportActionBar(toolbar);
     }
 
     @Override

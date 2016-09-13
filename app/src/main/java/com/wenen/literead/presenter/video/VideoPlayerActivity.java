@@ -22,7 +22,7 @@ public class VideoPlayerActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        create(R.layout.activity_video_player, getLayoutInflater(), null, savedInstanceState);
+        create(R.layout.activity_video_player, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
     }

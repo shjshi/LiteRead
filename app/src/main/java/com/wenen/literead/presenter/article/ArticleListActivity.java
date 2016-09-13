@@ -47,7 +47,7 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        create(R.layout.activity_article_list, getLayoutInflater(), null, savedInstanceState);
+        create(R.layout.activity_article_list, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
         if (savedInstanceState == null) {

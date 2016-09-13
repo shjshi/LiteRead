@@ -1,10 +1,9 @@
 # LiteRead
 
-### 闲暇时间学习retrofit+rxAndroid的项目.
 
 ### 图片数据来源于[天狗开放阅图](http://apistore.baidu.com/apiworks/servicedetail/992.html)
 
-### Android干货分享来源于[Gank.io](http://gank.io/api)
+### Android,IOS干货分享来源于[Gank.io](http://gank.io/api)
 
 ### 直播数据来源于[斗鱼](http://www.douyu.com),目前因为直播地址的加密,只解析到了直播列表
 
@@ -17,7 +16,7 @@
 ## 截图
 
 <img src="/img/Screenshot_2016-09-01-23-05-48.jpeg" width="30%"/>
-<img src="/img/Screenshot_2016-09-05-15-32-23.jpeg" width="30%"/>
+<img src="/img/Screenshot_2016-09-13-16-06-22.jpeg" width="30%"/>
 <img src="/img/Screenshot_2016-09-01-23-06-32.jpeg" width="30%"/>
 <img src="/img/Screenshot_2016-09-01-23-06-51.jpeg" width="30%"/>
 <img src="/img/Screenshot_2016-09-01-23-07-12.jpeg" width="30%"/>

@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.zhihu.ZhihuListAdapter;
@@ -42,7 +43,7 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        create(R.layout.activity_zhihu_list, getLayoutInflater(), null, savedInstanceState);
+        create(R.layout.activity_zhihu_list, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
         if (swipeRefreshLayout != null)
@@ -77,6 +78,12 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
                 super.onError(e);
                 if (swipeRefreshLayout != null)
                     swipeRefreshLayout.setRefreshing(false);
+                showSnackBar(indeterminateHorizontalProgressToolbar, e.toString(), new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getZhihuList();
+                    }
+                });
             }
 
             @Override

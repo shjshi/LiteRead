@@ -40,7 +40,7 @@ public class GitSearchActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        create(R.layout.activity_git_login, getLayoutInflater(), null, savedInstanceState);
+        create(R.layout.activity_git_login, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
         if (GithubUser.getSingle().isAutoLogin()) {

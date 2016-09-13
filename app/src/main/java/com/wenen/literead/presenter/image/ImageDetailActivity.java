@@ -60,7 +60,7 @@ public class ImageDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        create(R.layout.activity_image_detail, getLayoutInflater(), null, savedInstanceState);
+        create(R.layout.activity_image_detail, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
         listl = getIntent().getStringArrayListExtra("listUrls");

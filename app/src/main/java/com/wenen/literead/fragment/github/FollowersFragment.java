@@ -102,6 +102,7 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
                 reader.setLenient(true);
                 JsonArray jsonArray = parser.parse(reader).getAsJsonArray();
                 Gson gson = new Gson();
+                list.clear();
                 if (position == 0 || position == 1) {
                     for (JsonElement js : jsonArray
                             ) {
@@ -155,7 +156,7 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
                     break;
             }
         }
-        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).getGitHubFollow(GithubUser.getSingle().getName(), path,APIUrl.GITHUB_CLIENT_ID,APIUrl.GITHUB_CECRET, subscriber);
+        HttpClient.getSingle(APIUrl.GITHUB_BASE_URL).getGitHubFollow(GithubUser.getSingle().getName(), path, APIUrl.GITHUB_CLIENT_ID, APIUrl.GITHUB_CECRET, subscriber);
     }
 
     @Override

@@ -50,7 +50,7 @@ public class ThumbleActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        create(R.layout.activity_thumble, getLayoutInflater(), null, savedInstanceState);
+        create(R.layout.activity_thumble, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
         title = getIntent().getStringExtra("title");

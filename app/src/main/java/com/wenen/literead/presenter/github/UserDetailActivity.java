@@ -56,7 +56,7 @@ public class UserDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        create(R.layout.activity_user_detail, getLayoutInflater(), null, savedInstanceState);
+        create(R.layout.activity_user_detail, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
         if (savedInstanceState!=null){
