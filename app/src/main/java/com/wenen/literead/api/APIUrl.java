@@ -13,6 +13,6 @@ public class APIUrl {
     public static String GANK_IO_URL = "http://gank.io/api/";
     public static String ZHIHU_BASE_URL = "http://news-at.zhihu.com/api/4/news/";
     public static String GITHUB_BASE_URL = "https://api.github.com/users/";
-    public static String GITHUB_CLIENT_ID = "47f26960e2fc2f69fe51";
-    public static String GITHUB_CECRET = "90e9dae5fc2521bcd6c3d8b80984566c1076b548";
+    public static String GITHUB_CLIENT_ID = "****";
+    public static String GITHUB_CECRET = "****";
 }
