@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import com.litesuits.android.log.Log;
 
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import okhttp3.Headers;
 import okhttp3.Interceptor;
@@ -39,7 +40,13 @@ public class LoggerInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
         logForRequest(request);
-        Response response = chain.proceed(request);
+        Response response = null;
+        try {
+            response = chain.proceed(request);
+        } catch (SocketTimeoutException exception) {
+            exception.printStackTrace();
+            response = chain.proceed(request);
+        }
         return logForResponse(response);
     }
 

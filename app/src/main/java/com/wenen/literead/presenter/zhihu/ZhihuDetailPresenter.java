@@ -1,11 +1,7 @@
 package com.wenen.literead.presenter.zhihu;
 
 import android.os.Build;
-import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.AppCompatTextView;
-import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
@@ -14,83 +10,43 @@ import android.widget.TextView;
 
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.ImageLoaderConfig.URLImageGetter;
-import com.wenen.literead.R;
 import com.wenen.literead.api.APIUrl;
+import com.wenen.literead.contract.zhihu.ZhihuDetailContract;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.zhihu.ZhihuDetailModel;
-import com.wenen.literead.presenter.BaseActivity;
+import com.wenen.literead.presenter.BasePresenter;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import rx.Subscriber;
 
-public class ZhihuDetailActivity extends BaseActivity {
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.toolbar_layout)
-    CollapsingToolbarLayout toolbarLayout;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
-    @Bind(R.id.app_bar)
-    AppBarLayout appBar;
-    @Bind(R.id.tv_zhihu_detail_title)
-    AppCompatTextView tvZhihuDetailTitle;
-    @Bind(R.id.iv_author)
-    ImageView ivAuthor;
-    @Bind(R.id.tv_author)
-    TextView tvAuthor;
-    @Bind(R.id.tv_zhihu_detail)
-    AppCompatTextView tvZhihuDetail;
-    @Bind(R.id.iv_imageView)
-    ImageView ivImageView;
+/**
+ * Created by Wen_en on 16/9/14.
+ */
+public class ZhihuDetailPresenter extends BasePresenter implements ZhihuDetailContract.Presenter {
     private Subscriber subscriber;
-    private int id;
     private Document document;
     private String content;
-    private String title;
-    private String imgurl;
+    private AppCompatTextView tvZhihuDetailTitle;
+    private AppCompatTextView tvZhihuDetail;
+    private TextView tvAuthor;
+    private int id;
+    private ImageView ivAuthor;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-       create(R.layout.activity_zhihu_detail, null, savedInstanceState);
-        setContentView(getRootView());
-        ButterKnife.bind(this);
-        if (savedInstanceState == null) {
-            id = getIntent().getIntExtra("id", 0);
-            title = getIntent().getStringExtra("title");
-            imgurl = getIntent().getStringExtra("imgUrl");
-        } else {
-            imgurl = savedInstanceState.getString("imgUrl");
-            id = savedInstanceState.getInt("id");
-            title = savedInstanceState.getString("title");
-        }
-        getZhihuDetail();
+    public ZhihuDetailPresenter(ZhihuDetailContract.View view) {
+        super(view);
+        id = view.getId();
+        tvAuthor = view.getAuthor();
+        tvZhihuDetail = view.getZhihuDetailTxt();
+        tvZhihuDetailTitle = view.getZhihuDetailTitle();
+        ivAuthor = view.getIvAuthor();
     }
 
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString("title", title);
-        outState.putInt("id", id);
-        outState.putString("imgUrl", imgurl);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        toolbar.setTitle(title);
-        ImageLoaderConfig.imageLoader.displayImage(imgurl, ivImageView,
-                ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
-    }
-
-    private void getZhihuDetail() {
+    public void getZhihuDetail() {
         subscriber = new HttpSubscriber<ZhihuDetailModel>(indeterminateHorizontalProgressToolbar) {
             @Override
             public void onNext(ZhihuDetailModel zhihuDetailModel) {
@@ -127,11 +83,11 @@ public class ZhihuDetailActivity extends BaseActivity {
                     if (document.select("div.content") != null && document.select("div.content").first() != null)
                         content = document.select("div.content").first().html();
                     if (Build.VERSION.SDK_INT < 24) {
-                        tvZhihuDetail.setText(Html.fromHtml(content, new URLImageGetter(content,
-                                ZhihuDetailActivity.this, tvZhihuDetail, ImageLoaderConfig.options), null));
+                        tvZhihuDetail.setText(Html.fromHtml(content, new URLImageGetter(content,context
+                                , tvZhihuDetail, ImageLoaderConfig.options), null));
                     } else
                         tvZhihuDetail.setText(Html.fromHtml(content, 0, new URLImageGetter(content,
-                                ZhihuDetailActivity.this, tvZhihuDetail, ImageLoaderConfig.options), null));
+                                context, tvZhihuDetail, ImageLoaderConfig.options), null));
                 }
             }
         };

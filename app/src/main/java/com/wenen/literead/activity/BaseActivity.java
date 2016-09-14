@@ -1,25 +1,26 @@
-package com.wenen.literead.presenter;
+package com.wenen.literead.activity;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.wenen.literead.R;
-import com.wenen.literead.model.github.GithubLoginModel;
+import com.wenen.literead.contract.BaseContract;
+import com.wenen.literead.elegate.IDelegate;
 import com.wenen.literead.model.github.GithubUser;
-import com.wenen.literead.ui.IDelegate;
+
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
  * Created by Wen_en on 16/8/16.
  */
-public class BaseActivity extends AppCompatActivity implements IDelegate {
+public class BaseActivity extends AppCompatActivity implements IDelegate, BaseContract.View {
     public static GithubUser githubUser;
-    private View view;
+    public View view;
     private Toolbar toolbar;
     public IDelegate iDelegate;
     private boolean b;
@@ -45,28 +46,6 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
         }
     }
 
-    public void showSnackBar(@NonNull View view, String msg, View.OnClickListener onClickListener) {
-        if (msg == null)
-            msg = "数据加载失败";
-        if (onClickListener != null)
-            Snackbar.make(view, msg, Snackbar.LENGTH_INDEFINITE)
-                    .setAction("点击重试", onClickListener).show();
-        else
-            Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
-                    .show();
-    }
-
-    public void setProgressBarISvisible(View view, boolean iSvisible) {
-        if (iSvisible) {
-            view.setVisibility(View.VISIBLE);
-        } else {
-            view.setVisibility(View.GONE);
-        }
-    }
-
-    public void updateGithubUserData(GithubLoginModel githubLoginModel) {
-        githubUser.setGithubLoginModel(githubLoginModel);
-    }
 
     @Override
     public void create(int layoutId, ViewGroup v, Bundle b) {
@@ -84,5 +63,20 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
     @Override
     public void canTSetToolBar(boolean b) {
         this.b = b;
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return (MaterialProgressBar) view.findViewById(R.id.indeterminate_horizontal_progress_toolbar);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public GithubUser getGitHubUser() {
+        return githubUser;
     }
 }

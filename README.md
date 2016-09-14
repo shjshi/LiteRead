@@ -1,5 +1,13 @@
 # LiteRead
 
+## V2.0重构,重构之前是想着把Activity里的Control和View解耦的,结果重构完之后,what is fuck!!! 完全成了谜一样的代码.
+
+## 动手之前的计划是把Control放在Presenter里,通过接口回调获取View暴露的方法.结果完工之后发现Presenter硬生生的持有了View的对象,说好的解耦和呢?为什么还是纠纠缠缠理不清.
+
+<img src="/img/uml.png" width="60%"/>
+
+## MVP还是没理解好,先放在这里,慢慢改
+
 
 ### 图片数据来源于[天狗开放阅图](http://apistore.baidu.com/apiworks/servicedetail/992.html)
 

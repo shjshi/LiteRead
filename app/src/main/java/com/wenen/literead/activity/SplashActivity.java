@@ -1,4 +1,4 @@
-package com.wenen.literead.presenter;
+package com.wenen.literead.activity;
 
 import android.app.Activity;
 import android.content.Intent;

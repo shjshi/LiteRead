@@ -14,7 +14,7 @@ import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.ClickResponseListener;
 import com.wenen.literead.model.zhihu.ZhihuListModel;
-import com.wenen.literead.presenter.zhihu.ZhihuDetailActivity;
+import com.wenen.literead.activity.zhihu.ZhihuDetailActivity;
 
 import java.util.List;
 

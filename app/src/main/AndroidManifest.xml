@@ -19,16 +19,16 @@
         <!-- android:name=".ui.MainActivity" -->
         <!-- android:label="@string/app_name" /> -->
         <activity
-            android:name=".presenter.image.ThumbleActivity"
+            android:name=".activity.image.ThumbleActivity"
             android:label="@string/title_activity_thumble" />
         <activity
-            android:name=".presenter.image.ImageDetailActivity"
+            android:name=".activity.image.ImageDetailActivity"
             android:label="@string/title_activity_image_detail" />
         <activity
-            android:name=".presenter.zhihu.ZhihuListActivity"
+            android:name=".activity.zhihu.ZhihuListActivity"
             android:label="@string/zhihu_daily" />
         <activity
-            android:name=".presenter.MainActivity"
+            android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait">
@@ -38,23 +38,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".presenter.video.VideoListActivity" />
-        <activity android:name=".presenter.article.ArticleListActivity" />
+        <activity android:name=".activity.video.VideoListActivity" />
+        <activity android:name=".activity.article.ArticleListActivity" />
         <activity
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="sensor"
             android:theme="@style/FinestWebViewTheme.Light" />
-        <activity android:name=".presenter.video.VideoPlayerActivity" />
+        <activity android:name=".activity.video.VideoPlayerActivity" />
         <activity
-            android:name=".presenter.zhihu.ZhihuDetailActivity"
+            android:name=".activity.zhihu.ZhihuDetailActivity"
             android:label="@string/zhihu_daily" />
         <activity
-            android:name=".presenter.github.GitSearchActivity"
+            android:name=".activity.github.GitSearchActivity"
             android:label="GitHub" />
 
         <activity
-            android:name=".presenter.github.UserDetailActivity"
+            android:name=".activity.github.UserDetailActivity"
             android:launchMode="standard" />
     </application>
 

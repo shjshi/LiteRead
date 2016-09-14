@@ -16,7 +16,7 @@ import com.wenen.literead.adapter.ClickResponseListener;
 import com.wenen.literead.adapter.LoadMoreViewHolder;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.model.image.ImageListModel;
-import com.wenen.literead.presenter.image.ThumbleActivity;
+import com.wenen.literead.activity.image.ThumbleActivity;
 
 import java.util.ArrayList;
 

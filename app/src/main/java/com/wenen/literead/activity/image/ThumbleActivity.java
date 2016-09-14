@@ -1,4 +1,4 @@
-package com.wenen.literead.presenter.image;
+package com.wenen.literead.activity.image;
 
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -8,18 +8,16 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.wenen.literead.R;
+import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.adapter.image.ImageAdapter;
-import com.wenen.literead.api.APIUrl;
-import com.wenen.literead.http.HttpClient;
-import com.wenen.literead.http.HttpSubscriber;
+import com.wenen.literead.contract.image.ThumbleContract;
 import com.wenen.literead.model.image.ImageModel;
-import com.wenen.literead.presenter.BaseActivity;
+import com.wenen.literead.presenter.image.ThumblePresenter;
 
 import java.util.ArrayList;
 
@@ -28,49 +26,65 @@ import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import rx.Subscriber;
 
-public class ThumbleActivity extends BaseActivity {
+public class ThumbleActivity extends BaseActivity implements ThumbleContract.View {
 
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
-    @Bind(R.id.rcl_image_list)
-    RecyclerView rclImageList;
-    @Bind(R.id.nsv_parent)
-    NestedScrollView nsvParent;
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
-    private int id;
-    private String title;
-    private Subscriber subscribers;
-    private ArrayList<ImageModel.ListEntity> listEntities = new ArrayList<>();
-    private ImageAdapter mAdapter;
+    @Override
+    public ViewHolder getViewHolder() {
+        return viewHolder;
+    }
+
+    public class ViewHolder {
+        @Bind(R.id.toolbar)
+        public Toolbar toolbar;
+        @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+        public MaterialProgressBar indeterminateHorizontalProgressToolbar;
+        @Bind(R.id.rcl_image_list)
+        public RecyclerView rclImageList;
+        @Bind(R.id.nsv_parent)
+        public NestedScrollView nsvParent;
+        @Bind(R.id.fab)
+        public FloatingActionButton fab;
+        public int id;
+        public String title;
+        public Subscriber subscribers;
+        public ArrayList<ImageModel.ListEntity> listEntities = new ArrayList<>();
+        public ImageAdapter mAdapter;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+
+    private ThumblePresenter thumblePresenter;
+    private ViewHolder viewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         create(R.layout.activity_thumble, null, savedInstanceState);
         setContentView(getRootView());
+        viewHolder = new ViewHolder(getRootView());
+        thumblePresenter = new ThumblePresenter(this);
         ButterKnife.bind(this);
-        title = getIntent().getStringExtra("title");
-        id = getIntent().getIntExtra("id", 0);
+        viewHolder.title = getIntent().getStringExtra("title");
+        viewHolder.id = getIntent().getIntExtra("id", 0);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        rclImageList.setLayoutManager(staggeredGridLayoutManager);
-        mAdapter = new ImageAdapter(listEntities, title);
-        rclImageList.setAdapter(mAdapter);
-        mAdapter.getRandomHeight(listEntities);
+        viewHolder.rclImageList.setLayoutManager(staggeredGridLayoutManager);
+        viewHolder.mAdapter = new ImageAdapter(viewHolder.listEntities, viewHolder.title);
+        viewHolder.rclImageList.setAdapter(viewHolder.mAdapter);
+        viewHolder.mAdapter.getRandomHeight(viewHolder.listEntities);
         SpacesItemDecoration decoration = new SpacesItemDecoration(2, 10, true);
-        rclImageList.addItemDecoration(decoration);
-        rclImageList.setHasFixedSize(true);
-        rclImageList.setItemAnimator(new DefaultItemAnimator());
-        getImage(id);
+        viewHolder.rclImageList.addItemDecoration(decoration);
+        viewHolder.rclImageList.setHasFixedSize(true);
+        viewHolder.rclImageList.setItemAnimator(new DefaultItemAnimator());
+        thumblePresenter.getImage(viewHolder.id);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        toolbar.setTitle(title);
+        viewHolder.toolbar.setTitle(viewHolder.title);
     }
 
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
@@ -106,39 +120,6 @@ public class ThumbleActivity extends BaseActivity {
         }
     }
 
-    private void getImage(final int id) {
-        subscribers = new HttpSubscriber<ImageModel>(indeterminateHorizontalProgressToolbar) {
-            @Override
-            public void onCompleted() {
-                super.onCompleted();
-                mAdapter.getRandomHeight(listEntities);
-                mAdapter.updateList(listEntities);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                showSnackBar(indeterminateHorizontalProgressToolbar, e.toString(), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        getImage(id);
-                    }
-                });
-            }
-
-            @Override
-            public void onNext(ImageModel imageModel) {
-                super.onNext(imageModel);
-                listEntities.clear();
-                for (ImageModel.ListEntity listEntitie : imageModel.list
-                        ) {
-                    listEntities.add(listEntitie);
-                    Log.e("list", listEntitie.src);
-                }
-            }
-        };
-        HttpClient.getSingle(APIUrl.TIANGOU_IMG_URL).getImg(id, subscribers);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -149,5 +130,11 @@ public class ThumbleActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        viewHolder = null;
     }
 }

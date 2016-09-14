@@ -14,7 +14,7 @@ import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.ClickResponseListener;
 import com.wenen.literead.model.video.VideoListModel;
-import com.wenen.literead.presenter.video.VideoPlayerActivity;
+import com.wenen.literead.activity.video.VideoPlayerActivity;
 
 import java.util.ArrayList;
 

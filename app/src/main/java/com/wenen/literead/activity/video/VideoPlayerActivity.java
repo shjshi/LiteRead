@@ -1,4 +1,4 @@
-package com.wenen.literead.presenter.video;
+package com.wenen.literead.activity.video;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -7,7 +7,7 @@ import com.wenen.literead.R;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.model.video.VideoModel;
-import com.wenen.literead.presenter.BaseActivity;
+import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.utils.MD5;
 
 import butterknife.Bind;

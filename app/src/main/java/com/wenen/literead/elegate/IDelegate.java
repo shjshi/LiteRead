@@ -1,4 +1,4 @@
-package com.wenen.literead.ui;
+package com.wenen.literead.elegate;
 
 import android.os.Bundle;
 import android.view.View;

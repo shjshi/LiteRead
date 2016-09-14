@@ -15,7 +15,7 @@ import com.wenen.literead.R;
 import com.wenen.literead.adapter.ClickResponseListener;
 import com.wenen.literead.model.github.GithubFollowModel;
 import com.wenen.literead.model.github.StartedModel;
-import com.wenen.literead.presenter.github.UserDetailActivity;
+import com.wenen.literead.activity.github.UserDetailActivity;
 
 import java.util.List;
 

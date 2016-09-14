@@ -1,4 +1,4 @@
-package com.wenen.literead.presenter;
+package com.wenen.literead.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,30 +12,23 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.wenen.literead.R;
-import com.wenen.literead.api.APIUrl;
-import com.wenen.literead.fragment.image.ImageListFragment;
-import com.wenen.literead.http.HttpClient;
-import com.wenen.literead.http.HttpSubscriber;
-import com.wenen.literead.model.image.ImageTypeListModel;
-import com.wenen.literead.presenter.article.ArticleListActivity;
-import com.wenen.literead.presenter.github.GitSearchActivity;
-import com.wenen.literead.presenter.video.VideoListActivity;
-import com.wenen.literead.presenter.zhihu.ZhihuListActivity;
+import com.wenen.literead.contract.MainContract;
+import com.wenen.literead.presenter.MainPresenter;
+import com.wenen.literead.activity.article.ArticleListActivity;
+import com.wenen.literead.activity.github.GitSearchActivity;
+import com.wenen.literead.activity.video.VideoListActivity;
+import com.wenen.literead.activity.zhihu.ZhihuListActivity;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
-import rx.Subscriber;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, MainContract.View {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -47,12 +40,10 @@ public class MainActivity extends BaseActivity
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
-    private Subscriber subscriber;
+    private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> titleList = new ArrayList<>();
     private MainPageViewAdapter mainPageViewAdapter;
-    private ArrayList<Fragment> fragments = new ArrayList<>();
+    private MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,22 +51,21 @@ public class MainActivity extends BaseActivity
         create(R.layout.activity_main, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mainPageViewAdapter = new MainPageViewAdapter(getSupportFragmentManager());
+        mainPresenter = new MainPresenter(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        navView.setNavigationItemSelectedListener(this);
         assert mainPagerTabs != null;
         assert mainPager != null;
         mainPagerTabs.setupWithViewPager(mainPager);
         if (savedInstanceState == null) {
-            getIMGTypeList();
+            mainPresenter.getIMGTypeList();
         } else {
             titleList = savedInstanceState.getStringArrayList("titleList");
             if (mainPager.getAdapter() == null) {
-                mainPageViewAdapter = new MainPageViewAdapter(getSupportFragmentManager());
                 mainPager.setAdapter(mainPageViewAdapter);
             } else
                 mainPager.getAdapter().notifyDataSetChanged();
@@ -143,7 +133,29 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-    private class MainPageViewAdapter extends FragmentStatePagerAdapter {
+    @Override
+    public ViewPager getMainPager() {
+        return mainPager;
+    }
+
+    @Override
+    public MainPageViewAdapter getPagerAdapter() {
+        return mainPageViewAdapter;
+    }
+
+    @Override
+    public TabLayout getPagerTabs() {
+        return mainPagerTabs;
+    }
+
+    @Override
+    public void updateData(ArrayList<Fragment> fragments, ArrayList<String> titleList) {
+        this.fragments = fragments;
+        this.titleList = titleList;
+    }
+
+
+    public class MainPageViewAdapter extends FragmentStatePagerAdapter {
 
         public MainPageViewAdapter(FragmentManager fm) {
             super(fm);
@@ -151,7 +163,6 @@ public class MainActivity extends BaseActivity
 
         @Override
         public Fragment getItem(int position) {
-            Log.e("fragments", position + fragments.get(position).getArguments().getString("url"));
             return fragments.get(position);
         }
 
@@ -167,57 +178,9 @@ public class MainActivity extends BaseActivity
 
     }
 
-    private void getIMGTypeList() {
-        subscriber = new HttpSubscriber<ImageTypeListModel>(indeterminateHorizontalProgressToolbar) {
-            @Override
-            public void onCompleted() {
-                super.onCompleted();
-                if (mainPager.getAdapter() == null) {
-                    mainPageViewAdapter = new MainPageViewAdapter(getSupportFragmentManager());
-                    mainPager.setAdapter(mainPageViewAdapter);
-                } else
-                    mainPager.getAdapter().notifyDataSetChanged();
-                mainPager.setOffscreenPageLimit(titleList.size());
-            }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
-            @Override
-            public void onError(Throwable e) {
-                super.onError(e);
-                mainPagerTabs.setVisibility(View.GONE);
-                showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        mainPagerTabs.setVisibility(View.VISIBLE);
-                        getIMGTypeList();
-                    }
-                });
-
-            }
-
-            @Override
-            public void onNext(ImageTypeListModel imageTypeListModel) {
-                super.onNext(imageTypeListModel);
-                if (imageTypeListModel.status) {
-                    for (ImageTypeListModel.TngouEntity tnEntity : imageTypeListModel.tngou
-                            ) {
-                        Log.e("Title", tnEntity.title);
-                        titleList.add(tnEntity.title);
-                        ImageListFragment imageListFragment = new ImageListFragment();
-                        Bundle bundle = new Bundle();
-                        bundle.putInt("id", tnEntity.id);
-                        imageListFragment.setArguments(bundle);
-                        Log.e("id", tnEntity.id + "");
-                        fragments.add(imageListFragment);
-                    }
-                } else
-                    showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            getIMGTypeList();
-                        }
-                    });
-            }
-        };
-        HttpClient.getSingle(APIUrl.TIANGOU_IMG_URL).getIMGTypeList(subscriber);
     }
 }
