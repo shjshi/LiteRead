@@ -5,6 +5,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,9 +35,7 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     AppCompatTextView tvZhihuDetail;
     @Bind(R.id.iv_imageView)
     ImageView ivImageView;
-
     private int id;
-
     private String title;
     private String imgurl;
     private ZhihuDetailPresenter zhihuDetailPresenter;
@@ -56,7 +55,12 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
             id = savedInstanceState.getInt("id");
             title = savedInstanceState.getString("title");
         }
-        zhihuDetailPresenter=new ZhihuDetailPresenter(this);
+        appBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+            }
+        });
+        zhihuDetailPresenter = new ZhihuDetailPresenter(this);
         zhihuDetailPresenter.getZhihuDetail();
     }
 
@@ -71,7 +75,8 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     @Override
     protected void onResume() {
         super.onResume();
-        toolbar.setTitle(title);
+        Log.e("title", title);
+        toolbarLayout.setTitle(title);
         ImageLoaderConfig.imageLoader.displayImage(imgurl, ivImageView,
                 ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
     }

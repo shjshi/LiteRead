@@ -154,7 +154,6 @@ public class MainActivity extends BaseActivity
         this.titleList = titleList;
     }
 
-
     public class MainPageViewAdapter extends FragmentStatePagerAdapter {
 
         public MainPageViewAdapter(FragmentManager fm) {

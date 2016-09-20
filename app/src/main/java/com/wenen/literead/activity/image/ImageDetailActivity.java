@@ -46,6 +46,7 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
         public int position;
         public int currentPage;
         public ViewPager mViewPager;
+        public boolean b;
 
         ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -65,8 +66,10 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
         viewHolder.listl = getIntent().getStringArrayListExtra("listUrls");
         viewHolder.title = getIntent().getStringExtra("title");
         viewHolder.position = getIntent().getIntExtra("position", 0);
+        viewHolder.b = getIntent().getBooleanExtra("isNeadAddHead", true);
         viewHolder.currentPage = viewHolder.position;
-        viewHolder.mSectionsPagerAdapter = new ImageDetailsAdapter(getSupportFragmentManager(), viewHolder.listl, viewHolder.title, viewHolder.position);
+        viewHolder.mSectionsPagerAdapter = new ImageDetailsAdapter(getSupportFragmentManager(), viewHolder.listl,
+                viewHolder.title, viewHolder.position, viewHolder.b);
         viewHolder.mViewPager = (ViewPager) findViewById(R.id.container);
         viewHolder.mViewPager.setAdapter(viewHolder.mSectionsPagerAdapter);
         viewHolder.mViewPager.setCurrentItem(viewHolder.position);

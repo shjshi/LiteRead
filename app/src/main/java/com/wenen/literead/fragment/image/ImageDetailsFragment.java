@@ -32,11 +32,12 @@ public class ImageDetailsFragment extends Fragment {
     public ImageDetailsFragment() {
     }
 
-    public static ImageDetailsFragment newInstance(ArrayList<String> list, int position) {
+    public static ImageDetailsFragment newInstance(ArrayList<String> list, int position, boolean b) {
         ImageDetailsFragment fragment = new ImageDetailsFragment();
         Bundle args = new Bundle();
         args.putInt("position", position);
         args.putStringArrayList("list", list);
+        args.putBoolean("isNeadAddHead", b);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,8 +50,14 @@ public class ImageDetailsFragment extends Fragment {
         ArrayList<String> list;
         list = this.getArguments().getStringArrayList("list");
         if (list != null)
-            if (list.get(this.getArguments().getInt("position")) != null)
-                imageLoader.displayImage(APIUrl.imgUrl +list.get(this.getArguments().getInt("position")), ivImage, options, animateFirstListener);
+            if (list.get(this.getArguments().getInt("position")) != null) {
+                if (this.getArguments().getBoolean("isNeadAddHead"))
+                    imageLoader.displayImage(APIUrl.imgUrl + list.get(this.getArguments()
+                            .getInt("position")), ivImage, options, animateFirstListener);
+           else
+                    imageLoader.displayImage(list.get(this.getArguments()
+                            .getInt("position")), ivImage, options, animateFirstListener);
+            }
         return rootView;
     }
 

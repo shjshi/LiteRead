@@ -32,7 +32,7 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
     SwipeRefreshLayout swipeRefreshLayout;
 
     private ZhihuListAdapter zhihuListAdapter;
-    private List<ZhihuListModel.TopStoriesEntity> list = new ArrayList<>();
+    private List<ZhihuListModel.StoriesEntity> list = new ArrayList<>();
     private ZhihuListPresenter zhihuListPresenter;
 
     @Override
@@ -80,7 +80,7 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
     }
 
     @Override
-    public void upDateData(List<ZhihuListModel.TopStoriesEntity> list) {
+    public void upDateData(List<ZhihuListModel.StoriesEntity> list) {
         this.list = list;
     }
 }

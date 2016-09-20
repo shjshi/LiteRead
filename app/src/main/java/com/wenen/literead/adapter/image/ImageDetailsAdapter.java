@@ -15,17 +15,19 @@ public class ImageDetailsAdapter extends FragmentPagerAdapter {
     ArrayList<String> list;
     String title;
     int position;
+    boolean b;
 
-    public ImageDetailsAdapter(FragmentManager fm, ArrayList<String> list, String title, int position) {
+    public ImageDetailsAdapter(FragmentManager fm, ArrayList<String> list, String title, int position, boolean isNeedAddHead) {
         super(fm);
         this.list = list;
         this.title = title;
         this.position = position;
+        this.b = isNeedAddHead;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return ImageDetailsFragment.newInstance(list, position);
+        return ImageDetailsFragment.newInstance(list, position,b);
     }
 
     @Override

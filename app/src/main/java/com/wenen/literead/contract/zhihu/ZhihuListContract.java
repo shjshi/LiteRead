@@ -20,7 +20,7 @@ public interface ZhihuListContract {
 
         ZhihuListAdapter getAdapter();
 
-        void upDateData(List<ZhihuListModel.TopStoriesEntity> list);
+        void upDateData(List<ZhihuListModel.StoriesEntity> list);
     }
 
 

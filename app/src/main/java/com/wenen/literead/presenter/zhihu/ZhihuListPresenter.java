@@ -25,7 +25,7 @@ public class ZhihuListPresenter extends BasePresenter implements ZhihuListContra
     private SwipeRefreshLayout swipeRefreshLayout;
     private RecyclerView rclZhihu;
     private ZhihuListAdapter zhihuListAdapter;
-    private List<ZhihuListModel.TopStoriesEntity> list = new ArrayList<>();
+    private List<ZhihuListModel.StoriesEntity> list = new ArrayList<>();
 
     public ZhihuListPresenter(ZhihuListContract.View view) {
         super(view);
@@ -61,7 +61,7 @@ public class ZhihuListPresenter extends BasePresenter implements ZhihuListContra
             @Override
             public void onNext(ZhihuListModel zhihuListModel) {
                 super.onNext(zhihuListModel);
-                list = zhihuListModel.top_stories;
+                list = zhihuListModel.stories;
             }
 
         };

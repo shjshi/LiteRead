@@ -1,5 +1,6 @@
 package com.wenen.literead.adapter.github;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.AppCompatTextView;
@@ -53,6 +54,7 @@ public class GitHubFollowAdapter extends RecyclerView.Adapter<GitHubFollowAdapte
                     intent.setClass(context, UserDetailActivity.class);
                     intent.putExtra("username", ((GithubFollowModel) list.get(position)).login);
                     context.startActivity(intent);
+                    ((Activity) context).finish();
                 } else
                     new FinestWebView.Builder(context).statusBarColorRes(R.color.colorPrimary)
                             .progressBarColorRes(R.color.colorPrimary).toolbarColorRes(R.color.colorPrimary).titleColorRes(R.color.white)

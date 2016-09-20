@@ -25,18 +25,18 @@ import butterknife.ButterKnife;
  * Created by Wen_en on 16/9/5.
  */
 public class ZhihuListAdapter extends RecyclerView.Adapter<ZhihuListAdapter.ViewHolder> {
-    private List<ZhihuListModel.TopStoriesEntity> list;
+    private List<ZhihuListModel.StoriesEntity> list;
 
-    public ZhihuListAdapter(List<ZhihuListModel.TopStoriesEntity> list) {
+    public ZhihuListAdapter(List<ZhihuListModel.StoriesEntity> list) {
         this.list = list;
         setHasStableIds(true);
     }
 
-    private void setList(List<ZhihuListModel.TopStoriesEntity> list) {
+    private void setList(List<ZhihuListModel.StoriesEntity> list) {
         this.list = list;
     }
 
-    public void updateList(List<ZhihuListModel.TopStoriesEntity> list) {
+    public void updateList(List<ZhihuListModel.StoriesEntity> list) {
         setList(list);
        notifyDataSetChanged();
     }
@@ -52,7 +52,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<ZhihuListAdapter.View
                 intent.setClass(context, ZhihuDetailActivity.class);
                 intent.putExtra("id", list.get(position).id);
                 intent.putExtra("title", list.get(position).title);
-                intent.putExtra("imgUrl", list.get(position).image);
+                intent.putExtra("imgUrl", list.get(position).images.get(0));
                 context.startActivity(intent);
             }
         });
@@ -60,7 +60,7 @@ public class ZhihuListAdapter extends RecyclerView.Adapter<ZhihuListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ImageLoaderConfig.imageLoader.displayImage(list.get(position).image, holder.ivZhihuImg,
+        ImageLoaderConfig.imageLoader.displayImage(list.get(position).images.get(0), holder.ivZhihuImg,
                 ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
         holder.tvZhihuTitle.setText(list.get(position).title);
     }
