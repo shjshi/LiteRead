@@ -7,8 +7,8 @@ android {
         applicationId "com.wenen.literead"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 2000
-        versionName "2.000"
+        versionCode 3000
+        versionName "3.000"
     }
     buildTypes {
         release {
