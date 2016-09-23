@@ -1,6 +1,5 @@
 package com.wenen.literead.contract.image;
 
-import com.wenen.literead.activity.image.ImageDetailActivity;
 import com.wenen.literead.contract.BaseContract;
 
 /**
@@ -8,7 +7,6 @@ import com.wenen.literead.contract.BaseContract;
  */
 public interface ImageDetailContract {
     interface View extends BaseContract.View {
-        ImageDetailActivity.ViewHolder getViewHolder();
     }
 
     interface Model {

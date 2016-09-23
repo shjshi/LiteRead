@@ -1,22 +1,37 @@
 package com.wenen.literead.activity.zhihu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.thefinestartist.finestwebview.FinestWebView;
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
+import com.wenen.literead.activity.image.ImageDetailActivity;
 import com.wenen.literead.contract.zhihu.ZhihuDetailContract;
 import com.wenen.literead.presenter.zhihu.ZhihuDetailPresenter;
+import com.zzhoujay.richtext.RichText;
+import com.zzhoujay.richtext.callback.OnImageClickListener;
+import com.zzhoujay.richtext.callback.OnURLClickListener;
+
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+
 
 public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailContract.View {
     @Bind(R.id.toolbar)
@@ -35,10 +50,13 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     AppCompatTextView tvZhihuDetail;
     @Bind(R.id.iv_imageView)
     ImageView ivImageView;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     private int id;
     private String title;
     private String imgurl;
     private ZhihuDetailPresenter zhihuDetailPresenter;
+    private String content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +78,7 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
             }
         });
-        zhihuDetailPresenter = new ZhihuDetailPresenter(this);
-        zhihuDetailPresenter.getZhihuDetail();
+        getData();
     }
 
     @Override
@@ -81,34 +98,67 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
                 ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
     }
 
-
     @Override
-    public AppCompatTextView getZhihuDetailTitle() {
-        return tvZhihuDetailTitle;
+    public void showData(Document document) {
+        Log.e("document", document.outerHtml());
+        Elements elements = document.select("h2.question-title");
+        title = elements.first().text();
+        if (!"".equals(title)) {
+            tvZhihuDetailTitle.setText(title);
+            if (document.select("img.avatar") != null && document.select("img.avatar").first() != null)
+                ImageLoaderConfig.imageLoader.displayImage(document.select("img.avatar").first().attr("src"), ivAuthor,
+                        ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
+            if (document.select("span.author") != null && document.select("span.author").first() != null)
+                tvAuthor.setText(document.select("span.author").first().text());
+            if (document.select("div.content") != null && document.select("div.content").first() != null)
+                content = document.select("div.content").first().html();
+        } else {
+            ivAuthor.setVisibility(View.GONE);
+            tvAuthor.setVisibility(View.GONE);
+            tvZhihuDetailTitle.setVisibility(View.GONE);
+            content = document.outerHtml();
+        }
+        RichText.from(content).async(true).clickable(true).imageClick(new OnImageClickListener() {
+            @Override
+            public void imageClicked(List<String> imageUrls, int position) {
+                Intent intent = new Intent(context, ImageDetailActivity.class);
+                intent.putStringArrayListExtra("listUrls", (ArrayList<String>) imageUrls);
+                intent.putExtra("title", title);
+                intent.putExtra("position", position);
+                intent.putExtra("isNeadAddHead", false);
+                context.startActivity(intent);
+
+            }
+        }).urlClick(new OnURLClickListener() {
+            @Override
+            public boolean urlClicked(String url) {
+                new FinestWebView.Builder(context).statusBarColorRes(R.color.colorPrimary)
+                        .progressBarColorRes(R.color.colorPrimary).toolbarColorRes(R.color.colorPrimary).titleColorRes(R.color.white)
+                        .menuColorRes(R.color.white).iconDefaultColorRes(R.color.white)
+                        .show(url);
+                return true;
+            }
+        }).into(tvZhihuDetail);
     }
 
     @Override
-    public TextView getAuthor() {
-        return tvAuthor;
+    public void showError(String s, View.OnClickListener listener) {
+        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
     }
 
     @Override
-    public AppCompatTextView getZhihuDetailTxt() {
-        return tvZhihuDetail;
+    public void getData() {
+        zhihuDetailPresenter = new ZhihuDetailPresenter(this);
+        zhihuDetailPresenter.getZhihuDetail(id);
     }
 
     @Override
-    public ImageView getZhihuImage() {
-        return ivImageView;
+    public void addTaskListener() {
+        zhihuDetailPresenter.addTaskListener(this);
     }
 
     @Override
-    public ImageView getIvAuthor() {
-        return ivAuthor;
-    }
-
-    @Override
-    public int getId() {
-        return id;
+    public MaterialProgressBar getProgressBar() {
+        return indeterminateHorizontalProgressToolbar;
     }
 }

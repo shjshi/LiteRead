@@ -17,24 +17,25 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 /**
  * Created by Wen_en on 16/9/5.
  */
-public class URLImageGetter implements Html.ImageGetter{
+public class URLImageGetter implements Html.ImageGetter {
     private String shopDeString;
     private TextView textView;
     Context context;
     private DisplayImageOptions options;
-    public URLImageGetter(String shopDeString,Context context,TextView textView,DisplayImageOptions options) {
+
+    public URLImageGetter(String shopDeString, Context context, TextView textView, DisplayImageOptions options) {
         this.shopDeString = shopDeString;
         this.context = context;
         this.textView = textView;
         this.options = options;
     }
+
     @Override
     public Drawable getDrawable(String source) {
-
         final URLDrawable urlDrawable = new URLDrawable();
-        ImageSize imageSize = new ImageSize(480,320);
+        ImageSize imageSize = new ImageSize(480, 320);
         NonViewAware nonViewAware = new NonViewAware(imageSize, ViewScaleType.CROP);
-        ImageLoader.getInstance().displayImage(source,nonViewAware,options,new SimpleImageLoadingListener(){
+        ImageLoader.getInstance().displayImage(source, nonViewAware, options, new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 super.onLoadingComplete(imageUri, view, loadedImage);

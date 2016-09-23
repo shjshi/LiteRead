@@ -24,67 +24,54 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
-import rx.Subscriber;
 
 public class ThumbleActivity extends BaseActivity implements ThumbleContract.View {
 
 
-    @Override
-    public ViewHolder getViewHolder() {
-        return viewHolder;
-    }
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
+    @Bind(R.id.rcl_image_list)
+    RecyclerView rclImageList;
+    @Bind(R.id.nsv_parent)
+    NestedScrollView nsvParent;
+    @Bind(R.id.fab)
+    FloatingActionButton fab;
+    private int id;
+    private String title;
+    private ArrayList<ImageModel.ListEntity> listEntities = new ArrayList<>();
+    private ImageAdapter mAdapter;
 
-    public class ViewHolder {
-        @Bind(R.id.toolbar)
-        public Toolbar toolbar;
-        @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-        public MaterialProgressBar indeterminateHorizontalProgressToolbar;
-        @Bind(R.id.rcl_image_list)
-        public RecyclerView rclImageList;
-        @Bind(R.id.nsv_parent)
-        public NestedScrollView nsvParent;
-        @Bind(R.id.fab)
-        public FloatingActionButton fab;
-        public int id;
-        public String title;
-        public Subscriber subscribers;
-        public ArrayList<ImageModel.ListEntity> listEntities = new ArrayList<>();
-        public ImageAdapter mAdapter;
-
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
 
     private ThumblePresenter thumblePresenter;
-    private ViewHolder viewHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         create(R.layout.activity_thumble, null, savedInstanceState);
         setContentView(getRootView());
-        viewHolder = new ViewHolder(getRootView());
+        ButterKnife.bind(this);
         thumblePresenter = new ThumblePresenter(this);
         ButterKnife.bind(this);
-        viewHolder.title = getIntent().getStringExtra("title");
-        viewHolder.id = getIntent().getIntExtra("id", 0);
+        title = getIntent().getStringExtra("title");
+        id = getIntent().getIntExtra("id", 0);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        viewHolder.rclImageList.setLayoutManager(staggeredGridLayoutManager);
-        viewHolder.mAdapter = new ImageAdapter(viewHolder.listEntities, viewHolder.title);
-        viewHolder.rclImageList.setAdapter(viewHolder.mAdapter);
-        viewHolder.mAdapter.getRandomHeight(viewHolder.listEntities);
+        rclImageList.setLayoutManager(staggeredGridLayoutManager);
+        mAdapter = new ImageAdapter(listEntities, title);
+        rclImageList.setAdapter(mAdapter);
+        mAdapter.getRandomHeight(listEntities);
         SpacesItemDecoration decoration = new SpacesItemDecoration(2, 10, true);
-        viewHolder.rclImageList.addItemDecoration(decoration);
-        viewHolder.rclImageList.setHasFixedSize(true);
-        viewHolder.rclImageList.setItemAnimator(new DefaultItemAnimator());
-        thumblePresenter.getImage(viewHolder.id);
+        rclImageList.addItemDecoration(decoration);
+        rclImageList.setHasFixedSize(true);
+        rclImageList.setItemAnimator(new DefaultItemAnimator());
+        getData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        viewHolder.toolbar.setTitle(viewHolder.title);
+        toolbar.setTitle(title);
     }
 
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
@@ -135,6 +122,32 @@ public class ThumbleActivity extends BaseActivity implements ThumbleContract.Vie
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        viewHolder = null;
+    }
+
+
+    @Override
+    public void showData(ArrayList<ImageModel.ListEntity> listEntities) {
+        mAdapter.getRandomHeight(listEntities);
+        mAdapter.updateList(listEntities);
+    }
+
+    @Override
+    public void showError(String s, View.OnClickListener listener) {
+        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+    }
+
+    @Override
+    public void getData() {
+        thumblePresenter.getImage(id);
+    }
+
+    @Override
+    public void addTaskListener() {
+
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return indeterminateHorizontalProgressToolbar;
     }
 }

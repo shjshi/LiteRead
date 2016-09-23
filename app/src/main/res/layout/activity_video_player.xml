@@ -23,11 +23,14 @@
             android:src="@mipmap/portrait" />
 
         <TextView
+            android:id="@+id/tv_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/iv_image"
             android:text="目前还是没办法通过JSOUP的方式解析出直播地址,已知的是:\n直播地址获取API:http://www.douyu.com/lapi/live/getPlay/{roomID或房间别名}\n参数:sign:(加密方式未知)\n
         rate:(未知),did:(加密方式未知)\ntt:(加密方式未知)\ncdn:空字符" />
+
+
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

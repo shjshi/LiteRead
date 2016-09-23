@@ -13,23 +13,24 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.wenen.literead.R;
-import com.wenen.literead.contract.MainContract;
-import com.wenen.literead.presenter.MainPresenter;
 import com.wenen.literead.activity.article.ArticleListActivity;
 import com.wenen.literead.activity.github.GitSearchActivity;
 import com.wenen.literead.activity.video.VideoListActivity;
 import com.wenen.literead.activity.zhihu.ZhihuListActivity;
+import com.wenen.literead.contract.MainContract;
+import com.wenen.literead.presenter.MainPresenter;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainContract.View {
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.main_pager_tabs)
@@ -40,6 +41,8 @@ public class MainActivity extends BaseActivity
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> titleList = new ArrayList<>();
     private MainPageViewAdapter mainPageViewAdapter;
@@ -62,7 +65,7 @@ public class MainActivity extends BaseActivity
         assert mainPager != null;
         mainPagerTabs.setupWithViewPager(mainPager);
         if (savedInstanceState == null) {
-            mainPresenter.getIMGTypeList();
+            getData();
         } else {
             titleList = savedInstanceState.getStringArrayList("titleList");
             if (mainPager.getAdapter() == null) {
@@ -133,25 +136,37 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-    @Override
-    public ViewPager getMainPager() {
-        return mainPager;
-    }
 
     @Override
-    public MainPageViewAdapter getPagerAdapter() {
-        return mainPageViewAdapter;
-    }
-
-    @Override
-    public TabLayout getPagerTabs() {
-        return mainPagerTabs;
-    }
-
-    @Override
-    public void updateData(ArrayList<Fragment> fragments, ArrayList<String> titleList) {
+    public void showData(ArrayList<Fragment> fragments, ArrayList<String> titleList) {
         this.fragments = fragments;
         this.titleList = titleList;
+        if (mainPager.getAdapter() == null) {
+            mainPager.setAdapter(mainPageViewAdapter);
+        } else
+            mainPager.getAdapter().notifyDataSetChanged();
+        mainPager.setOffscreenPageLimit(titleList.size());
+    }
+
+    @Override
+    public void showError(String s, View.OnClickListener listener) {
+        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+
+    }
+
+    @Override
+    public void getData() {
+        mainPresenter.getIMGTypeList();
+    }
+
+    @Override
+    public void addTaskListener() {
+        mainPresenter.addTaskListener(this);
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return indeterminateHorizontalProgressToolbar;
     }
 
     public class MainPageViewAdapter extends FragmentStatePagerAdapter {

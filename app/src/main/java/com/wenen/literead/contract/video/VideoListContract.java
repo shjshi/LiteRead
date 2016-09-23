@@ -1,14 +1,17 @@
 package com.wenen.literead.contract.video;
 
-import com.wenen.literead.activity.video.VideoListActivity;
+import android.support.v4.app.Fragment;
+
 import com.wenen.literead.contract.BaseContract;
+
+import java.util.ArrayList;
 
 /**
  * Created by Wen_en on 16/9/14.
  */
 public interface VideoListContract {
     interface View extends BaseContract.View {
-        VideoListActivity.ViewHolder getViewHolder();
+        void showData(ArrayList<String> titleList,  ArrayList<Fragment> fragments);
     }
 
     interface Model {

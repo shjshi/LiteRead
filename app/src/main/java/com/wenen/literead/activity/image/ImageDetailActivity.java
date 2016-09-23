@@ -25,35 +25,24 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 public class ImageDetailActivity extends BaseActivity implements ImageDetailContract.View {
 
 
-    @Override
-    public ViewHolder getViewHolder() {
-        return viewHolder;
-    }
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.container)
+    ViewPager container;
+    @Bind(R.id.fab)
+    FloatingActionButton fab;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
 
-    public class ViewHolder {
-        @Bind(R.id.toolbar)
-        public Toolbar toolbar;
-        @Bind(R.id.container)
-        public ViewPager container;
-        @Bind(R.id.fab)
-        public FloatingActionButton fab;
-        @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-        public MaterialProgressBar indeterminateHorizontalProgressToolbar;
+    private ImageDetailsAdapter mSectionsPagerAdapter;
+    private ArrayList<String> listl;
+    private String title;
+    private int position;
+    private int currentPage;
+    private ViewPager mViewPager;
+    private boolean b;
 
-        public ImageDetailsAdapter mSectionsPagerAdapter;
-        public ArrayList<String> listl;
-        public String title;
-        public int position;
-        public int currentPage;
-        public ViewPager mViewPager;
-        public boolean b;
 
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
-
-    private ViewHolder viewHolder;
     private ImageDetailPresenter imageDetailPresenter;
 
     @Override
@@ -61,29 +50,27 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
         super.onCreate(savedInstanceState);
         create(R.layout.activity_image_detail, null, savedInstanceState);
         setContentView(getRootView());
-        viewHolder = new ViewHolder(getRootView());
+        ButterKnife.bind(this);
         imageDetailPresenter = new ImageDetailPresenter(this);
-        viewHolder.listl = getIntent().getStringArrayListExtra("listUrls");
-        viewHolder.title = getIntent().getStringExtra("title");
-        viewHolder.position = getIntent().getIntExtra("position", 0);
-        viewHolder.b = getIntent().getBooleanExtra("isNeadAddHead", true);
-        viewHolder.currentPage = viewHolder.position;
-        viewHolder.mSectionsPagerAdapter = new ImageDetailsAdapter(getSupportFragmentManager(), viewHolder.listl,
-                viewHolder.title, viewHolder.position, viewHolder.b);
-        viewHolder.mViewPager = (ViewPager) findViewById(R.id.container);
-        viewHolder.mViewPager.setAdapter(viewHolder.mSectionsPagerAdapter);
-        viewHolder.mViewPager.setCurrentItem(viewHolder.position);
-
-        viewHolder.mViewPager.setOffscreenPageLimit(viewHolder.listl.size());
-        viewHolder.mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        listl = getIntent().getStringArrayListExtra("listUrls");
+        title = getIntent().getStringExtra("title");
+        position = getIntent().getIntExtra("position", 0);
+        b = getIntent().getBooleanExtra("isNeadAddHead", true);
+        currentPage = position;
+        mSectionsPagerAdapter = new ImageDetailsAdapter(getSupportFragmentManager(), listl,
+                title, position, b);
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setCurrentItem(position);
+        mViewPager.setOffscreenPageLimit(listl.size());
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-                viewHolder.position = position;
+                ImageDetailActivity.this.position = position;
             }
 
             @Override
@@ -91,11 +78,10 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
 
             }
         });
-        viewHolder.fab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                imageDetailPresenter.setProgressBarISvisible(viewHolder.indeterminateHorizontalProgressToolbar, true);
-                imageDetailPresenter.downLoadFile(APIUrl.imgUrl + viewHolder.listl.get(viewHolder.position));
+                getData();
             }
         });
     }
@@ -104,7 +90,7 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     @Override
     protected void onResume() {
         super.onResume();
-        viewHolder.toolbar.setTitle(viewHolder.title);
+        toolbar.setTitle(title);
     }
 
     @Override
@@ -125,6 +111,27 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        viewHolder = null;
+    }
+
+    @Override
+    public void showError(String s, View.OnClickListener listener) {
+        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
+        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+    }
+
+    @Override
+    public void getData() {
+        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
+        imageDetailPresenter.downLoadFile(APIUrl.imgUrl + listl.get(position));
+    }
+
+    @Override
+    public void addTaskListener() {
+        //imageDetailPresenter.addTaskListener(this);
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return indeterminateHorizontalProgressToolbar;
     }
 }

@@ -6,7 +6,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
-import com.wenen.literead.activity.image.ImageDetailActivity;
 import com.wenen.literead.contract.image.ImageDetailContract;
 import com.wenen.literead.presenter.BasePresenter;
 
@@ -24,15 +23,20 @@ import java.util.UUID;
  * Created by Wen_en on 16/9/14.
  */
 public class ImageDetailPresenter extends BasePresenter implements ImageDetailContract.Presenter {
-    ImageDetailActivity.ViewHolder viewHolder;
     public static final String PICTURE_DIR = Environment.getExternalStorageDirectory().getAbsolutePath()
             + "/liteRead/pictures/";
     public static final int DOWNLOAD_SUCCESS = 0x123;
     public static final int DOWNLOAD_ERROR = 0x124;
+    private ImageDetailContract.View view;
 
     public ImageDetailPresenter(ImageDetailContract.View view) {
         super(view);
-        viewHolder = view.getViewHolder();
+        addTaskListener(view);
+    }
+
+    public ImageDetailPresenter addTaskListener(ImageDetailContract.View view) {
+        this.view = view;
+        return this;
     }
 
     @Override
@@ -107,13 +111,12 @@ public class ImageDetailPresenter extends BasePresenter implements ImageDetailCo
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
             switch (msg.what) {
                 case DOWNLOAD_SUCCESS:
-                    showSnackBar(indeterminateHorizontalProgressToolbar, "图片已保存至：" + msg.obj.toString(), null);
+                    view.showError("图片已保存至：" + msg.obj.toString(), null);
                     break;
                 case DOWNLOAD_ERROR:
-                    showSnackBar(indeterminateHorizontalProgressToolbar, "图片保存失败：" + msg.obj.toString(), null);
+                    view.showError("图片保存失败：" + msg.obj.toString(), null);
                     break;
                 default:
                     break;

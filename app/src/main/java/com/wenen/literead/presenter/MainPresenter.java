@@ -1,10 +1,7 @@
 package com.wenen.literead.presenter;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
@@ -14,7 +11,6 @@ import com.wenen.literead.fragment.image.ImageListFragment;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.image.ImageTypeListModel;
-import com.wenen.literead.activity.MainActivity;
 
 import java.util.ArrayList;
 
@@ -24,24 +20,20 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/14.
  */
 public class MainPresenter extends BasePresenter implements MainContract.Presenter {
-    private MainContract.View view;
-    private ViewPager mainPager;
-    private MainActivity.MainPageViewAdapter mainPageViewAdapter;
-    private TabLayout mainPagerTabs;
     private Subscriber subscriber;
     private ArrayList<String> titleList = new ArrayList<>();
     private ArrayList<Fragment> fragments = new ArrayList<>();
-    private Context context;
+    private MainContract.View view;
 
     public MainPresenter(MainContract.View view) {
         super(view);
         this.view = view;
-        mainPager = view.getMainPager();
-        mainPageViewAdapter = view.getPagerAdapter();
-        mainPagerTabs = view.getPagerTabs();
-        context = view.getContext();
     }
 
+    public MainPresenter addTaskListener(MainContract.View view) {
+        this.view = view;
+        return this;
+    }
 
     @Override
     public void getIMGTypeList() {
@@ -49,26 +41,18 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
             @Override
             public void onCompleted() {
                 super.onCompleted();
-                view.updateData(fragments, titleList);
-                if (mainPager.getAdapter() == null) {
-                    mainPager.setAdapter(mainPageViewAdapter);
-                } else
-                    mainPager.getAdapter().notifyDataSetChanged();
-                mainPager.setOffscreenPageLimit(titleList.size());
+                view.showData(fragments, titleList);
             }
 
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                mainPagerTabs.setVisibility(View.GONE);
-                showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
+                view.showError(e.toString(), new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        mainPagerTabs.setVisibility(View.VISIBLE);
+                    public void onClick(View v) {
                         getIMGTypeList();
                     }
                 });
-
             }
 
             @Override
@@ -87,9 +71,9 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
                         fragments.add(imageListFragment);
                     }
                 } else
-                    showSnackBar(indeterminateHorizontalProgressToolbar, null, new View.OnClickListener() {
+                    view.showError(null, new View.OnClickListener() {
                         @Override
-                        public void onClick(View view) {
+                        public void onClick(View v) {
                             getIMGTypeList();
                         }
                     });

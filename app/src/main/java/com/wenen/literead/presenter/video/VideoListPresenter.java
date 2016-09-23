@@ -1,10 +1,10 @@
 package com.wenen.literead.presenter.video;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
-import com.wenen.literead.activity.video.VideoListActivity;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.contract.video.VideoListContract;
 import com.wenen.literead.fragment.video.VideoListFragment;
@@ -15,28 +15,36 @@ import com.wenen.literead.presenter.BasePresenter;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
+
+import rx.Subscriber;
+
 /**
  * Created by Wen_en on 16/9/14.
  */
 public class VideoListPresenter extends BasePresenter implements VideoListContract.Presenter {
-    VideoListActivity.ViewHolder viewHolder;
+    private VideoListContract.View view;
+    private Subscriber subscriber;
+    private ArrayList<String> titleList = new ArrayList<>();
+    private ArrayList<Fragment> fragments = new ArrayList<>();
 
     public VideoListPresenter(VideoListContract.View view) {
         super(view);
-        this.viewHolder = view.getViewHolder();
+        this.view=view;
+    }
+
+    public VideoListPresenter addTaskListener(VideoListContract.View view) {
+        this.view = view;
+        return this;
     }
 
     @Override
     public void getVideoList() {
-        viewHolder.subscriber = new HttpSubscriber<Element>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<Element>(indeterminateHorizontalProgressToolbar) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
-                if (viewHolder.mainPager.getAdapter() == null) {
-                    viewHolder.mainPager.setAdapter(viewHolder.mainPageViewAdapter);
-                } else
-                    viewHolder.mainPager.getAdapter().notifyDataSetChanged();
-                viewHolder.mainPager.setOffscreenPageLimit( viewHolder.titleList.size());
+                view.showData(titleList, fragments);
             }
 
             @Override
@@ -44,11 +52,9 @@ public class VideoListPresenter extends BasePresenter implements VideoListContra
                 super.onError(e);
                 if (e != null)
                     Log.e("next", e.toString());
-                viewHolder.mainPagerTabs.setVisibility(View.GONE);
-                showSnackBar(viewHolder.mainPager, "数据获取失败!", new View.OnClickListener() {
+                view.showError("数据获取失败!", new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        viewHolder.mainPagerTabs.setVisibility(View.VISIBLE);
+                    public void onClick(View v) {
                         getVideoList();
                     }
                 });
@@ -59,17 +65,17 @@ public class VideoListPresenter extends BasePresenter implements VideoListContra
                 super.onNext(type);
                 Elements elements = type.select("a.btn");
                 for (Element element : elements) {
-                    viewHolder.titleList.add(element.text());
+                    titleList.add(element.text());
                     VideoListFragment videoListFragment = new VideoListFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("url", element.attr("href"));
                     videoListFragment.setArguments(bundle);
-                    viewHolder.fragments.add(videoListFragment);
+                    fragments.add(videoListFragment);
                 }
             }
         }
         ;
         HttpClient.getSingle(APIUrl.DOUYU_BASE_URL).
-                getVideoList("/directory", viewHolder.subscriber);
+                getVideoList("/directory", subscriber);
     }
 }

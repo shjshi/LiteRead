@@ -19,52 +19,41 @@ import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.contract.github.UserDetailContract;
 import com.wenen.literead.fragment.github.FollowersFragment;
+import com.wenen.literead.model.github.GithubLoginModel;
 import com.wenen.literead.presenter.github.UserDetailPresenter;
 import com.wenen.literead.view.CircleImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
-import rx.Subscriber;
 
 /**
  * Created by Wen_en on 16/9/7.
  */
 public class UserDetailActivity extends BaseActivity implements UserDetailContract.View {
 
-    @Override
-    public ViewHolder getViewHolder() {
-        return viewHolder;
-    }
 
-    public class ViewHolder {
-        @Bind(R.id.toolbar)
-        public Toolbar toolbar;
-        @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-        public MaterialProgressBar indeterminateHorizontalProgressToolbar;
-        @Bind(R.id.iv_avatar)
-        public CircleImageView ivAvatar;
-        @Bind(R.id.tv_bio)
-        public AppCompatTextView tvBio;
-        @Bind(R.id.tv_name)
-        public AppCompatTextView tvName;
-        @Bind(R.id.tv_blog)
-        public AppCompatTextView tvBlog;
-        @Bind(R.id.tb_tab)
-        public TabLayout tbTab;
-        @Bind(R.id.vp_github)
-        public ViewPager vpGithub;
-        public GithubPageAdapter githubPageAdapter;
-        public String[] titles = new String[]{"Followers", "Following", "Started", "Repo"};
-        public Subscriber subscriber;
-        public String username;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
+    @Bind(R.id.iv_avatar)
+    CircleImageView ivAvatar;
+    @Bind(R.id.tv_bio)
+    AppCompatTextView tvBio;
+    @Bind(R.id.tv_name)
+    AppCompatTextView tvName;
+    @Bind(R.id.tv_blog)
+    AppCompatTextView tvBlog;
+    @Bind(R.id.tb_tab)
+    TabLayout tbTab;
+    @Bind(R.id.vp_github)
+    ViewPager vpGithub;
+    private GithubPageAdapter githubPageAdapter;
+    private String[] titles = new String[]{"Followers", "Following", "Started", "Repo"};
+    private String username;
 
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
 
-    ViewHolder viewHolder;
     private UserDetailPresenter userDetailPresenter;
 
     @Override
@@ -72,44 +61,81 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
         super.onCreate(savedInstanceState);
         create(R.layout.activity_user_detail, null, savedInstanceState);
         setContentView(getRootView());
-        viewHolder = new ViewHolder(getRootView());
         ButterKnife.bind(this);
-        viewHolder.githubPageAdapter = new GithubPageAdapter(getSupportFragmentManager());
+        githubPageAdapter = new GithubPageAdapter(getSupportFragmentManager());
         userDetailPresenter = new UserDetailPresenter(this);
         if (savedInstanceState != null) {
-            viewHolder.username = savedInstanceState.getString("username");
-            userDetailPresenter.githubSearch();
+            username = savedInstanceState.getString("username");
+            getData();
         } else {
             if (getIntent().getStringExtra("username") != null) {
-                viewHolder.username = getIntent().getStringExtra("username");
-                userDetailPresenter.githubSearch();
+                username = getIntent().getStringExtra("username");
+                getData();
             } else {
-                ImageLoaderConfig.imageLoader.displayImage(userDetailPresenter.githubUser.getGithubLoginModel().avatar_url, viewHolder.ivAvatar,
+                ImageLoaderConfig.imageLoader.displayImage(githubUser.getGithubLoginModel().avatar_url, ivAvatar,
                         ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
                 if (githubUser.getGithubLoginModel().bio != null)
-                    viewHolder.tvBio.setText("Bio:" + userDetailPresenter.githubUser.getGithubLoginModel().bio);
-                viewHolder.tvName.setText(githubUser.getGithubLoginModel().name);
+                    tvBio.setText("Bio:" + githubUser.getGithubLoginModel().bio);
+                tvName.setText(githubUser.getGithubLoginModel().name);
                 if (githubUser.getGithubLoginModel().blog != null)
-                    viewHolder.tvBlog.setText("Blog:" + userDetailPresenter.githubUser.getGithubLoginModel().blog);
+                    tvBlog.setText("Blog:" + githubUser.getGithubLoginModel().blog);
             }
         }
-        assert viewHolder.tbTab != null;
-        assert viewHolder.vpGithub != null;
-        viewHolder.tbTab.setupWithViewPager(viewHolder.vpGithub);
-        viewHolder.githubPageAdapter = new GithubPageAdapter(getSupportFragmentManager());
-        viewHolder.vpGithub.setAdapter(viewHolder.githubPageAdapter);
+        assert tbTab != null;
+        assert vpGithub != null;
+        tbTab.setupWithViewPager(vpGithub);
+        githubPageAdapter = new GithubPageAdapter(getSupportFragmentManager());
+        vpGithub.setAdapter(githubPageAdapter);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("username", viewHolder.username);
+        outState.putString("username", username);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        viewHolder.toolbar.setTitle(getString(R.string.github));
+        toolbar.setTitle(getString(R.string.github));
+    }
+
+    @Override
+    public void showData(GithubLoginModel githubLoginModel) {
+        updateGithubUserData(githubLoginModel);
+        githubUser.setName(username);
+        ImageLoaderConfig.imageLoader.displayImage(githubUser.getGithubLoginModel().avatar_url, ivAvatar,
+                ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
+        if (githubUser.getGithubLoginModel().bio != null)
+            tvBio.setText("Bio:" + githubUser.getGithubLoginModel().bio);
+        tvName.setText(githubUser.getGithubLoginModel().name);
+        if (githubUser.getGithubLoginModel().blog != null)
+            tvBlog.setText("Blog:" + githubUser.getGithubLoginModel().blog);
+        assert tbTab != null;
+        assert vpGithub != null;
+        tbTab.setupWithViewPager(vpGithub);
+        if (vpGithub != null)
+            vpGithub.setAdapter(githubPageAdapter);
+    }
+
+    @Override
+    public void showError(String s, View.OnClickListener listener) {
+        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+    }
+
+    @Override
+    public void getData() {
+        userDetailPresenter.githubSearch(username);
+    }
+
+    @Override
+    public void addTaskListener() {
+
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return indeterminateHorizontalProgressToolbar;
     }
 
     class GithubPageAdapter extends FragmentStatePagerAdapter {
@@ -130,7 +156,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return viewHolder.titles[position];
+            return titles[position];
         }
     }
 
@@ -152,9 +178,9 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
         getMenuInflater().inflate(R.menu.git_user_detail, menu);
         return true;
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        viewHolder = null;
     }
 }

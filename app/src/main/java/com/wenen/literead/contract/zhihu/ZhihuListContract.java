@@ -1,9 +1,5 @@
 package com.wenen.literead.contract.zhihu;
 
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
-
-import com.wenen.literead.adapter.zhihu.ZhihuListAdapter;
 import com.wenen.literead.contract.BaseContract;
 import com.wenen.literead.model.zhihu.ZhihuListModel;
 
@@ -14,13 +10,8 @@ import java.util.List;
  */
 public interface ZhihuListContract {
     interface View extends BaseContract.View {
-        SwipeRefreshLayout getSwipRefreshLayout();
-
-        RecyclerView getRecyclerView();
-
-        ZhihuListAdapter getAdapter();
-
         void upDateData(List<ZhihuListModel.StoriesEntity> list);
+void showData(List<ZhihuListModel.StoriesEntity> list);
     }
 
 

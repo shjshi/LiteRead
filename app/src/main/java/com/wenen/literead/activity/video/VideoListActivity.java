@@ -25,34 +25,24 @@ import rx.Subscriber;
 
 public class VideoListActivity extends BaseActivity implements VideoListContract.View {
 
-    @Override
-    public ViewHolder getViewHolder() {
-        return viewHolder;
-    }
 
-    public class ViewHolder {
-        @Bind(R.id.toolbar)
-        public Toolbar toolbar;
-        @Bind(R.id.main_pager_tabs)
-        public TabLayout mainPagerTabs;
-        @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-        public MaterialProgressBar indeterminateHorizontalProgressToolbar;
-        @Bind(R.id.app_bar)
-        public AppBarLayout appBar;
-        @Bind(R.id.main_pager)
-        public ViewPager mainPager;
-        public Subscriber subscriber;
-        public ArrayList<String> titleList = new ArrayList<>();
-        public MainPageViewAdapter mainPageViewAdapter;
-        public ArrayList<Fragment> fragments = new ArrayList<>();
-        public String title;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.main_pager_tabs)
+    TabLayout mainPagerTabs;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
+    @Bind(R.id.app_bar)
+    AppBarLayout appBar;
+    @Bind(R.id.main_pager)
+    ViewPager mainPager;
+    private Subscriber subscriber;
+    private ArrayList<String> titleList = new ArrayList<>();
+    private MainPageViewAdapter mainPageViewAdapter;
+    private ArrayList<Fragment> fragments = new ArrayList<>();
+    private String title;
 
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
 
-    private ViewHolder viewHolder;
     private VideoListPresenter videoListPresenter;
 
     @Override
@@ -60,36 +50,35 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
         super.onCreate(savedInstanceState);
         create(R.layout.activity_video_list, null, savedInstanceState);
         setContentView(getRootView());
-        viewHolder = new ViewHolder(getRootView());
-        viewHolder.mainPageViewAdapter = new MainPageViewAdapter(getSupportFragmentManager());
+        ButterKnife.bind(this);
+        mainPageViewAdapter = new MainPageViewAdapter(getSupportFragmentManager());
         videoListPresenter = new VideoListPresenter(this);
-        assert viewHolder.mainPagerTabs != null;
-        assert viewHolder.mainPager != null;
-        viewHolder.mainPagerTabs.setupWithViewPager(viewHolder.mainPager);
+        assert mainPagerTabs != null;
+        assert mainPager != null;
+        mainPagerTabs.setupWithViewPager(mainPager);
         if (savedInstanceState == null) {
-            videoListPresenter.getVideoList();
+            getData();
         } else {
-            viewHolder.titleList = savedInstanceState.getStringArrayList("list");
-            if (viewHolder.mainPager.getAdapter() == null) {
-
-                viewHolder.mainPager.setAdapter(viewHolder.mainPageViewAdapter);
+            titleList = savedInstanceState.getStringArrayList("list");
+            if (mainPager.getAdapter() == null) {
+                mainPager.setAdapter(mainPageViewAdapter);
             } else
-                viewHolder.mainPager.getAdapter().notifyDataSetChanged();
-            viewHolder.mainPager.setOffscreenPageLimit(viewHolder.titleList.size());
+                mainPager.getAdapter().notifyDataSetChanged();
+            mainPager.setOffscreenPageLimit(titleList.size());
         }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putStringArrayList("list", viewHolder.titleList);
+        outState.putStringArrayList("list", titleList);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        viewHolder.title = getIntent().getStringExtra("title");
-        viewHolder.toolbar.setTitle(viewHolder.title);
+        title = getIntent().getStringExtra("title");
+        toolbar.setTitle(title);
     }
 
 
@@ -101,19 +90,19 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
 
         @Override
         public Fragment getItem(int position) {
-            Log.e("fragments", position + viewHolder.fragments.get(position).getArguments().getString("url"));
-            return viewHolder.fragments.get(position);
+            Log.e("fragments", position + fragments.get(position).getArguments().getString("url"));
+            return fragments.get(position);
 
         }
 
         @Override
         public int getCount() {
-            return viewHolder.titleList.size();
+            return titleList.size();
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return viewHolder.titleList.get(position);
+            return titleList.get(position);
         }
 
     }
@@ -121,6 +110,37 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        viewHolder = null;
+    }
+
+
+    @Override
+    public void showData(ArrayList<String> titleList, ArrayList<Fragment> fragments) {
+        this.titleList = titleList;
+        this.fragments = fragments;
+        if (mainPager.getAdapter() == null) {
+            mainPager.setAdapter(mainPageViewAdapter);
+        } else
+            mainPager.getAdapter().notifyDataSetChanged();
+        mainPager.setOffscreenPageLimit(titleList.size());
+    }
+
+    @Override
+    public void showError(String s, View.OnClickListener listener) {
+        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+    }
+
+    @Override
+    public void getData() {
+        videoListPresenter.getVideoList();
+    }
+
+    @Override
+    public void addTaskListener() {
+        videoListPresenter.addTaskListener(this);
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return indeterminateHorizontalProgressToolbar;
     }
 }

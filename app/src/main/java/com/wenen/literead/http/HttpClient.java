@@ -123,6 +123,7 @@ public class HttpClient {
      * @param url
      * @param subscriber
      */
+    @SuppressWarnings("unchecked")
     public void getVideoList(String url, Subscriber<Object> subscriber) {
         Log.e("wholeurl", BASE_URL + url);
         GetWebObservable.getInstance(BASE_URL + url).map(new Func1<Document, Element>() {
@@ -131,7 +132,6 @@ public class HttpClient {
                 Element type = document.body();
                 return type;
             }
-
 
         }).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).

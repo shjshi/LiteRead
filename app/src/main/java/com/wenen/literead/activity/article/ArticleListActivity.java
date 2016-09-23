@@ -19,43 +19,31 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
-import rx.Subscriber;
 
 /**
  * Created by Wen_en on 16/9/1.
  */
 public class ArticleListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ArticleListContract.View {
 
-    @Override
-    public ViewHolder getViewHolder() {
-        return viewHolder;
-    }
 
-    public class ViewHolder {
-        @Bind(R.id.toolbar)
-        public Toolbar toolbar;
-        @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-        public MaterialProgressBar indeterminateHorizontalProgressToolbar;
-        @Bind(R.id.rcl_article_list)
-        public RecyclerView rclArticleList;
-        @Bind(R.id.swipe_refresh_layout)
-        public SwipeRefreshLayout swipeRefreshLayout;
-        public Subscriber subscriber;
-        public ArticleListAdapter adapter;
-        public ArrayList<ArticleListModel.ResultsEntity> list = new ArrayList<>();
-        public String title;
-        public int page = 1;
-        public boolean loadMore;
-        public boolean isError;
-        public String type = "Android";
-        public int pagecount = 5;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
+    @Bind(R.id.rcl_article_list)
+    RecyclerView rclArticleList;
+    @Bind(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+    private ArticleListAdapter adapter;
+    private ArrayList<ArticleListModel.ResultsEntity> list = new ArrayList<>();
+    private String title;
+    private int page = 1;
+    private boolean loadMore;
+    private boolean isError;
+    private String type = "Android";
+    private int pagecount = 5;
 
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-    }
 
-    ViewHolder viewHolder;
     private ArticleListPresenter articleListPresenter;
 
     @Override
@@ -63,36 +51,36 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
         super.onCreate(savedInstanceState);
         create(R.layout.activity_article_list, null, savedInstanceState);
         setContentView(getRootView());
-        viewHolder = new ViewHolder(getRootView());
+        ButterKnife.bind(this);
         if (savedInstanceState == null) {
-            viewHolder.title = getIntent().getStringExtra("title");
-            viewHolder.type = getIntent().getStringExtra("type");
-            viewHolder.pagecount = 5;
-            viewHolder.page = 1;
+            title = getIntent().getStringExtra("title");
+            type = getIntent().getStringExtra("type");
+            pagecount = 5;
+            page = 1;
 
         } else {
-            viewHolder.page = savedInstanceState.getInt("page", 1);
-            viewHolder.title = savedInstanceState.getString("title");
-            viewHolder.type = savedInstanceState.getString("type");
-            viewHolder.pagecount = savedInstanceState.getInt("pagecount", 5);
+            page = savedInstanceState.getInt("page", 1);
+            title = savedInstanceState.getString("title");
+            type = savedInstanceState.getString("type");
+            pagecount = savedInstanceState.getInt("pagecount", 5);
         }
-        viewHolder.swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setOnRefreshListener(this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        viewHolder.rclArticleList.setLayoutManager(linearLayoutManager);
-        viewHolder.adapter = new ArticleListAdapter(viewHolder.list, viewHolder.isError);
-        viewHolder.rclArticleList.setAdapter(viewHolder.adapter);
+        rclArticleList.setLayoutManager(linearLayoutManager);
+        adapter = new ArticleListAdapter(list, isError);
+        rclArticleList.setAdapter(adapter);
         articleListPresenter = new ArticleListPresenter(this);
-        articleListPresenter.getArticleList(viewHolder.type, viewHolder.pagecount, viewHolder.page);
-        viewHolder.rclArticleList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        getData();
+        rclArticleList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (viewHolder.adapter != null) {
-                    if (viewHolder.adapter.needLoadMore() && !viewHolder.isError) {
-                        viewHolder.page++;
-                        articleListPresenter.getArticleList(viewHolder.type, viewHolder.pagecount, viewHolder.page);
-                        viewHolder.loadMore = true;
+                if (adapter != null) {
+                    if (adapter.needLoadMore() && !isError) {
+                        page++;
+                        getData();
+                        loadMore = true;
                     }
                 }
             }
@@ -102,30 +90,72 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("title", viewHolder.title);
-        outState.putString("type", viewHolder.type);
-        outState.putInt("pagecount", viewHolder.pagecount);
-        outState.putInt("page", viewHolder.page);
+        outState.putString("title", title);
+        outState.putString("type", type);
+        outState.putInt("pagecount", pagecount);
+        outState.putInt("page", page);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        viewHolder.toolbar.setTitle(viewHolder.title);
+        toolbar.setTitle(title);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
-        viewHolder = null;
     }
 
     @Override
     public void onRefresh() {
-        viewHolder.loadMore = false;
-        viewHolder.page = 1;
-        articleListPresenter.getArticleList(viewHolder.type, viewHolder.pagecount, viewHolder.page);
+        loadMore = false;
+        page = 1;
+        getData();
+    }
+
+    @Override
+    public void showData(ArticleListModel articleListModel) {
+        if (!loadMore) {
+            list.clear();
+        }
+        for (ArticleListModel.ResultsEntity entity : articleListModel.results
+                ) {
+            list.add(entity);
+        }
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+        isError = false;
+        adapter.updateModel(list, isError);
+    }
+
+    @Override
+    public void showError(String s, View.OnClickListener listener) {
+        if (swipeRefreshLayout != null) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
+        if (loadMore) {
+            isError = true;
+            adapter.updateModel(list, isError);
+        } else
+            showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+    }
+
+    @Override
+    public void getData() {
+        articleListPresenter.getArticleList(type, pagecount, page);
+    }
+
+    @Override
+    public void addTaskListener() {
+
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return indeterminateHorizontalProgressToolbar;
     }
 }

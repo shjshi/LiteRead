@@ -12,6 +12,7 @@ import rx.Subscriber;
 /**
  * Created by Wen_en on 16/8/17.
  */
+
 public class GetWebObservable {
     public static rx.Observable getInstance(final String urls) {
         Log.d("webUrls", urls);

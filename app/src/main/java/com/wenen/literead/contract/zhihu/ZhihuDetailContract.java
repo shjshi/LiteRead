@@ -1,33 +1,28 @@
 package com.wenen.literead.contract.zhihu;
 
-import android.support.v7.widget.AppCompatTextView;
-import android.widget.ImageView;
-import android.widget.TextView;
-
 import com.wenen.literead.contract.BaseContract;
+
+import org.jsoup.nodes.Document;
 
 /**
  * Created by Wen_en on 16/9/14.
  */
 public interface ZhihuDetailContract {
     interface View extends BaseContract.View {
-        AppCompatTextView getZhihuDetailTitle();
+        void showData(Document document);
 
-        TextView getAuthor();
+        void showError(String s, android.view.View.OnClickListener listener);
 
-        AppCompatTextView getZhihuDetailTxt();
+        void getData();
 
-        ImageView getZhihuImage();
-
-        ImageView getIvAuthor();
-
-        int getId();
+        void addTaskListener();
     }
 
     interface Model {
     }
 
     interface Presenter {
-        void getZhihuDetail();
+        void getZhihuDetail(int id);
+
     }
 }

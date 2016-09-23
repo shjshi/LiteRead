@@ -1,10 +1,7 @@
 package com.wenen.literead.presenter.zhihu;
 
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.wenen.literead.adapter.zhihu.ZhihuListAdapter;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.contract.zhihu.ZhihuListContract;
 import com.wenen.literead.http.HttpClient;
@@ -22,16 +19,17 @@ import rx.Subscriber;
  */
 public class ZhihuListPresenter extends BasePresenter implements ZhihuListContract.Prestener {
     private Subscriber subscriber;
-    private SwipeRefreshLayout swipeRefreshLayout;
-    private RecyclerView rclZhihu;
-    private ZhihuListAdapter zhihuListAdapter;
     private List<ZhihuListModel.StoriesEntity> list = new ArrayList<>();
+    ZhihuListContract.View view;
 
     public ZhihuListPresenter(ZhihuListContract.View view) {
         super(view);
-        swipeRefreshLayout = view.getSwipRefreshLayout();
-        rclZhihu = view.getRecyclerView();
-        zhihuListAdapter = view.getAdapter();
+this.view=view;
+    }
+
+    public ZhihuListPresenter addTaskListener(ZhihuListContract.View view) {
+        this.view = view;
+        return this;
     }
 
     @Override
@@ -40,19 +38,16 @@ public class ZhihuListPresenter extends BasePresenter implements ZhihuListContra
             @Override
             public void onCompleted() {
                 super.onCompleted();
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
-                if (rclZhihu.getAdapter() != null)
-                    zhihuListAdapter.updateList(list);
+                view.showData(list);
+//
             }
+
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
-                showSnackBar(indeterminateHorizontalProgressToolbar, e.toString(), new View.OnClickListener() {
+                view.showError(e.toString(), new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View v) {
                         getZhihuList();
                     }
                 });

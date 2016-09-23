@@ -6,19 +6,21 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.wenen.literead.R;
+import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.adapter.zhihu.ZhihuListAdapter;
 import com.wenen.literead.contract.zhihu.ZhihuListContract;
-import com.wenen.literead.presenter.zhihu.ZhihuListPresenter;
 import com.wenen.literead.model.zhihu.ZhihuListModel;
-import com.wenen.literead.activity.BaseActivity;
+import com.wenen.literead.presenter.zhihu.ZhihuListPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
  * Created by Wen_en on 16/9/5.
@@ -30,6 +32,8 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
     RecyclerView rclZhihu;
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
 
     private ZhihuListAdapter zhihuListAdapter;
     private List<ZhihuListModel.StoriesEntity> list = new ArrayList<>();
@@ -45,7 +49,7 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
         zhihuListPresenter = new ZhihuListPresenter(this);
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setOnRefreshListener(this);
-        zhihuListPresenter.getZhihuList();
+        getData();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rclZhihu.setLayoutManager(linearLayoutManager);
@@ -64,23 +68,39 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
         zhihuListPresenter.getZhihuList();
     }
 
-    @Override
-    public SwipeRefreshLayout getSwipRefreshLayout() {
-        return swipeRefreshLayout;
-    }
-
-    @Override
-    public RecyclerView getRecyclerView() {
-        return rclZhihu;
-    }
-
-    @Override
-    public ZhihuListAdapter getAdapter() {
-        return zhihuListAdapter;
-    }
 
     @Override
     public void upDateData(List<ZhihuListModel.StoriesEntity> list) {
         this.list = list;
+    }
+
+    @Override
+    public void showData(List<ZhihuListModel.StoriesEntity> list) {
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
+        if (rclZhihu.getAdapter() != null)
+            zhihuListAdapter.updateList(list);
+    }
+
+    @Override
+    public void showError(String s, View.OnClickListener listener) {
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
+        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+    }
+
+    @Override
+    public void getData() {
+        zhihuListPresenter.getZhihuList();
+    }
+
+    @Override
+    public void addTaskListener() {
+        zhihuListPresenter.addTaskListener(this);
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return indeterminateHorizontalProgressToolbar;
     }
 }

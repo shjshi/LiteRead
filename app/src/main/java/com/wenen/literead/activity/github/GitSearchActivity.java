@@ -1,5 +1,6 @@
 package com.wenen.literead.activity.github;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.contract.github.GitSearchContract;
+import com.wenen.literead.model.github.GithubLoginModel;
 import com.wenen.literead.model.github.GithubUser;
 import com.wenen.literead.presenter.github.GitSearchPresenter;
 
@@ -18,46 +20,33 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
-import rx.Subscriber;
 
 /**
  * Created by Wen_en on 16/9/6.
  */
 public class GitSearchActivity extends BaseActivity implements GitSearchContract.View {
 
-    @Override
-    public ViewHolder getViewHolder() {
-        return viewHolder;
+
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
+    MaterialProgressBar indeterminateHorizontalProgressToolbar;
+    @Bind(R.id.et_username)
+    AppCompatEditText etUsername;
+    @Bind(R.id.btn_login)
+    AppCompatButton btnLogin;
+    private String title;
+    private String username;
+
+    @OnClick(R.id.btn_login)
+    public void gitLogin() {
+        username = etUsername.getText().toString();
+        if ("".equals(username))
+            showSnackBar(indeterminateHorizontalProgressToolbar, "账户名为空!", null);
+        else
+            getData();
     }
 
-    public class ViewHolder {
-        @Bind(R.id.toolbar)
-        public Toolbar toolbar;
-        @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-        public MaterialProgressBar indeterminateHorizontalProgressToolbar;
-        @Bind(R.id.et_username)
-        public AppCompatEditText etUsername;
-        @Bind(R.id.btn_login)
-        public AppCompatButton btnLogin;
-        public String title;
-        public String username;
-        public Subscriber subscriber;
-
-        ViewHolder(View view) {
-            ButterKnife.bind(this, view);
-        }
-
-        @OnClick(R.id.btn_login)
-        public void gitLogin() {
-            username = etUsername.getText().toString();
-            if ("".equals(username))
-                gitSearchPresenter.showSnackBar(indeterminateHorizontalProgressToolbar, "账户名为空!", null);
-            else
-                gitSearchPresenter.githubLogin();
-        }
-    }
-
-    ViewHolder viewHolder;
     private GitSearchPresenter gitSearchPresenter;
 
     @Override
@@ -65,7 +54,7 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
         super.onCreate(savedInstanceState);
         create(R.layout.activity_git_login, null, savedInstanceState);
         setContentView(getRootView());
-        viewHolder = new ViewHolder(getRootView());
+        ButterKnife.bind(this);
         if (GithubUser.getSingle().isAutoLogin()) {
             Intent intent = new Intent(this, UserDetailActivity.class);
             intent.putExtra("username", githubUser.getName());
@@ -73,27 +62,55 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
             finish();
         }
         if (savedInstanceState == null) {
-            viewHolder.title = getIntent().getStringExtra("title");
+            title = getIntent().getStringExtra("title");
         } else
-            viewHolder.title = savedInstanceState.getString("title");
+            title = savedInstanceState.getString("title");
         gitSearchPresenter = new GitSearchPresenter(this);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("title", viewHolder.title);
+        outState.putString("title", title);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        viewHolder.toolbar.setTitle(viewHolder.title);
+        toolbar.setTitle(title);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        viewHolder = null;
+    }
+
+    @Override
+    public void showData(GithubLoginModel githubLoginModel) {
+        updateGithubUserData(githubLoginModel);
+        githubUser.setName(username);
+        githubUser.setAutoLogin(true);
+        context.startActivity(new Intent(context, UserDetailActivity.class));
+        ((Activity) context).finish();
+    }
+
+    @Override
+    public void showError(String s, View.OnClickListener listener) {
+        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+    }
+
+    @Override
+    public void getData() {
+        gitSearchPresenter.githubLogin(username);
+    }
+
+    @Override
+    public void addTaskListener() {
+
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return indeterminateHorizontalProgressToolbar;
     }
 }
