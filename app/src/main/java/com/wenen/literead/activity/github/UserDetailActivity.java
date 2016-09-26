@@ -17,10 +17,10 @@ import android.view.View;
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
-import com.wenen.literead.contract.github.UserDetailContract;
+import com.wenen.literead.contract.activity.github.UserDetailContract;
 import com.wenen.literead.fragment.github.FollowersFragment;
 import com.wenen.literead.model.github.GithubLoginModel;
-import com.wenen.literead.presenter.github.UserDetailPresenter;
+import com.wenen.literead.presenter.activity.github.UserDetailPresenter;
 import com.wenen.literead.view.CircleImageView;
 
 import butterknife.Bind;
@@ -182,5 +182,6 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        userDetailPresenter = null;
     }
 }

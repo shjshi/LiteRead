@@ -16,8 +16,8 @@ import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.activity.image.ImageDetailActivity;
-import com.wenen.literead.contract.zhihu.ZhihuDetailContract;
-import com.wenen.literead.presenter.zhihu.ZhihuDetailPresenter;
+import com.wenen.literead.contract.activity.zhihu.ZhihuDetailContract;
+import com.wenen.literead.presenter.activity.zhihu.ZhihuDetailPresenter;
 import com.zzhoujay.richtext.RichText;
 import com.zzhoujay.richtext.callback.OnImageClickListener;
 import com.zzhoujay.richtext.callback.OnURLClickListener;
@@ -160,5 +160,11 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     @Override
     public MaterialProgressBar getProgressBar() {
         return indeterminateHorizontalProgressToolbar;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        zhihuDetailPresenter=null;
     }
 }

@@ -15,9 +15,9 @@ import android.view.View;
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.adapter.image.ImageAdapter;
-import com.wenen.literead.contract.image.ThumbleContract;
+import com.wenen.literead.contract.activity.image.ThumbleContract;
 import com.wenen.literead.model.image.ImageModel;
-import com.wenen.literead.presenter.image.ThumblePresenter;
+import com.wenen.literead.presenter.activity.image.ThumblePresenter;
 
 import java.util.ArrayList;
 
@@ -122,6 +122,7 @@ public class ThumbleActivity extends BaseActivity implements ThumbleContract.Vie
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        thumblePresenter=null;
     }
 
 

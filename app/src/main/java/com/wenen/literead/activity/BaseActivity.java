@@ -18,20 +18,22 @@ import com.wenen.literead.model.github.GithubUser;
 /**
  * Created by Wen_en on 16/8/16.
  */
-public class BaseActivity extends AppCompatActivity implements IDelegate{
+public class BaseActivity extends AppCompatActivity implements IDelegate {
     public static GithubUser githubUser;
     public View view;
     private Toolbar toolbar;
     public IDelegate iDelegate;
     private boolean b;
     public Context context;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         iDelegate = this;
         githubUser = GithubUser.getSingle();
-        context=getApplicationContext();
+        context = getApplicationContext();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -83,21 +85,10 @@ public class BaseActivity extends AppCompatActivity implements IDelegate{
             view.setVisibility(View.GONE);
         }
     }
+
     public void updateGithubUserData(GithubLoginModel githubLoginModel) {
         githubUser.setGithubLoginModel(githubLoginModel);
     }
-//    @Override
-//    public MaterialProgressBar getProgressBar() {
-//        return (MaterialProgressBar) view.findViewById(R.id.indeterminate_horizontal_progress_toolbar);
-//    }
-//
-//    @Override
-//    public Context getContext() {
-//        return this;
-//    }
-//
-//    @Override
-//    public GithubUser getGitHubUser() {
-//        return githubUser;
-//    }
+
+
 }

@@ -20,8 +20,8 @@ import com.wenen.literead.activity.article.ArticleListActivity;
 import com.wenen.literead.activity.github.GitSearchActivity;
 import com.wenen.literead.activity.video.VideoListActivity;
 import com.wenen.literead.activity.zhihu.ZhihuListActivity;
-import com.wenen.literead.contract.MainContract;
-import com.wenen.literead.presenter.MainPresenter;
+import com.wenen.literead.contract.activity.MainContract;
+import com.wenen.literead.presenter.activity.MainPresenter;
 
 import java.util.ArrayList;
 
@@ -136,7 +136,6 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
-
     @Override
     public void showData(ArrayList<Fragment> fragments, ArrayList<String> titleList) {
         this.fragments = fragments;
@@ -195,6 +194,6 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        mainPresenter = null;
     }
 }

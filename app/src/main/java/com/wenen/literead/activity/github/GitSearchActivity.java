@@ -1,6 +1,5 @@
 package com.wenen.literead.activity.github;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,10 +10,10 @@ import android.view.View;
 
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
-import com.wenen.literead.contract.github.GitSearchContract;
+import com.wenen.literead.contract.activity.github.GitSearchContract;
 import com.wenen.literead.model.github.GithubLoginModel;
 import com.wenen.literead.model.github.GithubUser;
-import com.wenen.literead.presenter.github.GitSearchPresenter;
+import com.wenen.literead.presenter.activity.github.GitSearchPresenter;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -83,6 +82,7 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        gitSearchPresenter=null;
     }
 
     @Override
@@ -90,8 +90,8 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
         updateGithubUserData(githubLoginModel);
         githubUser.setName(username);
         githubUser.setAutoLogin(true);
-        context.startActivity(new Intent(context, UserDetailActivity.class));
-        ((Activity) context).finish();
+        startActivity(new Intent(context, UserDetailActivity.class));
+        finish();
     }
 
     @Override

@@ -10,9 +10,9 @@ import android.view.View;
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.adapter.article.ArticleListAdapter;
-import com.wenen.literead.contract.article.ArticleListContract;
+import com.wenen.literead.contract.activity.article.ArticleListContract;
 import com.wenen.literead.model.article.ArticleListModel;
-import com.wenen.literead.presenter.article.ArticleListPresenter;
+import com.wenen.literead.presenter.activity.article.ArticleListPresenter;
 
 import java.util.ArrayList;
 
@@ -107,6 +107,7 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
     protected void onDestroy() {
         super.onDestroy();
         ButterKnife.unbind(this);
+        articleListPresenter = null;
     }
 
     @Override

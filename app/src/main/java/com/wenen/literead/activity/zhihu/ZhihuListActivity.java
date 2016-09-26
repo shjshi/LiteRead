@@ -11,9 +11,9 @@ import android.view.View;
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.adapter.zhihu.ZhihuListAdapter;
-import com.wenen.literead.contract.zhihu.ZhihuListContract;
+import com.wenen.literead.contract.activity.zhihu.ZhihuListContract;
 import com.wenen.literead.model.zhihu.ZhihuListModel;
-import com.wenen.literead.presenter.zhihu.ZhihuListPresenter;
+import com.wenen.literead.presenter.activity.zhihu.ZhihuListPresenter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,5 +102,11 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
     @Override
     public MaterialProgressBar getProgressBar() {
         return indeterminateHorizontalProgressToolbar;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        zhihuListPresenter = null;
     }
 }

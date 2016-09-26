@@ -13,8 +13,8 @@ import android.view.View;
 
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
-import com.wenen.literead.contract.video.VideoListContract;
-import com.wenen.literead.presenter.video.VideoListPresenter;
+import com.wenen.literead.contract.activity.video.VideoListContract;
+import com.wenen.literead.presenter.activity.video.VideoListPresenter;
 
 import java.util.ArrayList;
 
@@ -110,6 +110,7 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        videoListPresenter = null;
     }
 
 
@@ -143,4 +144,5 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
     public MaterialProgressBar getProgressBar() {
         return indeterminateHorizontalProgressToolbar;
     }
+
 }

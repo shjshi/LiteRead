@@ -1,10 +1,10 @@
 package com.wenen.literead.fragment.video;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,45 +12,36 @@ import android.widget.FrameLayout;
 
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.video.VideoListAdapter;
-import com.wenen.literead.api.APIUrl;
+import com.wenen.literead.contract.fragment.video.VideoListContract;
 import com.wenen.literead.fragment.BaseFragment;
-import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.model.video.VideoListModel;
-
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.wenen.literead.presenter.fragment.video.VideoListPresenter;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Subscriber;
 
-public class VideoListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class VideoListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, VideoListContract.View {
     @Bind(R.id.rcl_video_list)
     RecyclerView rclVideoList;
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.fl_parent)
     FrameLayout flParent;
-    private String url;
-    private Subscriber subscriber;
     private boolean isRefreshed = false;
-    private ArrayList<VideoListModel> listModels = new ArrayList<>();
     private VideoListAdapter mAdapter;
+    private ArrayList<VideoListModel> listModels = new ArrayList<>();
+    private VideoListPresenter videoListPresenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            url = savedInstanceState.getString("url");
-        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("url", url);
     }
 
     @Override
@@ -75,6 +66,7 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        videoListPresenter = new VideoListPresenter(this);
         refreshIf(shouldRefreshOnVisibilityChange(isVisibleToUser));
     }
 
@@ -109,46 +101,30 @@ public class VideoListFragment extends BaseFragment implements SwipeRefreshLayou
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout.setRefreshing(true);
         }
-        subscriber = new Subscriber<Element>() {
-            @Override
-            public void onCompleted() {
-                isRefreshed = true;
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
-                mAdapter.updateList(listModels);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                if (e != null)
-                    Log.e("next", e.toString());
-            }
-
-            @Override
-            public void onNext(Element type) {
-                Elements elements = type.select("div.mes");
-                for (Element element : elements) {
-                    VideoListModel videoListModel = new VideoListModel();
-                    Log.e("author", element.select("p").select("span.dy-name").first().text());
-                    videoListModel.author = element.select("p").select("span.dy-name").first().text();
-                    Log.e("roomUrl", element.parent().select("a").first().attr("href"));
-                    videoListModel.roomUrl = element.parent().select("a").first().attr("href");
-                    videoListModel.imageUrl = element.parent().select("a").first().select("img").first().attr("data-original");
-                    Log.e("imageUrl", element.parent().select("a").first().select("img").first().attr("data-original"));
-                    Elements mesTit = element.select("div.mes-tit");
-                    for (Element mesElement : mesTit) {
-                        videoListModel.title = mesElement.select("h3").first().text();
-                        Log.e("mesElement", mesElement.select("h3").first().text());
-                        listModels.add(videoListModel);
-                    }
-                }
-            }
-        };
-        if (url==null)
-            url=getArguments().getString("url");
-        HttpClient.getSingle(APIUrl.DOUYU_BASE_URL).
-                getVideoList(url, subscriber);
-
+        videoListPresenter.getVideoList(this);
     }
 
+    @Override
+    public void showData(ArrayList<VideoListModel> list) {
+        isRefreshed = true;
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
+        mAdapter.updateList(list);
+    }
+
+    @Override
+    public void showError(String e) {
+        Snackbar.make(rclVideoList, e, Snackbar.LENGTH_INDEFINITE).setAction("点击重试", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getVideoList();
+            }
+        }).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        videoListPresenter = null;
+    }
 }

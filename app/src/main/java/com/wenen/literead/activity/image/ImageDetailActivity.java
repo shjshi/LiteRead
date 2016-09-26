@@ -13,8 +13,8 @@ import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.adapter.image.ImageDetailsAdapter;
 import com.wenen.literead.api.APIUrl;
-import com.wenen.literead.contract.image.ImageDetailContract;
-import com.wenen.literead.presenter.image.ImageDetailPresenter;
+import com.wenen.literead.contract.activity.image.ImageDetailContract;
+import com.wenen.literead.presenter.activity.image.ImageDetailPresenter;
 
 import java.util.ArrayList;
 
@@ -111,6 +111,7 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        imageDetailPresenter=null;
     }
 
     @Override

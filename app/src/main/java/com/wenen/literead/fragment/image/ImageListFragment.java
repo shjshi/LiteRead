@@ -13,26 +13,24 @@ import android.view.ViewGroup;
 
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.image.ImageListAdapter;
-import com.wenen.literead.api.APIUrl;
+import com.wenen.literead.contract.fragment.image.ImageListContract;
 import com.wenen.literead.fragment.BaseFragment;
-import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.model.image.ImageListModel;
+import com.wenen.literead.presenter.fragment.image.ImageListPresenter;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Subscriber;
 
 /**
  * Created by Wen_en on 16/8/12.
  */
-public class ImageListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener {
+public class ImageListFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener, ImageListContract.View {
     @Bind(R.id.rcl_image_list)
     RecyclerView rclImageList;
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-    private Subscriber subscriber;
     private boolean isRefreshed = false;
     private boolean loadMore;
     /**
@@ -43,6 +41,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     private int rows = 5;
     private ArrayList<ImageListModel.TngouEntity> list = new ArrayList<>();
     private ImageListAdapter mAdapter;
+    private ImageListPresenter imageListPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +90,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
                 if (mAdapter != null) {
                     if (mAdapter.needLoadMore()) {
                         page++;
-                        getImgThumbleList(id, page, rows);
+                        imageListPresenter.getImgThumbleList(id, page, rows, loadMore);
                         loadMore = true;
                     }
                 }
@@ -119,7 +118,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
 
     private void doRefresh() {
         page = 1;
-        getImgThumbleList(id, page, rows);
+        imageListPresenter.getImgThumbleList(id, page, rows, loadMore);
     }
 
     private boolean shouldRefreshOnVisibilityChange(boolean isVisibleToUser) {
@@ -129,6 +128,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        imageListPresenter = new ImageListPresenter(this);
         refreshIf(shouldRefreshOnVisibilityChange(isVisibleToUser));
     }
 
@@ -138,41 +138,32 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
         ButterKnife.unbind(this);
     }
 
-    private void getImgThumbleList(int id, int page, int rows) {
-        subscriber = new Subscriber<ImageListModel>() {
-            @Override
-            public void onCompleted() {
-                isRefreshed = true;
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
-                mAdapter.updateList(list);
-            }
+    @Override
+    public void showData(ArrayList<ImageListModel.TngouEntity> list) {
+        isRefreshed = true;
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
+        mAdapter.updateList(list);
+    }
 
+    @Override
+    public void shoeError(String e) {
+        if (swipeRefreshLayout != null)
+            swipeRefreshLayout.setRefreshing(false);
+        if (loadMore) {
+            mAdapter.setIsLoadMore(false);
+        }
+        Snackbar.make(rclImageList, "数据加载失败", Snackbar.LENGTH_INDEFINITE).setAction("点击重试", new View.OnClickListener() {
             @Override
-            public void onError(Throwable e) {
-                if (swipeRefreshLayout != null)
-                    swipeRefreshLayout.setRefreshing(false);
-                if (loadMore) {
-                    mAdapter.setIsLoadMore(false);
-                }
-                Snackbar.make(rclImageList, "数据加载失败", Snackbar.LENGTH_INDEFINITE).setAction("点击重试", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        getImgThumbleList(ImageListFragment.this.id, ImageListFragment.this.page, ImageListFragment.this.rows);
-                    }
-                });
+            public void onClick(View view) {
+                imageListPresenter.getImgThumbleList(id, page, rows, loadMore);
             }
+        });
+    }
 
-            @Override
-            public void onNext(ImageListModel imageListModel) {
-                if (!loadMore)
-                    list.clear();
-                for (ImageListModel.TngouEntity tnEntity : imageListModel.tngou
-                        ) {
-                    list.add(tnEntity);
-                }
-            }
-        };
-        HttpClient.getSingle(APIUrl.TIANGOU_IMG_URL).getIMGThumbleList(id, page, rows, subscriber);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        imageListPresenter=null;
     }
 }
