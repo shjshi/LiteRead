@@ -6,6 +6,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
 
 /**
  * Created by Wen_en on 16/8/12.
@@ -42,6 +44,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     private ArrayList<ImageListModel.TngouEntity> list = new ArrayList<>();
     private ImageListAdapter mAdapter;
     private ImageListPresenter imageListPresenter;
+    private RecyclerViewListener recyclerViewListener;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +72,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_image_list, container, false);
         ButterKnife.bind(this, view);
+        recyclerViewListener = new RecyclerViewListener();
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rclImageList.setLayoutManager(linearLayoutManager);
@@ -78,25 +82,27 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(true);
-        rclImageList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
+        rclImageList.addOnScrollListener(recyclerViewListener);
+        return view;
+    }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (mAdapter != null) {
-                    if (mAdapter.needLoadMore()) {
-                        page++;
-                        imageListPresenter.getImgThumbleList(id, page, rows, loadMore);
-                        loadMore = true;
-                    }
+    private class RecyclerViewListener extends OnScrollListener {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (mAdapter != null) {
+                if (mAdapter.needLoadMore()) {
+                    page++;
+                    imageListPresenter.getImgThumbleList(id, page, rows, loadMore);
+                    loadMore = true;
                 }
             }
-        });
-        return view;
+        }
     }
 
     @Override
@@ -164,6 +170,7 @@ public class ImageListFragment extends BaseFragment implements SwipeRefreshLayou
     @Override
     public void onDestroy() {
         super.onDestroy();
-        imageListPresenter=null;
+        imageListPresenter = null;
+        recyclerViewListener = null;
     }
 }

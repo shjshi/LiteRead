@@ -67,6 +67,4 @@ public class ZhihuDetailPresenter extends BasePresenter implements ZhihuDetailCo
         HttpClient.getSingle(APIUrl.ZHIHU_BASE_URL).getZhihuDetail(id, subscriber);
     }
 
-
-
 }

@@ -31,7 +31,7 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
         super.onCreate(savedInstanceState);
         iDelegate = this;
         githubUser = GithubUser.getSingle();
-        context = getApplicationContext();
+        context = this;
     }
 
     @Override
@@ -47,7 +47,6 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
             toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
         }
     }
-
 
     @Override
     public void create(int layoutId, ViewGroup v, Bundle b) {
@@ -90,5 +89,8 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
         githubUser.setGithubLoginModel(githubLoginModel);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

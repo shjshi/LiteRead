@@ -57,6 +57,8 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     private String imgurl;
     private ZhihuDetailPresenter zhihuDetailPresenter;
     private String content;
+    private MyOnImageClickListener myOnImageClickListener;
+    private MyUrlClick myUrlClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +102,8 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
 
     @Override
     public void showData(Document document) {
+        myOnImageClickListener = new MyOnImageClickListener();
+        myUrlClick = new MyUrlClick();
         Log.e("document", document.outerHtml());
         Elements elements = document.select("h2.question-title");
         title = elements.first().text();
@@ -118,27 +122,45 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
             tvZhihuDetailTitle.setVisibility(View.GONE);
             content = document.outerHtml();
         }
-        RichText.from(content).async(true).clickable(true).imageClick(new OnImageClickListener() {
-            @Override
-            public void imageClicked(List<String> imageUrls, int position) {
-                Intent intent = new Intent(context, ImageDetailActivity.class);
-                intent.putStringArrayListExtra("listUrls", (ArrayList<String>) imageUrls);
-                intent.putExtra("title", title);
-                intent.putExtra("position", position);
-                intent.putExtra("isNeadAddHead", false);
-                context.startActivity(intent);
+        RichText.from(content).async(true).clickable(true)
+                .imageClick(myOnImageClickListener).urlClick(myUrlClick).imageLongClick(null).into(tvZhihuDetail);
+    }
 
-            }
-        }).urlClick(new OnURLClickListener() {
-            @Override
-            public boolean urlClicked(String url) {
-                new FinestWebView.Builder(context).statusBarColorRes(R.color.colorPrimary)
-                        .progressBarColorRes(R.color.colorPrimary).toolbarColorRes(R.color.colorPrimary).titleColorRes(R.color.white)
-                        .menuColorRes(R.color.white).iconDefaultColorRes(R.color.white)
-                        .show(url);
-                return true;
-            }
-        }).into(tvZhihuDetail);
+    private class MyUrlClick implements OnURLClickListener {
+
+        /**
+         * 超链接点击得回调方法
+         *
+         * @param url 点击得url
+         * @return true：已处理，false：未处理（会进行默认处理）
+         */
+        @Override
+        public boolean urlClicked(String url) {
+            new FinestWebView.Builder(context).statusBarColorRes(R.color.colorPrimary)
+                    .progressBarColorRes(R.color.colorPrimary).toolbarColorRes(R.color.colorPrimary).titleColorRes(R.color.white)
+                    .menuColorRes(R.color.white).iconDefaultColorRes(R.color.white)
+                    .show(url);
+            return true;
+        }
+    }
+
+    private class MyOnImageClickListener implements OnImageClickListener {
+
+        /**
+         * 图片被点击后的回调方法
+         *
+         * @param imageUrls 本篇富文本内容里的全部图片
+         * @param position  点击处图片在imageUrls中的位置
+         */
+        @Override
+        public void imageClicked(List<String> imageUrls, int position) {
+            Intent intent = new Intent(context, ImageDetailActivity.class);
+            intent.putStringArrayListExtra("listUrls", (ArrayList<String>) imageUrls);
+            intent.putExtra("title", title);
+            intent.putExtra("position", position);
+            intent.putExtra("isNeadAddHead", false);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -165,6 +187,9 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        zhihuDetailPresenter=null;
+        zhihuDetailPresenter = null;
+        myOnImageClickListener = null;
+        myUrlClick = null;
+        imgurl = null;
     }
 }
