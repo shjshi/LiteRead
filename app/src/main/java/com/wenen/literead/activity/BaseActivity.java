@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.thefinestartist.finestwebview.FinestWebView;
 import com.wenen.literead.R;
 import com.wenen.literead.elegate.IDelegate;
 import com.wenen.literead.model.github.GithubLoginModel;

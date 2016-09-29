@@ -1,8 +1,8 @@
 package com.wenen.literead.http;
 
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.litesuits.android.log.Log;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -114,7 +114,6 @@ public class LoggerInterceptor implements Interceptor {
             }
             Log.e(tag, "========request'log=======end");
         } catch (Exception e) {
-//            e.printStackTrace();
         }
     }
 

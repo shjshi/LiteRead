@@ -188,7 +188,6 @@ public class MainActivity extends BaseActivity
         public CharSequence getPageTitle(int position) {
             return titleList.get(position);
         }
-
     }
 
     @Override

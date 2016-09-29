@@ -27,7 +27,6 @@ public class ArticleListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int NO_LOAD_MORE = 1;
     private boolean needLoadMore;
     private boolean isError;
-
     public ArticleListAdapter(ArrayList<ArticleListModel.ResultsEntity> list, boolean isError) {
         this.list = list;
         this.isError = isError;

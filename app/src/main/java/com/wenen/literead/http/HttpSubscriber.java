@@ -1,8 +1,8 @@
 package com.wenen.literead.http;
 
+import android.util.Log;
 import android.view.View;
 
-import com.litesuits.android.log.Log;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -15,7 +15,7 @@ import rx.Subscriber;
  */
 public class HttpSubscriber<T> extends Subscriber<T> {
    private View view;
-
+private static final String TAG="HttpSubscriber";
     public HttpSubscriber() {
     }
 
@@ -34,16 +34,16 @@ public class HttpSubscriber<T> extends Subscriber<T> {
     public void onError(Throwable e) {
         setProgressBarISvisible(view, false);
         if (e instanceof SocketTimeoutException) {
-            Log.e(e.toString());
+            Log.e("TAG",e.toString());
         } else if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
-            Log.e(httpException.code() + "");
-            Log.e(httpException.message() + "");
+            Log.e("TAG",httpException.code() + "");
+            Log.e("TAG",httpException.message() + "");
             if (httpException.response() != null && httpException.response().errorBody() != null) {
                 try {
-                    Log.e(httpException.response().message());
+                    Log.e("TAG",httpException.response().message());
                     String bodyStr = httpException.response().errorBody().string();
-                    Log.e(bodyStr);
+                    Log.e("TAG",bodyStr);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

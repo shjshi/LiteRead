@@ -26,8 +26,6 @@ import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class ThumbleActivity extends BaseActivity implements ThumbleContract.View {
-
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.indeterminate_horizontal_progress_toolbar)
@@ -42,8 +40,6 @@ public class ThumbleActivity extends BaseActivity implements ThumbleContract.Vie
     private String title;
     private ArrayList<ImageModel.ListEntity> listEntities = new ArrayList<>();
     private ImageAdapter mAdapter;
-
-
     private ThumblePresenter thumblePresenter;
 
     @Override
@@ -122,7 +118,7 @@ public class ThumbleActivity extends BaseActivity implements ThumbleContract.Vie
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        thumblePresenter=null;
+        thumblePresenter = null;
     }
 
 

@@ -23,8 +23,6 @@ import butterknife.ButterKnife;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class ImageDetailActivity extends BaseActivity implements ImageDetailContract.View {
-
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.container)
@@ -33,7 +31,6 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     FloatingActionButton fab;
     @Bind(R.id.indeterminate_horizontal_progress_toolbar)
     MaterialProgressBar indeterminateHorizontalProgressToolbar;
-
     private ImageDetailsAdapter mSectionsPagerAdapter;
     private ArrayList<String> listl;
     private String title;
@@ -42,7 +39,7 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     private ViewPager mViewPager;
     private boolean b;
 
-
+private ViewPagerChangListener viewPagerChangListener;
     private ImageDetailPresenter imageDetailPresenter;
 
     @Override
@@ -63,21 +60,8 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(position);
         mViewPager.setOffscreenPageLimit(listl.size());
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                ImageDetailActivity.this.position = position;
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        viewPagerChangListener=new ViewPagerChangListener();
+        mViewPager.addOnPageChangeListener(viewPagerChangListener);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,6 +70,21 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
         });
     }
 
+    private class ViewPagerChangListener implements ViewPager.OnPageChangeListener {
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+        }
+        @Override
+        public void onPageSelected(int position) {
+            ImageDetailActivity.this.position = position;
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -111,7 +110,8 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        imageDetailPresenter=null;
+        imageDetailPresenter = null;
+        viewPagerChangListener=null;
     }
 
     @Override
@@ -128,7 +128,6 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
 
     @Override
     public void addTaskListener() {
-        //imageDetailPresenter.addTaskListener(this);
     }
 
     @Override

@@ -1,9 +1,11 @@
 package com.wenen.literead.http;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
+import android.util.Log;
 
-import com.litesuits.android.log.Log;
-import com.litesuits.common.assist.Network;
 import com.wenen.literead.LiteReadApplication;
 
 import java.io.IOException;
@@ -36,19 +38,15 @@ public class HttpInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
-//            if (original.url().toString().indexOf("https://api.github.com/users/") != -1) {
-//                original.newBuilder().put(RequestBody.create(JSON,
-//                        APIUrl.GITHUB_CLIENT_ID));
-//            }
-        if (!Network.isConnected(LiteReadApplication.mContext)) {
+        if (!isConnected(LiteReadApplication.mContext)) {
             original = original.newBuilder()
                     .cacheControl(CacheControl.FORCE_CACHE)
                     .build();
-            Log.e("NoNetwork", "无网络");
+            Log.e(TAG, "无网络");
         } else
-            Log.e("NoNetwork", "有网络");
+            Log.e(TAG, "有网络");
         Response response = chain.proceed(original);
-        if (Network.isConnected(LiteReadApplication.mContext)) {
+        if (isConnected(LiteReadApplication.mContext)) {
             int maxAge = 60 * 60; // read from cache for 1 minute
             response.newBuilder()
                     .removeHeader("Pragma")
@@ -62,5 +60,12 @@ public class HttpInterceptor implements Interceptor {
                     .build();
         }
         return response;
+    }
+    private  boolean isConnected(Context context) {
+        NetworkInfo net = getConnectivityManager(context).getActiveNetworkInfo();
+        return net != null && net.isConnected();
+    }
+    private  ConnectivityManager getConnectivityManager(Context context) {
+        return (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
     }
 }

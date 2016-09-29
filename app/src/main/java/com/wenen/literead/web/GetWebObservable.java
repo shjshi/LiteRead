@@ -1,6 +1,7 @@
 package com.wenen.literead.web;
 
-import com.litesuits.android.log.Log;
+
+import android.util.Log;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;

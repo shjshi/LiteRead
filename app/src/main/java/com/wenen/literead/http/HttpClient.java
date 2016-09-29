@@ -1,6 +1,7 @@
 package com.wenen.literead.http;
 
-import com.litesuits.android.log.Log;
+import android.util.Log;
+
 import com.wenen.literead.LiteReadApplication;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.retrofitInterface.article.ArticleList;
@@ -34,15 +35,6 @@ import rx.schedulers.Schedulers;
  */
 public class HttpClient {
     private static final String TAG = "HttpClient";
-
-    public static String getBaseUrl() {
-        return BASE_URL;
-    }
-
-    public static void setBaseUrl(String baseUrl) {
-        BASE_URL = baseUrl;
-    }
-
     public static String BASE_URL = "";
     private static Retrofit retrofit;
     private static OkHttpClient client;
@@ -55,7 +47,7 @@ public class HttpClient {
         cacheSize = 30 * 1024 * 1024; // 30 MiB
         cache = new Cache(httpCacheDirectory, cacheSize);
         client = new OkHttpClient.Builder()
-                .addInterceptor(new LoggerInterceptor("LOG")).addNetworkInterceptor(new HttpInterceptor("NETWORK"))
+                .addInterceptor(new LoggerInterceptor(TAG)).addNetworkInterceptor(new HttpInterceptor(TAG))
                 .cache(cache).build();
     }
 
@@ -64,8 +56,8 @@ public class HttpClient {
     }
 
     public static HttpClient getSingle(String url) {
-        setBaseUrl(url);
-        Log.e("url", BASE_URL);
+        BASE_URL=url;
+        Log.e(TAG, BASE_URL);
         return SingletonHolder.INSTANCE;
     }
 
@@ -73,7 +65,7 @@ public class HttpClient {
         retrofit = new Retrofit.Builder().client(client).
                 addConverterFactory(GsonConverterFactory.create())//解析方法
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .baseUrl(getBaseUrl())//主机地址
+                .baseUrl(BASE_URL)//主机地址
                 .build();
     }
 
@@ -125,7 +117,7 @@ public class HttpClient {
      */
     @SuppressWarnings("unchecked")
     public void getVideoList(String url, Subscriber<Object> subscriber) {
-        Log.e("wholeurl", BASE_URL + url);
+        Log.e(TAG, BASE_URL + url);
         GetWebObservable.getInstance(BASE_URL + url).map(new Func1<Document, Element>() {
             @Override
             public Element call(Document document) {

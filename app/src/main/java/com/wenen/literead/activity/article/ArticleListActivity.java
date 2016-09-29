@@ -43,7 +43,7 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
     private String type = "Android";
     private int pagecount = 5;
 
-
+    private RecyclerViewOnScrollListener recyclerViewOnScrollListener;
     private ArticleListPresenter articleListPresenter;
 
     @Override
@@ -52,12 +52,12 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
         create(R.layout.activity_article_list, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
+        recyclerViewOnScrollListener = new RecyclerViewOnScrollListener();
         if (savedInstanceState == null) {
             title = getIntent().getStringExtra("title");
             type = getIntent().getStringExtra("type");
             pagecount = 5;
             page = 1;
-
         } else {
             page = savedInstanceState.getInt("page", 1);
             title = savedInstanceState.getString("title");
@@ -72,19 +72,20 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
         rclArticleList.setAdapter(adapter);
         articleListPresenter = new ArticleListPresenter(this);
         getData();
-        rclArticleList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (adapter != null) {
-                    if (adapter.needLoadMore() && !isError) {
-                        page++;
-                        getData();
-                        loadMore = true;
-                    }
+        rclArticleList.addOnScrollListener(recyclerViewOnScrollListener);
+    }
+    private class RecyclerViewOnScrollListener extends RecyclerView.OnScrollListener {
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            if (adapter != null) {
+                if (adapter.needLoadMore() && !isError) {
+                    page++;
+                    getData();
+                    loadMore = true;
                 }
             }
-        });
+        }
     }
 
     @Override
@@ -108,6 +109,7 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
         super.onDestroy();
         ButterKnife.unbind(this);
         articleListPresenter = null;
+        recyclerViewOnScrollListener = null;
     }
 
     @Override
