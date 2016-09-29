@@ -24,8 +24,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  * Created by Wen_en on 16/9/1.
  */
 public class ArticleListActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener, ArticleListContract.View {
-
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.indeterminate_horizontal_progress_toolbar)

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1056703089538",
+    "firebase_url": "https://literead-29cba.firebaseio.com",
+    "project_id": "literead-29cba",
+    "storage_bucket": "literead-29cba.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1056703089538:android:eaae181d842e5153",
+        "android_client_info": {
+          "package_name": "com.wenen.literead"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1056703089538-p87ob58omorhqk5vdvjurhe08hkjrt4a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wenen.literead",
+            "certificate_hash": "583A0EB2D5EEC055544C89C3144A277D79C41638"
+          }
+        },
+        {
+          "client_id": "1056703089538-dv7m48gsfihpdrupdh28q5m54855j3o1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqxG5tO5dZlY9liKb659Bc7WsWEVOs5MM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1056703089538-dv7m48gsfihpdrupdh28q5m54855j3o1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

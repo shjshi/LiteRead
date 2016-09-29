@@ -17,7 +17,8 @@ import com.wenen.literead.api.APIUrl;
  */
 public class LiteReadApplication extends Application {
     public static Context mContext;
-private SharedPreferences sp;
+    private SharedPreferences sp;
+
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .denyCacheImageMultipleSizesInMemory()
@@ -33,8 +34,6 @@ private SharedPreferences sp;
     public void onCreate() {
         super.onCreate();
         if (LeakCanary.isInAnalyzerProcess(this)) {
-            // This process is dedicated to LeakCanary for heap analysis.
-            // You should not init your app in this process.
             return;
         }
         LeakCanary.install(this);

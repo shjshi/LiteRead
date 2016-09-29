@@ -18,7 +18,9 @@ import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.activity.image.ImageDetailActivity;
 import com.wenen.literead.contract.activity.zhihu.ZhihuDetailContract;
 import com.wenen.literead.presenter.activity.zhihu.ZhihuDetailPresenter;
+import com.zzhoujay.richtext.ImageHolder;
 import com.zzhoujay.richtext.RichText;
+import com.zzhoujay.richtext.callback.ImageFixCallback;
 import com.zzhoujay.richtext.callback.OnImageClickListener;
 import com.zzhoujay.richtext.callback.OnURLClickListener;
 
@@ -59,6 +61,7 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     private String content;
     private MyOnImageClickListener myOnImageClickListener;
     private MyUrlClick myUrlClick;
+    private ImageFixCallBack imageFixCallBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,7 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
         create(R.layout.activity_zhihu_detail, null, savedInstanceState);
         setContentView(getRootView());
         ButterKnife.bind(this);
+        imageFixCallBack = new ImageFixCallBack();
         if (savedInstanceState == null) {
             id = getIntent().getIntExtra("id", 0);
             title = getIntent().getStringExtra("title");
@@ -122,8 +126,17 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
             tvZhihuDetailTitle.setVisibility(View.GONE);
             content = document.outerHtml();
         }
-        RichText.from(content).async(true).clickable(true)
+        RichText.from(content).autoFix(false).fix(imageFixCallBack).async(true).clickable(true)
                 .imageClick(myOnImageClickListener).urlClick(myUrlClick).imageLongClick(null).into(tvZhihuDetail);
+    }
+
+    private class ImageFixCallBack implements ImageFixCallback {
+        @Override
+        public void onFix(ImageHolder holder, boolean imageReady) {
+            if (holder.getWidth() > 500 && holder.getHeight() > 500) {
+                holder.setAutoFix(true);
+            }
+        }
     }
 
     private class MyUrlClick implements OnURLClickListener {
@@ -191,5 +204,6 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
         myOnImageClickListener = null;
         myUrlClick = null;
         imgurl = null;
+        imageFixCallBack=null;
     }
 }
