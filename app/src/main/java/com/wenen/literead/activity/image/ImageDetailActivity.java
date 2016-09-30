@@ -39,7 +39,7 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     private ViewPager mViewPager;
     private boolean b;
 
-private ViewPagerChangListener viewPagerChangListener;
+    private ViewPagerChangListener viewPagerChangListener;
     private ImageDetailPresenter imageDetailPresenter;
 
     @Override
@@ -60,7 +60,7 @@ private ViewPagerChangListener viewPagerChangListener;
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(position);
         mViewPager.setOffscreenPageLimit(listl.size());
-        viewPagerChangListener=new ViewPagerChangListener();
+        viewPagerChangListener = new ViewPagerChangListener();
         mViewPager.addOnPageChangeListener(viewPagerChangListener);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +75,7 @@ private ViewPagerChangListener viewPagerChangListener;
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
         }
+
         @Override
         public void onPageSelected(int position) {
             ImageDetailActivity.this.position = position;
@@ -111,7 +112,7 @@ private ViewPagerChangListener viewPagerChangListener;
     protected void onDestroy() {
         super.onDestroy();
         imageDetailPresenter = null;
-        viewPagerChangListener=null;
+        viewPagerChangListener = null;
     }
 
     @Override

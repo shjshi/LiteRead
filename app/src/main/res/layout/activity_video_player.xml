@@ -16,7 +16,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ImageView
-
             android:id="@+id/iv_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,5 +31,4 @@
 
 
     </RelativeLayout>
-
 </android.support.design.widget.CoordinatorLayout>
