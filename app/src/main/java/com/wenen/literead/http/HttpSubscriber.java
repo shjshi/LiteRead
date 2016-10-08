@@ -14,11 +14,11 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/2.
  */
 public class HttpSubscriber<T> extends Subscriber<T> {
-   private View view;
-private static final String TAG="HttpSubscriber";
+    private View view;
+    private static final String TAG = "HttpSubscriber";
+
     public HttpSubscriber() {
     }
-
     public HttpSubscriber(View view) {
         this.view = view;
         setProgressBarISvisible(view, true);
@@ -29,21 +29,20 @@ private static final String TAG="HttpSubscriber";
         setProgressBarISvisible(view, false);
     }
 
-
     @Override
     public void onError(Throwable e) {
         setProgressBarISvisible(view, false);
         if (e instanceof SocketTimeoutException) {
-            Log.e("TAG",e.toString());
+            Log.e(TAG, e.toString());
         } else if (e instanceof HttpException) {
             HttpException httpException = (HttpException) e;
-            Log.e("TAG",httpException.code() + "");
-            Log.e("TAG",httpException.message() + "");
+            Log.e(TAG, httpException.code() + "");
+            Log.e(TAG, httpException.message() + "");
             if (httpException.response() != null && httpException.response().errorBody() != null) {
                 try {
-                    Log.e("TAG",httpException.response().message());
+                    Log.e(TAG, httpException.response().message());
                     String bodyStr = httpException.response().errorBody().string();
-                    Log.e("TAG",bodyStr);
+                    Log.e(TAG, bodyStr);
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }

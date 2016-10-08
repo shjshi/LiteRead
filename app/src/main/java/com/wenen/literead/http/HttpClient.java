@@ -60,7 +60,6 @@ public class HttpClient {
         Log.e(TAG, BASE_URL);
         return SingletonHolder.INSTANCE;
     }
-
     private static void updateRetrofit() {
         retrofit = new Retrofit.Builder().client(client).
                 addConverterFactory(GsonConverterFactory.create())//解析方法

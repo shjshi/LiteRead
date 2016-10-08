@@ -8,7 +8,6 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.squareup.leakcanary.LeakCanary;
 import com.tencent.bugly.Bugly;
 import com.wenen.literead.api.APIUrl;
 
@@ -33,11 +32,6 @@ public class LiteReadApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        LeakCanary.install(this);
-        // Normal app init code...
         mContext = getApplicationContext();
         initImageLoader(getApplicationContext());
         Bugly.init(getApplicationContext(), APIUrl.BUGLY_APPID, false);

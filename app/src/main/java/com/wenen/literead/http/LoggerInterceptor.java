@@ -52,7 +52,6 @@ public class LoggerInterceptor implements Interceptor {
 
     private Response logForResponse(Response response) {
         try {
-            //===>response log
             Log.e(tag, "========response'log=======");
             Response.Builder builder = response.newBuilder();
             Response clone = builder.build();
@@ -80,15 +79,12 @@ public class LoggerInterceptor implements Interceptor {
                     }
                 }
             }
-
             Log.e(tag, "========response'log=======end");
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return response;
     }
-
     private void logForRequest(Request request) {
         try {
             String url = request.url().toString();
@@ -131,7 +127,6 @@ public class LoggerInterceptor implements Interceptor {
         }
         return false;
     }
-
     private String bodyToString(final Request request) {
         try {
             final Request copy = request.newBuilder().build();
