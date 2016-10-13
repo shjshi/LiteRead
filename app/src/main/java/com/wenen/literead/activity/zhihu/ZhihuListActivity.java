@@ -88,7 +88,6 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
             swipeRefreshLayout.setRefreshing(false);
         showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
     }
-
     @Override
     public void getData() {
         zhihuListPresenter.getZhihuList();

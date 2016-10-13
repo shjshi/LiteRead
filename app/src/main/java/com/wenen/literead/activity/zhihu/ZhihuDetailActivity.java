@@ -204,6 +204,6 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
         myOnImageClickListener = null;
         myUrlClick = null;
         imgurl = null;
-        imageFixCallBack=null;
+        imageFixCallBack = null;
     }
 }
