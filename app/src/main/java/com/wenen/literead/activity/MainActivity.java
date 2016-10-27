@@ -20,6 +20,7 @@ import com.wenen.literead.activity.article.ArticleListActivity;
 import com.wenen.literead.activity.github.GitSearchActivity;
 import com.wenen.literead.activity.video.VideoListActivity;
 import com.wenen.literead.activity.zhihu.ZhihuListActivity;
+import com.wenen.literead.animation.ZoomOutPageTransformer;
 import com.wenen.literead.contract.activity.MainContract;
 import com.wenen.literead.presenter.activity.MainPresenter;
 
@@ -64,6 +65,7 @@ public class MainActivity extends BaseActivity
         assert mainPagerTabs != null;
         assert mainPager != null;
         mainPagerTabs.setupWithViewPager(mainPager);
+        mainPager.setPageTransformer(true, new ZoomOutPageTransformer());
         if (savedInstanceState == null) {
             getData();
         } else {

@@ -77,9 +77,7 @@ public class GitHubFollowAdapter extends RecyclerView.Adapter<GitHubFollowAdapte
             holder.tvFollowerName.setText(((StartedModel) list.get(position)).full_name);
             holder.tvFollowerUrl.setText(((StartedModel) list.get(position)).html_url);
         }
-
     }
-
     @Override
     public int getItemCount() {
         if (list != null)
@@ -108,7 +106,6 @@ public class GitHubFollowAdapter extends RecyclerView.Adapter<GitHubFollowAdapte
             this.clickResponseListener = clickResponseListener;
             view.setOnClickListener(this);
         }
-
         @Override
         public void onClick(View view) {
             clickResponseListener.onWholeClick(getAdapterPosition());

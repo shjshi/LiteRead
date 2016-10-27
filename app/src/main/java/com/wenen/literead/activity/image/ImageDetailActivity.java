@@ -12,6 +12,7 @@ import android.view.View;
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
 import com.wenen.literead.adapter.image.ImageDetailsAdapter;
+import com.wenen.literead.animation.ZoomOutPageTransformer;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.contract.activity.image.ImageDetailContract;
 import com.wenen.literead.presenter.activity.image.ImageDetailPresenter;
@@ -59,6 +60,7 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(position);
+        mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mViewPager.setOffscreenPageLimit(listl.size());
         viewPagerChangListener = new ViewPagerChangListener();
         mViewPager.addOnPageChangeListener(viewPagerChangListener);
@@ -91,21 +93,6 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     protected void onResume() {
         super.onResume();
         toolbar.setTitle(title);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_image_detail, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.view.View;
 
 import com.wenen.literead.R;
 import com.wenen.literead.activity.BaseActivity;
+import com.wenen.literead.animation.ZoomOutPageTransformer;
 import com.wenen.literead.contract.activity.video.VideoListContract;
 import com.wenen.literead.presenter.activity.video.VideoListPresenter;
 
@@ -66,6 +67,7 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
                 mainPager.getAdapter().notifyDataSetChanged();
             mainPager.setOffscreenPageLimit(titleList.size());
         }
+        mainPager.setPageTransformer(true, new ZoomOutPageTransformer());
     }
 
     @Override
