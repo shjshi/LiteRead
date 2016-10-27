@@ -1,5 +1,4 @@
 package com.wenen.literead.activity;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.thefinestartist.finestwebview.FinestWebView;
 import com.wenen.literead.R;
 import com.wenen.literead.elegate.IDelegate;
 import com.wenen.literead.model.github.GithubLoginModel;
@@ -61,12 +59,10 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
     public View getRootView() {
         return view;
     }
-
     @Override
     public void canTSetToolBar(boolean b) {
         this.b = b;
     }
-
     public void showSnackBar(@NonNull View view, String msg, View.OnClickListener onClickListener) {
         if (msg == null)
             msg = "数据加载失败";
@@ -77,7 +73,6 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
             Snackbar.make(view, msg, Snackbar.LENGTH_SHORT)
                     .show();
     }
-
     public void setProgressBarISvisible(View view, boolean iSvisible) {
         if (iSvisible) {
             view.setVisibility(View.VISIBLE);
@@ -85,11 +80,9 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
             view.setVisibility(View.GONE);
         }
     }
-
     public void updateGithubUserData(GithubLoginModel githubLoginModel) {
         githubUser.setGithubLoginModel(githubLoginModel);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

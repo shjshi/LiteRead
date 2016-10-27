@@ -24,8 +24,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  * Created by Wen_en on 16/9/6.
  */
 public class GitSearchActivity extends BaseActivity implements GitSearchContract.View {
-
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.indeterminate_horizontal_progress_toolbar)
@@ -82,7 +80,7 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        gitSearchPresenter=null;
+        gitSearchPresenter = null;
     }
 
     @Override
@@ -91,6 +89,7 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
         githubUser.setName(username);
         githubUser.setAutoLogin(true);
         startActivity(new Intent(context, UserDetailActivity.class));
+        overridePendingTransition(R.anim.in_from_top, R.anim.out_from_left);
         finish();
     }
 
