@@ -1,5 +1,6 @@
 package com.wenen.literead.activity.github;
 
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -52,7 +53,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     private GithubPageAdapter githubPageAdapter;
     private String[] titles = new String[]{"Followers", "Following", "Started", "Repo"};
     private String username;
-
+    private ObjectAnimator objectAnimator;
 
     private UserDetailPresenter userDetailPresenter;
 
@@ -106,6 +107,9 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
         githubUser.setName(username);
         ImageLoaderConfig.imageLoader.displayImage(githubUser.getGithubLoginModel().avatar_url, ivAvatar,
                 ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
+        objectAnimator = ObjectAnimator.ofFloat(ivAvatar, "rotationY", 0, -360);
+        objectAnimator.setDuration(2000);
+        objectAnimator.start();
         if (githubUser.getGithubLoginModel().bio != null)
             tvBio.setText("Bio:" + githubUser.getGithubLoginModel().bio);
         tvName.setText(githubUser.getGithubLoginModel().name);
@@ -183,5 +187,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     protected void onDestroy() {
         super.onDestroy();
         userDetailPresenter = null;
+        objectAnimator.cancel();
+        objectAnimator = null;
     }
 }

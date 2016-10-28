@@ -84,7 +84,6 @@ public class MainActivity extends BaseActivity
         super.onSaveInstanceState(outState);
         outState.putStringArrayList("titleList", titleList);
     }
-
     @Override
     protected void onResume() {
         canTSetToolBar(true);

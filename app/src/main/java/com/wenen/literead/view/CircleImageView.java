@@ -57,7 +57,6 @@ public class CircleImageView extends ImageView {
     private BitmapShader mBitmapShader;
     private int mBitmapWidth;
     private int mBitmapHeight;
-
     private float mDrawableRadius;
     private float mBorderRadius;
 
@@ -69,7 +68,6 @@ public class CircleImageView extends ImageView {
 
     public CircleImageView(Context context) {
         super(context);
-
         init();
     }
 
@@ -299,4 +297,6 @@ public class CircleImageView extends ImageView {
 
         mBitmapShader.setLocalMatrix(mShaderMatrix);
     }
+
+
 }
