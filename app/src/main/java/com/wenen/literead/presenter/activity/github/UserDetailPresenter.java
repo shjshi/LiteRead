@@ -27,7 +27,7 @@ public class UserDetailPresenter extends BasePresenter implements UserDetailCont
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                view.showError(e.toString(),null);
+                view.showError(e.toString(), null);
             }
 
             @Override

@@ -140,7 +140,6 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     }
 
     private class MyUrlClick implements OnURLClickListener {
-
         /**
          * 超链接点击得回调方法
          *

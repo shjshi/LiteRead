@@ -32,8 +32,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
  * Created by Wen_en on 16/9/7.
  */
 public class UserDetailActivity extends BaseActivity implements UserDetailContract.View {
-
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.indeterminate_horizontal_progress_toolbar)
@@ -123,6 +121,12 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     }
 
     @Override
+    public void refreashData(String username) {
+        this.username=username;
+        userDetailPresenter.githubSearch(username);
+    }
+
+    @Override
     public void showError(String s, View.OnClickListener listener) {
         showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
     }
@@ -134,7 +138,6 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
 
     @Override
     public void addTaskListener() {
-
     }
 
     @Override
@@ -164,13 +167,15 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
         }
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_log_out:
                 githubUser.setAutoLogin(false);
-                startActivity(new Intent(this, GitSearchActivity.class));
+                Intent intent=new Intent();
+                intent.putExtra("title",getString(R.string.github));
+                intent.setClass(this, GitSearchActivity.class);
+                startActivity(intent);
                 finish();
                 break;
         }
@@ -187,7 +192,10 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     protected void onDestroy() {
         super.onDestroy();
         userDetailPresenter = null;
-        objectAnimator.cancel();
-        objectAnimator = null;
+        if (objectAnimator != null) {
+            objectAnimator.cancel();
+            objectAnimator = null;
+        }
+
     }
 }

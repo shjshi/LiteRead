@@ -51,6 +51,7 @@
         <activity
             android:name=".activity.github.UserDetailActivity"
             android:launchMode="standard" />
+<activity android:name=".activity.SplashActivity"/>
     </application>
 
 </manifest>

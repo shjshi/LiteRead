@@ -9,6 +9,7 @@ import com.wenen.literead.model.github.GithubLoginModel;
 public interface UserDetailContract {
     interface View extends BaseContract.View {
         void showData(GithubLoginModel githubLoginModel);
+        void refreashData(String username);
     }
 
     interface Model {

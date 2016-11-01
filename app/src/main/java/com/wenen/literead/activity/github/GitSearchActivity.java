@@ -89,7 +89,7 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
         githubUser.setName(username);
         githubUser.setAutoLogin(true);
         startActivity(new Intent(context, UserDetailActivity.class));
-        overridePendingTransition(R.anim.in_from_top, R.anim.out_from_left);
+        //overridePendingTransition(R.anim.in_from_top, R.anim.out_from_left);
         finish();
     }
 

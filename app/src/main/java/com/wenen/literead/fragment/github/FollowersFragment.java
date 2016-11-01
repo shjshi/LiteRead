@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.wenen.literead.R;
+import com.wenen.literead.activity.github.UserDetailActivity;
 import com.wenen.literead.adapter.github.GitHubFollowAdapter;
 import com.wenen.literead.contract.fragment.github.FollowersContract;
 import com.wenen.literead.fragment.BaseFragment;
@@ -52,7 +53,6 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rclGithubList.setLayoutManager(linearLayoutManager);
-        gitHubFollowAdapter = new GitHubFollowAdapter(list);
+        gitHubFollowAdapter = new GitHubFollowAdapter(list,(UserDetailActivity)getActivity());
         rclGithubList.setAdapter(gitHubFollowAdapter);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
@@ -81,7 +81,7 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
     public void onResume() {
         super.onResume();
         if (!hasLoad) {
-            followersPresenter.getGitHubFollow( this);
+            followersPresenter.getGitHubFollow(this);
         }
 
     }

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +28,7 @@ public class SplashActivity extends Activity {
     @Bind(R.id.fullscreen_content_controls)
     LinearLayout fullscreenContentControls;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,11 @@ public class SplashActivity extends Activity {
         postHandler.sendEmptyMessage(0x123);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+    }
     Handler postHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

@@ -93,11 +93,12 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void onBackPressed() {
+       super.onBackPressed();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            moveTaskToBack(true);
+           //moveTaskToBack(true);
         }
     }
 

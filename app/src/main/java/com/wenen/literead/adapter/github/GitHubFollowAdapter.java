@@ -14,6 +14,7 @@ import com.thefinestartist.finestwebview.FinestWebView;
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.ClickResponseListener;
+import com.wenen.literead.contract.activity.github.UserDetailContract;
 import com.wenen.literead.model.github.GithubFollowModel;
 import com.wenen.literead.model.github.StartedModel;
 import com.wenen.literead.activity.github.UserDetailActivity;
@@ -28,9 +29,11 @@ import butterknife.ButterKnife;
  */
 public class GitHubFollowAdapter extends RecyclerView.Adapter<GitHubFollowAdapter.ViewHolder> {
     private List<Object> list;
+    private UserDetailContract.View githubView;
 
-    public GitHubFollowAdapter(List<Object> list) {
+    public GitHubFollowAdapter(List<Object> list, UserDetailContract.View view) {
         this.list = list;
+        this.githubView = view;
     }
 
     public void setList(List<Object> list) {
@@ -45,16 +48,12 @@ public class GitHubFollowAdapter extends RecyclerView.Adapter<GitHubFollowAdapte
     @Override
     public GitHubFollowAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         final Context context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.github_list_item, null, false);
+        final View view = LayoutInflater.from(context).inflate(R.layout.github_list_item, null, false);
         return new ViewHolder(view, new ClickResponseListener() {
             @Override
             public void onWholeClick(int position) {
                 if (list.get(position) instanceof GithubFollowModel) {
-                    Intent intent = new Intent();
-                    intent.setClass(context, UserDetailActivity.class);
-                    intent.putExtra("username", ((GithubFollowModel) list.get(position)).login);
-                    context.startActivity(intent);
-                    ((Activity) context).finish();
+                    githubView.refreashData(((GithubFollowModel) list.get(position)).login);
                 } else
                     new FinestWebView.Builder(context).statusBarColorRes(R.color.colorPrimary)
                             .progressBarColorRes(R.color.colorPrimary).toolbarColorRes(R.color.colorPrimary).titleColorRes(R.color.white)
@@ -78,6 +77,7 @@ public class GitHubFollowAdapter extends RecyclerView.Adapter<GitHubFollowAdapte
             holder.tvFollowerUrl.setText(((StartedModel) list.get(position)).html_url);
         }
     }
+
     @Override
     public int getItemCount() {
         if (list != null)
@@ -106,6 +106,7 @@ public class GitHubFollowAdapter extends RecyclerView.Adapter<GitHubFollowAdapte
             this.clickResponseListener = clickResponseListener;
             view.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View view) {
             clickResponseListener.onWholeClick(getAdapterPosition());
