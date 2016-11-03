@@ -196,6 +196,5 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
             objectAnimator.cancel();
             objectAnimator = null;
         }
-
     }
 }

@@ -83,7 +83,6 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
         if (!hasLoad) {
             followersPresenter.getGitHubFollow(this);
         }
-
     }
 
     @Override

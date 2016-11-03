@@ -98,7 +98,7 @@ public class MainActivity extends BaseActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-           //moveTaskToBack(true);
+           moveTaskToBack(true);
         }
     }
 
@@ -148,11 +148,9 @@ public class MainActivity extends BaseActivity
             mainPager.getAdapter().notifyDataSetChanged();
         mainPager.setOffscreenPageLimit(titleList.size());
     }
-
     @Override
     public void showError(String s, View.OnClickListener listener) {
         showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
-
     }
 
     @Override

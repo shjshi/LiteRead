@@ -1,5 +1,6 @@
 package com.wenen.literead.activity.zhihu;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -32,6 +33,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import immortalz.me.library.TransitionsHeleper;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
@@ -62,7 +64,6 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     private MyOnImageClickListener myOnImageClickListener;
     private MyUrlClick myUrlClick;
     private ImageFixCallBack imageFixCallBack;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -157,7 +158,6 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     }
 
     private class MyOnImageClickListener implements OnImageClickListener {
-
         /**
          * 图片被点击后的回调方法
          *
