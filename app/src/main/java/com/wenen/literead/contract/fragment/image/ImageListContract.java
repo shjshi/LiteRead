@@ -1,5 +1,6 @@
 package com.wenen.literead.contract.fragment.image;
 
+import com.wenen.literead.contract.activity.BaseContract;
 import com.wenen.literead.model.image.ImageListModel;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public interface ImageListContract {
-    interface View {
+    interface View extends BaseContract.View{
         void showData(ArrayList<ImageListModel.TngouEntity> list);
 
         void shoeError(String e);

@@ -14,8 +14,6 @@ import rx.Subscriber;
  */
 public class GitSearchPresenter extends BasePresenter implements GitSearchContract.Prestener {
     private GitSearchContract.View view;
-    private Subscriber subscriber;
-
     public GitSearchPresenter(GitSearchContract.View view) {
         super(view);
         this.view = view;

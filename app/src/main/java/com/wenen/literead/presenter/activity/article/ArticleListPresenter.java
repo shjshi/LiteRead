@@ -15,14 +15,11 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/14.
  */
 public class ArticleListPresenter extends BasePresenter implements ArticleListContract.Presenter {
-    private Subscriber subscriber;
     private ArticleListContract.View view;
-
     public ArticleListPresenter(ArticleListContract.View view) {
         super(view);
         this.view = view;
     }
-
     @Override
     public void getArticleList(final String typePath, final int pageCount, final int page) {
         subscriber = new HttpSubscriber<ArticleListModel>(indeterminateHorizontalProgressToolbar) {

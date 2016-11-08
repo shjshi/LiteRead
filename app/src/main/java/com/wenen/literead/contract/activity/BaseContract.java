@@ -14,13 +14,15 @@ public interface BaseContract {
         void addTaskListener();
 
         MaterialProgressBar getProgressBar();
+
+        void cancelHttp();
     }
 
     interface Model {
     }
 
     interface Presenter {
-
+        void cancelHttp();
 
     }
 }

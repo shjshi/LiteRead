@@ -7,6 +7,7 @@ import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.contract.fragment.video.VideoListContract;
 import com.wenen.literead.http.HttpClient;
 import com.wenen.literead.model.video.VideoListModel;
+import com.wenen.literead.presenter.activity.BasePresenter;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,13 +20,13 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/26.
  */
 
-public class VideoListPresenter implements VideoListContract.Presenter {
-    private Subscriber subscriber;
+public class VideoListPresenter extends BasePresenter implements VideoListContract.Presenter {
     private ArrayList<VideoListModel> listModels = new ArrayList<>();
     private String url;
     private VideoListContract.View view;
 
     public VideoListPresenter(VideoListContract.View view) {
+        super(view);
         this.view = view;
     }
 

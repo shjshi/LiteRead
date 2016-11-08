@@ -14,6 +14,7 @@ import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.github.GithubFollowModel;
 import com.wenen.literead.model.github.GithubUser;
 import com.wenen.literead.model.github.StartedModel;
+import com.wenen.literead.presenter.activity.BasePresenter;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -27,14 +28,14 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/26.
  */
 
-public class FollowersPresenter implements FollowersContract.Presenter {
-    private Subscriber subscriber;
+public class FollowersPresenter extends BasePresenter implements FollowersContract.Presenter {
     private List<Object> list = new ArrayList<>();
     private String path;
     private FollowersContract.View view;
     private int position;
 
     public FollowersPresenter(FollowersContract.View view) {
+        super(view);
         this.view = view;
     }
 

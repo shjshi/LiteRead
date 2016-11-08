@@ -76,7 +76,6 @@ public class MainActivity extends BaseActivity
                 mainPager.getAdapter().notifyDataSetChanged();
             mainPager.setOffscreenPageLimit(titleList.size());
         }
-
     }
 
     @Override
@@ -90,7 +89,6 @@ public class MainActivity extends BaseActivity
         super.onResume();
         toolbar.setTitle(getString(R.string.app_name));
     }
-
     @Override
     public void onBackPressed() {
        super.onBackPressed();
@@ -101,8 +99,6 @@ public class MainActivity extends BaseActivity
            moveTaskToBack(true);
         }
     }
-
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

@@ -13,6 +13,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
 import com.wenen.literead.api.APIUrl;
+import com.wenen.literead.fragment.BaseFragment;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Created by Wen_en on 16/8/29.
  */
-public class ImageDetailsFragment extends Fragment {
+public class ImageDetailsFragment extends BaseFragment {
     @Bind(R.id.iv_image)
     ImageView ivImage;
     private ImageLoader imageLoader = ImageLoaderConfig.imageLoader;

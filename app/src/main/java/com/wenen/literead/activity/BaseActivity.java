@@ -10,21 +10,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wenen.literead.R;
+import com.wenen.literead.contract.activity.BaseContract;
 import com.wenen.literead.elegate.IDelegate;
 import com.wenen.literead.model.github.GithubLoginModel;
 import com.wenen.literead.model.github.GithubUser;
+import com.wenen.literead.presenter.activity.BasePresenter;
+
+import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
  * Created by Wen_en on 16/8/16.
  */
-public class BaseActivity extends AppCompatActivity implements IDelegate {
+public class BaseActivity extends AppCompatActivity implements IDelegate,BaseContract.View{
     public static GithubUser githubUser;
     public View view;
     private Toolbar toolbar;
     public IDelegate iDelegate;
     private boolean b;
     public Context context;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,5 +89,32 @@ public class BaseActivity extends AppCompatActivity implements IDelegate {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        cancelHttp();
     }
+
+    @Override
+    public void showError(String s, View.OnClickListener listener) {
+
+    }
+
+    @Override
+    public void getData() {
+
+    }
+
+    @Override
+    public void addTaskListener() {
+
+    }
+
+    @Override
+    public MaterialProgressBar getProgressBar() {
+        return null;
+    }
+
+    @Override
+    public void cancelHttp() {
+        new BasePresenter(this).cancelHttp();
+    }
+
 }

@@ -19,7 +19,6 @@ import rx.Subscriber;
  */
 public class ThumblePresenter extends BasePresenter implements ThumbleContract.Presenter {
     private ThumbleContract.View view;
-    private Subscriber subscribers;
     ArrayList<ImageModel.ListEntity> listEntities = new ArrayList<>();
 
     public ThumblePresenter(ThumbleContract.View view) {
@@ -29,7 +28,7 @@ public class ThumblePresenter extends BasePresenter implements ThumbleContract.P
 
     @Override
     public void getImage(final int id) {
-        subscribers = new HttpSubscriber<ImageModel>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<ImageModel>(indeterminateHorizontalProgressToolbar) {
             @Override
             public void onCompleted() {
                 super.onCompleted();
@@ -58,6 +57,6 @@ public class ThumblePresenter extends BasePresenter implements ThumbleContract.P
                 }
             }
         };
-        HttpClient.getSingle(APIUrl.TIANGOU_IMG_URL).getImg(id, subscribers);
+        HttpClient.getSingle(APIUrl.TIANGOU_IMG_URL).getImg(id, subscriber);
     }
 }

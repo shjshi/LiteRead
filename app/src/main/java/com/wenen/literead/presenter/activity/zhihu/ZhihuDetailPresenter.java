@@ -18,7 +18,6 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/14.
  */
 public class ZhihuDetailPresenter extends BasePresenter implements ZhihuDetailContract.Presenter {
-    private Subscriber subscriber;
     private Document document;
     private ZhihuDetailContract.View view;
 

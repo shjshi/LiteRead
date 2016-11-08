@@ -18,7 +18,6 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/14.
  */
 public class ZhihuListPresenter extends BasePresenter implements ZhihuListContract.Prestener {
-    private Subscriber subscriber;
     private List<ZhihuListModel.StoriesEntity> list = new ArrayList<>();
     ZhihuListContract.View view;
 

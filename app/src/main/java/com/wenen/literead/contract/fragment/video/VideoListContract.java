@@ -2,6 +2,7 @@ package com.wenen.literead.contract.fragment.video;
 
 import android.support.v4.app.Fragment;
 
+import com.wenen.literead.contract.activity.BaseContract;
 import com.wenen.literead.model.video.VideoListModel;
 
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  */
 
 public interface VideoListContract {
-    interface View {
+    interface View extends BaseContract.View {
         void showData(ArrayList<VideoListModel> list);
 
         void showError(String e);

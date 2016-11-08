@@ -2,6 +2,8 @@ package com.wenen.literead.contract.fragment.github;
 
 import android.support.v4.app.Fragment;
 
+import com.wenen.literead.contract.activity.BaseContract;
+
 import java.util.List;
 
 /**
@@ -9,7 +11,7 @@ import java.util.List;
  */
 
 public interface FollowersContract {
-    interface View {
+    interface View extends BaseContract.View{
         void showData(List<Object> list);
 
         void showError(String e);

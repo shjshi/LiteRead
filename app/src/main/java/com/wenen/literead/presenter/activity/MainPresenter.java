@@ -20,7 +20,6 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/14.
  */
 public class MainPresenter extends BasePresenter implements MainContract.Presenter {
-    private Subscriber subscriber;
     private ArrayList<String> titleList = new ArrayList<>();
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private MainContract.View view;

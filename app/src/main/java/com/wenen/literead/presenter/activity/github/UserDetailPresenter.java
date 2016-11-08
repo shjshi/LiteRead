@@ -13,7 +13,6 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/14.
  */
 public class UserDetailPresenter extends BasePresenter implements UserDetailContract.Presenter {
-    private Subscriber subscriber;
     private UserDetailContract.View view;
 
     public UserDetailPresenter(UserDetailContract.View view) {

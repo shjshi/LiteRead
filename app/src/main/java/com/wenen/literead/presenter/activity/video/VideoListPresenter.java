@@ -24,7 +24,6 @@ import rx.Subscriber;
  */
 public class VideoListPresenter extends BasePresenter implements VideoListContract.Presenter {
     private VideoListContract.View view;
-    private Subscriber subscriber;
     private ArrayList<String> titleList = new ArrayList<>();
     private ArrayList<Fragment> fragments = new ArrayList<>();
 

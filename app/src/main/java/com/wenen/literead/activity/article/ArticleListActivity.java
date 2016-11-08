@@ -109,7 +109,6 @@ public class ArticleListActivity extends BaseActivity implements SwipeRefreshLay
         articleListPresenter = null;
         recyclerViewOnScrollListener = null;
     }
-
     @Override
     public void onRefresh() {
         loadMore = false;

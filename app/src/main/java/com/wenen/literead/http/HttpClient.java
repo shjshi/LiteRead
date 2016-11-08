@@ -22,6 +22,7 @@ import java.io.File;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
+import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -77,6 +78,7 @@ public class HttpClient {
         imgTypeList.getImageTypeList(APIUrl.apikey).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
+        
     }
 
     /**
@@ -135,7 +137,6 @@ public class HttpClient {
         video.getVideo(roomid, aid, cdn, client_sys, time, auth).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
-
     }
 
     public void getArticleList(String TypePath, int PageCount, int page, Subscriber<Object> subscriber) {

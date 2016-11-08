@@ -33,7 +33,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import immortalz.me.library.TransitionsHeleper;
 import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
