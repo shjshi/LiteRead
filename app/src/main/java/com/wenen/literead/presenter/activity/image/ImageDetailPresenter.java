@@ -46,6 +46,7 @@ public class ImageDetailPresenter extends BasePresenter implements ImageDetailCo
                 return downLoad(params[0]);
             } catch (Exception e) {
                 e.printStackTrace();
+                view.showError("图片保存失败：" + e.toString(), null);
                 return "图片保存失败：" + e.toString();
             }
         }
@@ -80,6 +81,7 @@ public class ImageDetailPresenter extends BasePresenter implements ImageDetailCo
             bitmap.recycle();
         }
         bitmap = null;
+        view.showMsg("图片已保存至：" + file.getAbsolutePath());
         return "图片已保存至：" + file.getAbsolutePath();
     }
 
@@ -88,7 +90,6 @@ public class ImageDetailPresenter extends BasePresenter implements ImageDetailCo
         downLoadAsyncTask = new DownLoadAsyncTask();
         downLoadAsyncTask.execute(url, null, null);
     }
-
     public File createPictureDir() {
         File pictureDir = new File(PICTURE_DIR);
         if (!pictureDir.exists()) {

@@ -25,8 +25,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import rx.Subscriber;
 
 public class VideoListActivity extends BaseActivity implements VideoListContract.View {
-
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.main_pager_tabs)
@@ -94,7 +92,6 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
         public Fragment getItem(int position) {
             Log.e("fragments", position + fragments.get(position).getArguments().getString("url"));
             return fragments.get(position);
-
         }
 
         @Override

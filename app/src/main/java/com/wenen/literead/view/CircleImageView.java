@@ -88,7 +88,6 @@ public class CircleImageView extends ImageView {
     private void init() {
         super.setScaleType(SCALE_TYPE);
         mReady = true;
-
         if (mSetupPending) {
             setup();
             mSetupPending = false;
@@ -106,7 +105,6 @@ public class CircleImageView extends ImageView {
             throw new IllegalArgumentException(String.format("ScaleType %s not supported.", scaleType));
         }
     }
-
     @Override
     public void setAdjustViewBounds(boolean adjustViewBounds) {
         if (adjustViewBounds) {
@@ -119,7 +117,6 @@ public class CircleImageView extends ImageView {
         if (getDrawable() == null) {
             return;
         }
-
         canvas.drawCircle(getWidth() / 2, getHeight() / 2, mDrawableRadius, mBitmapPaint);
         if (mBorderWidth != 0) {
             canvas.drawCircle(getWidth() / 2, getHeight() / 2, mBorderRadius, mBorderPaint);
@@ -140,7 +137,6 @@ public class CircleImageView extends ImageView {
         if (borderColor == mBorderColor) {
             return;
         }
-
         mBorderColor = borderColor;
         mBorderPaint.setColor(mBorderColor);
         invalidate();
@@ -208,7 +204,6 @@ public class CircleImageView extends ImageView {
         if (cf == mColorFilter) {
             return;
         }
-
         mColorFilter = cf;
         mBitmapPaint.setColorFilter(mColorFilter);
         invalidate();

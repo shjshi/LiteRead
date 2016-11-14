@@ -61,7 +61,6 @@ public class ImageDetailsFragment extends BaseFragment {
             }
         return rootView;
     }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();

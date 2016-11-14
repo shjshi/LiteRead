@@ -72,6 +72,12 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
         });
     }
 
+    @Override
+    public void showMsg(String msg) {
+        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
+        showSnackBar(indeterminateHorizontalProgressToolbar, msg, null);
+    }
+
     private class ViewPagerChangListener implements ViewPager.OnPageChangeListener {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -88,36 +94,30 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
 
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         toolbar.setTitle(title);
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
         imageDetailPresenter = null;
         viewPagerChangListener = null;
     }
-
     @Override
     public void showError(String s, View.OnClickListener listener) {
         setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
         showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
     }
-
     @Override
     public void getData() {
         setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
         imageDetailPresenter.downLoadFile(APIUrl.imgUrl + listl.get(position));
     }
-
     @Override
     public void addTaskListener() {
     }
-
     @Override
     public MaterialProgressBar getProgressBar() {
         return indeterminateHorizontalProgressToolbar;

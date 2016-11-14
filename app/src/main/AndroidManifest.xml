@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-sdk tools:overrideLibrary="immortalz.me.library"/>
+
+    <uses-sdk tools:overrideLibrary="immortalz.me.library" />
     <application
         android:name=".LiteReadApplication"
         android:allowBackup="true"
@@ -18,13 +19,16 @@
 
         <activity
             android:name=".activity.image.ThumbleActivity"
-            android:label="@string/title_activity_thumble" />
+            android:label="@string/title_activity_thumble"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.image.ImageDetailActivity"
-            android:label="@string/title_activity_image_detail" />
+            android:label="@string/title_activity_image_detail"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.zhihu.ZhihuListActivity"
-            android:label="@string/zhihu_daily" />
+            android:label="@string/zhihu_daily"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -36,23 +40,34 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.video.VideoListActivity" />
-        <activity android:name=".activity.article.ArticleListActivity" />
+        <activity
+            android:name=".activity.video.VideoListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.article.ArticleListActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.thefinestartist.finestwebview.FinestWebViewActivity"
             android:screenOrientation="portrait"
             android:theme="@style/FinestWebViewTheme.Light" />
-        <activity android:name=".activity.video.VideoPlayerActivity" />
+        <activity
+            android:name=".activity.video.VideoPlayerActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.zhihu.ZhihuDetailActivity"
-            android:label="@string/zhihu_daily" />
+            android:label="@string/zhihu_daily"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.github.GitSearchActivity"
-            android:label="GitHub" />
+            android:label="GitHub"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activity.github.UserDetailActivity"
-            android:launchMode="standard" />
-<activity android:name=".activity.SplashActivity"/>
+            android:launchMode="standard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

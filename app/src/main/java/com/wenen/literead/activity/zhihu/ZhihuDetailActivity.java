@@ -126,10 +126,9 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
             tvZhihuDetailTitle.setVisibility(View.GONE);
             content = document.outerHtml();
         }
-        RichText.from(content).autoFix(false).fix(imageFixCallBack).async(true).clickable(true)
+        RichText.from(content).autoFix(false).fix(imageFixCallBack).clickable(true)
                 .imageClick(myOnImageClickListener).urlClick(myUrlClick).imageLongClick(null).into(tvZhihuDetail);
     }
-
     private class ImageFixCallBack implements ImageFixCallback {
         @Override
         public void onFix(ImageHolder holder, boolean imageReady) {

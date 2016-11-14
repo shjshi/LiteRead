@@ -77,7 +77,6 @@ public class MainActivity extends BaseActivity
             mainPager.setOffscreenPageLimit(titleList.size());
         }
     }
-
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -148,7 +147,6 @@ public class MainActivity extends BaseActivity
     public void showError(String s, View.OnClickListener listener) {
         showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
     }
-
     @Override
     public void getData() {
         mainPresenter.getIMGTypeList();
@@ -185,7 +183,6 @@ public class MainActivity extends BaseActivity
             return titleList.get(position);
         }
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();

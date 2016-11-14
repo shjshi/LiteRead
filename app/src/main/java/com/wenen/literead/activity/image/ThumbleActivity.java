@@ -34,8 +34,6 @@ public class ThumbleActivity extends BaseActivity implements ThumbleContract.Vie
     RecyclerView rclImageList;
     @Bind(R.id.nsv_parent)
     NestedScrollView nsvParent;
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
     private int id;
     private String title;
     private ArrayList<ImageModel.ListEntity> listEntities = new ArrayList<>();
@@ -88,7 +86,6 @@ public class ThumbleActivity extends BaseActivity implements ThumbleContract.Vie
             if (includeEdge) {
                 outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
                 outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
-
                 if (position < spanCount) { // top edge
                     outRect.top = spacing;
                 }

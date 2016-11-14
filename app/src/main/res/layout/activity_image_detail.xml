@@ -37,8 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/activity_horizontal_margin"
-        android:background="@color/colorPrimaryDark"
-        android:backgroundTint="@color/colorPrimaryDark"
         android:src="@mipmap/ic_action_download" />
 
 

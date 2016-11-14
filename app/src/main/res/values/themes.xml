@@ -2,6 +2,7 @@
 <resources>
     <style name="Theme.LiteReade.Light.NoActionBar" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionModeOverlay">true</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="android:textColorPrimary">@android:color/white</item>

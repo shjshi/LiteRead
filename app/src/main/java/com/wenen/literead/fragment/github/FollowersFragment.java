@@ -81,6 +81,8 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
     public void onResume() {
         super.onResume();
         if (!hasLoad) {
+            if (followersPresenter==null)
+                followersPresenter=new FollowersPresenter(this);
             followersPresenter.getGitHubFollow(this);
         }
     }

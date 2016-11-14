@@ -7,7 +7,6 @@ import com.wenen.literead.http.HttpSubscriber;
 import com.wenen.literead.model.github.GithubLoginModel;
 import com.wenen.literead.presenter.activity.BasePresenter;
 
-import rx.Subscriber;
 
 /**
  * Created by Wen_en on 16/9/14.
@@ -22,6 +21,10 @@ public class UserDetailPresenter extends BasePresenter implements UserDetailCont
 
     @Override
     public void githubSearch(String s) {
+        if(subscriber!=null){
+            subscriber.unsubscribe();
+            subscriber=null;
+        }
         subscriber = new HttpSubscriber<GithubLoginModel>(indeterminateHorizontalProgressToolbar) {
             @Override
             public void onError(Throwable e) {

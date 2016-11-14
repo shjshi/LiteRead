@@ -7,6 +7,7 @@ import com.wenen.literead.contract.activity.BaseContract;
  */
 public interface ImageDetailContract {
     interface View extends BaseContract.View {
+        void showMsg(String msg);
     }
 
     interface Model {

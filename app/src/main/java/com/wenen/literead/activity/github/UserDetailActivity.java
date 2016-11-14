@@ -52,7 +52,6 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     private String[] titles = new String[]{"Followers", "Following", "Started", "Repo"};
     private String username;
     private ObjectAnimator objectAnimator;
-
     private UserDetailPresenter userDetailPresenter;
 
     @Override
@@ -75,7 +74,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
                         ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
                 if (githubUser.getGithubLoginModel().bio != null)
                     tvBio.setText("Bio:" + githubUser.getGithubLoginModel().bio);
-                tvName.setText(githubUser.getGithubLoginModel().name);
+                   tvName.setText(githubUser.getGithubLoginModel().name);
                 if (githubUser.getGithubLoginModel().blog != null)
                     tvBlog.setText("Blog:" + githubUser.getGithubLoginModel().blog);
             }
@@ -105,9 +104,9 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
         githubUser.setName(username);
         ImageLoaderConfig.imageLoader.displayImage(githubUser.getGithubLoginModel().avatar_url, ivAvatar,
                 ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
-        objectAnimator = ObjectAnimator.ofFloat(ivAvatar, "rotationY", 0, -360);
-        objectAnimator.setDuration(2000);
-        objectAnimator.start();
+           objectAnimator = ObjectAnimator.ofFloat(ivAvatar, "rotationY", 0, -360);
+           objectAnimator.setDuration(2000);
+           objectAnimator.start();
         if (githubUser.getGithubLoginModel().bio != null)
             tvBio.setText("Bio:" + githubUser.getGithubLoginModel().bio);
         tvName.setText(githubUser.getGithubLoginModel().name);
@@ -123,6 +122,9 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     @Override
     public void refreashData(String username) {
         this.username=username;
+        if (objectAnimator!=null)
+            objectAnimator.cancel();
+        objectAnimator=null;
         userDetailPresenter.githubSearch(username);
     }
 

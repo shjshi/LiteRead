@@ -88,8 +88,9 @@ public class BaseActivity extends AppCompatActivity implements IDelegate,BaseCon
     }
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         cancelHttp();
+        super.onDestroy();
+        context=null;
     }
 
     @Override
