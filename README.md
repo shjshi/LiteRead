@@ -26,6 +26,8 @@
 
 ##### 3.认真学习并且实践了多种设计模式
 
+##### 4.对照[Android Developer官网](https://developer.android.com/)以及其它众多优秀的Blog上的指导，重新认识了Android的众多基础知识。
+
 ***
 
 ### 图片数据来源于[天狗开放阅图](http://apistore.baidu.com/apiworks/servicedetail/992.html)
