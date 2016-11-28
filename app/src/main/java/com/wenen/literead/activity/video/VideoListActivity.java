@@ -40,10 +40,7 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
     private MainPageViewAdapter mainPageViewAdapter;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private String title;
-
-
     private VideoListPresenter videoListPresenter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,8 +77,6 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
         title = getIntent().getStringExtra("title");
         toolbar.setTitle(title);
     }
-
-
     private class MainPageViewAdapter extends FragmentStatePagerAdapter {
 
         public MainPageViewAdapter(FragmentManager fm) {
@@ -103,7 +98,6 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
         public CharSequence getPageTitle(int position) {
             return titleList.get(position);
         }
-
     }
 
     @Override
@@ -111,8 +105,6 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
         super.onDestroy();
         videoListPresenter = null;
     }
-
-
     @Override
     public void showData(ArrayList<String> titleList, ArrayList<Fragment> fragments) {
         this.titleList = titleList;

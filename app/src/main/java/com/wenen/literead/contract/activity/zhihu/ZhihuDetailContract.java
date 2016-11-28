@@ -23,6 +23,5 @@ public interface ZhihuDetailContract {
 
     interface Presenter {
         void getZhihuDetail(int id);
-
     }
 }

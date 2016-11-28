@@ -39,4 +39,5 @@ dependencies {
     compile 'com.tencent.bugly:nativecrashreport:2.2.0'
     compile 'com.thefinestartist:finestwebview:1.2.7'
     compile 'org.jsoup:jsoup:1.9.2'
+    compile 'com.squareup.okhttp3:okhttp:3.4.2'
 }

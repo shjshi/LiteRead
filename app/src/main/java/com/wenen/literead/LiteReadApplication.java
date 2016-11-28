@@ -27,7 +27,6 @@ public class LiteReadApplication extends Application {
                 .build();
         ImageLoader.getInstance().init(config);
     }
-
     @Override
     public void onCreate() {
         super.onCreate();

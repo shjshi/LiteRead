@@ -4,11 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.wenen.literead.R;
 import com.wenen.literead.contract.activity.BaseContract;
 import com.wenen.literead.presenter.activity.BasePresenter;
 

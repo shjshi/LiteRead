@@ -106,7 +106,6 @@ public class FollowersFragment extends BaseFragment implements SwipeRefreshLayou
         followersPresenter = new FollowersPresenter(this);
         refreshIf(shouldRefreshOnVisibilityChange(isVisibleToUser));
     }
-
     private void refreshIf(boolean needRefresh) {
         if (needRefresh) {
             doRefresh();

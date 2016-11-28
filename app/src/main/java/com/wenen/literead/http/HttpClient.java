@@ -48,10 +48,9 @@ public class HttpClient {
         cacheSize = 30 * 1024 * 1024; // 30 MiB
         cache = new Cache(httpCacheDirectory, cacheSize);
         client = new OkHttpClient.Builder()
-                .addInterceptor(new LoggerInterceptor(TAG)).addNetworkInterceptor(new HttpInterceptor(TAG))
+                .addInterceptor(new HttpLoggingInterceptor())
                 .cache(cache).build();
     }
-
     private static class SingletonHolder {
         private static HttpClient INSTANCE = new HttpClient();
     }
@@ -78,7 +77,6 @@ public class HttpClient {
         imgTypeList.getImageTypeList(APIUrl.apikey).subscribeOn(Schedulers.io())
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
-        
     }
 
     /**
