@@ -13,4 +13,5 @@
     <dimen name="tiny_details_text_size">12sp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="card_view_margin">0dp</dimen>
 </resources>

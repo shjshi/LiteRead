@@ -3,29 +3,32 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_list_card_view"
-    style="@style/cardStyle"
+    android:layout_margin="@dimen/card_view_margin"
     card_view:cardCornerRadius="4dp"
-    card_view:cardElevation="4dp">
-    <RelativeLayout
-        style="@style/cardRelativeLayoutStyle"
-        tools:ignore="UselessParent">
+    card_view:cardElevation="4dp"
+    style="@style/cardStyle"
+    >
+  <RelativeLayout
+      tools:ignore="UselessParent"
+      style="@style/cardRelativeLayoutStyle"
+      >
 
-        <ImageView
-            android:id="@+id/iv_zhihu_img"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_alignParentLeft="true"
-            android:scaleType="centerCrop" />
+    <ImageView
+        android:id="@+id/iv_zhihu_img"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_alignParentLeft="true"
+        android:scaleType="centerCrop"
+        />
 
-        <TextView
-            android:id="@+id/tv_zhihu_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@+id/iv_zhihu_img"
-            android:textSize="@dimen/title_text_size"
-            android:textStyle="bold" />
-
-
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/tv_zhihu_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@+id/iv_zhihu_img"
+        android:textSize="@dimen/title_text_size"
+        android:textStyle="bold"
+        />
+  </RelativeLayout>
 </android.support.v7.widget.CardView>
