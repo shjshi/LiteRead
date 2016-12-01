@@ -29,6 +29,6 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="wmj141519@gmail.com" />
+        android:text="1187113652@qq.com" />
 
 </LinearLayout>
