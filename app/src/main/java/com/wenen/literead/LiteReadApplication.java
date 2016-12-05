@@ -8,6 +8,8 @@ import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.tencent.bugly.Bugly;
 import com.wenen.literead.api.APIUrl;
 
@@ -17,7 +19,12 @@ import com.wenen.literead.api.APIUrl;
 public class LiteReadApplication extends Application {
     public static Context mContext;
     private SharedPreferences sp;
-
+     public static RefWatcher getRefWatcher(Context context) {
+            LiteReadApplication application = (LiteReadApplication) context.getApplicationContext();
+            return application.refWatcher;
+          }
+     
+          private RefWatcher refWatcher;
     public static void initImageLoader(Context context) {
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
                 .denyCacheImageMultipleSizesInMemory()
@@ -34,5 +41,9 @@ public class LiteReadApplication extends Application {
         initImageLoader(getApplicationContext());
         Bugly.init(getApplicationContext(), APIUrl.BUGLY_APPID, false);
         sp = getSharedPreferences("appInfo", Context.MODE_PRIVATE);
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return;
+        }
+        refWatcher=LeakCanary.install(this);
     }
 }

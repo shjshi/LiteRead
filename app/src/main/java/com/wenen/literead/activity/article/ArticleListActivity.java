@@ -61,7 +61,7 @@ public class ArticleListActivity extends BaseActivity
     linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
     recyclerViewOnScrollListener = new RecyclerViewOnScrollListener(linearLayoutManager);
     rclArticleList.setLayoutManager(linearLayoutManager);
-    adapter = new ArticleListAdapter(list);
+    adapter = new ArticleListAdapter(list,getApplicationContext());
     headerViewRecyclerAdapter=new HeaderViewRecyclerAdapter(adapter);
     createLoadMoreView();
     rclArticleList.setAdapter(headerViewRecyclerAdapter);
@@ -99,6 +99,7 @@ public class ArticleListActivity extends BaseActivity
   @Override protected void onDestroy() {
     super.onDestroy();
     ButterKnife.unbind(this);
+    adapter.releaseContext();
     articleListPresenter = null;
     recyclerViewOnScrollListener = null;
   }
@@ -114,7 +115,6 @@ public class ArticleListActivity extends BaseActivity
     }
     adapter.updateModel(list);
   }
-
   @Override public void showError(String s, View.OnClickListener listener) {
     if (swipeRefreshLayout != null) {
       swipeRefreshLayout.setRefreshing(false);

@@ -22,9 +22,10 @@ import butterknife.ButterKnife;
  */
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ViewHolder> {
   private ArrayList<ArticleListModel.ResultsEntity> list;
-
-  public ArticleListAdapter(ArrayList<ArticleListModel.ResultsEntity> list) {
+private Context appLicationcontext;
+  public ArticleListAdapter(ArrayList<ArticleListModel.ResultsEntity> list,Context context) {
     this.list = list;
+    this.appLicationcontext=context;
     setHasStableIds(true);
   }
 
@@ -38,11 +39,11 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
 
   @Override
   public ArticleListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-    final Context context = parent.getContext();
+     Context context=parent.getContext();
       View view = LayoutInflater.from(context).inflate(R.layout.article_list_item, null, false);
       return new ViewHolder(view, new ClickResponseListener() {
         @Override public void onWholeClick(int position) {
-          new FinestWebView.Builder(context).statusBarColorRes(R.color.colorPrimary)
+           new FinestWebView.Builder(appLicationcontext).statusBarColorRes(R.color.colorPrimary)
               .progressBarColorRes(R.color.colorPrimary)
               .toolbarColorRes(R.color.colorPrimary)
               .titleColorRes(R.color.white)
@@ -89,5 +90,8 @@ public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.
     @Override public void onClick(View view) {
       clickResponseListener.onWholeClick(getAdapterPosition());
     }
+  }
+  public void releaseContext(){
+    this.appLicationcontext=null;
   }
 }

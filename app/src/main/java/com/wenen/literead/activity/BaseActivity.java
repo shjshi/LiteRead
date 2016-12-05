@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -19,13 +18,11 @@ import com.wenen.literead.model.github.GithubLoginModel;
 import com.wenen.literead.model.github.GithubUser;
 import com.wenen.literead.presenter.activity.BasePresenter;
 
-
 /**
  * Created by Wen_en on 16/8/16.
  */
 public class BaseActivity extends AppCompatActivity implements IDelegate, BaseContract.View {
   public static GithubUser githubUser;
-  private AlertDialog alertDialog;
   public View view;
   private Toolbar toolbar;
   public IDelegate iDelegate;
@@ -79,12 +76,18 @@ public class BaseActivity extends AppCompatActivity implements IDelegate, BaseCo
 
   public void creatProgressDialog() {
     if (progressDialog == null) {
-      progressDialog=ProgressDialog.show(context,"提示","正在加载中...");
+      progressDialog = ProgressDialog.show(context, "提示", "正在加载中...");
     }
   }
+
+  public void creatProgressDialog(@NonNull String msg) {
+    if (progressDialog == null) {
+      progressDialog = ProgressDialog.show(context, "提示", msg);
+    }
+  }
+
   public void cancelProgressDialog() {
     if (progressDialog != null) progressDialog.dismiss();
-    if (alertDialog!=null)alertDialog.dismiss();
   }
 
   public void updateGithubUserData(GithubLoginModel githubLoginModel) {
@@ -95,6 +98,8 @@ public class BaseActivity extends AppCompatActivity implements IDelegate, BaseCo
     cancelHttp();
     super.onDestroy();
     context = null;
+    if (progressDialog != null) progressDialog.dismiss();
+    progressDialog = null;
   }
 
   @Override public void showError(String s, View.OnClickListener listener) {
