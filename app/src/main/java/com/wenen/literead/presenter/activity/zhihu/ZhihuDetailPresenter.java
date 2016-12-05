@@ -33,7 +33,7 @@ public class ZhihuDetailPresenter extends BasePresenter implements ZhihuDetailCo
 
     @Override
     public void getZhihuDetail(final int id) {
-        subscriber = new HttpSubscriber<ZhihuDetailModel>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<ZhihuDetailModel>(context) {
             @Override
             public void onNext(ZhihuDetailModel zhihuDetailModel) {
                 super.onNext(zhihuDetailModel);

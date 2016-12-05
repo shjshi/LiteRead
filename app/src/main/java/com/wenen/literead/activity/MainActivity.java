@@ -28,7 +28,6 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, MainContract.View {
@@ -42,8 +41,6 @@ public class MainActivity extends BaseActivity
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> titleList = new ArrayList<>();
     private MainPageViewAdapter mainPageViewAdapter;
@@ -145,7 +142,7 @@ public class MainActivity extends BaseActivity
     }
     @Override
     public void showError(String s, View.OnClickListener listener) {
-        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+        showSnackBar(toolbar, s, listener);
     }
     @Override
     public void getData() {
@@ -157,10 +154,6 @@ public class MainActivity extends BaseActivity
         mainPresenter.addTaskListener(this);
     }
 
-    @Override
-    public MaterialProgressBar getProgressBar() {
-        return indeterminateHorizontalProgressToolbar;
-    }
 
     public class MainPageViewAdapter extends FragmentStatePagerAdapter {
 

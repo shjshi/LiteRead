@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.wenen.literead.R;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class ImageDetailActivity extends BaseActivity implements ImageDetailContract.View {
     @Bind(R.id.toolbar)
@@ -30,8 +27,6 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     ViewPager container;
     @Bind(R.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     private ImageDetailsAdapter mSectionsPagerAdapter;
     private ArrayList<String> listl;
     private String title;
@@ -74,8 +69,8 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
 
     @Override
     public void showMsg(String msg) {
-        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
-        showSnackBar(indeterminateHorizontalProgressToolbar, msg, null);
+        cancelProgressDialog();
+        showSnackBar(toolbar, msg, null);
     }
 
     private class ViewPagerChangListener implements ViewPager.OnPageChangeListener {
@@ -107,19 +102,15 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     }
     @Override
     public void showError(String s, View.OnClickListener listener) {
-        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, false);
-        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+        cancelProgressDialog();
+        showSnackBar(toolbar, s, listener);
     }
     @Override
     public void getData() {
-        setProgressBarISvisible(indeterminateHorizontalProgressToolbar, true);
+        creatProgressDialog();
         imageDetailPresenter.downLoadFile(APIUrl.imgUrl + listl.get(position));
     }
     @Override
     public void addTaskListener() {
-    }
-    @Override
-    public MaterialProgressBar getProgressBar() {
-        return indeterminateHorizontalProgressToolbar;
     }
 }

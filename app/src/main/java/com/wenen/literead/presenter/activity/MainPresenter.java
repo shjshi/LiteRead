@@ -36,7 +36,7 @@ public class MainPresenter extends BasePresenter implements MainContract.Present
 
     @Override
     public void getIMGTypeList() {
-        subscriber = new HttpSubscriber<ImageTypeListModel>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<ImageTypeListModel>(context) {
             @Override
             public void onCompleted() {
                 super.onCompleted();

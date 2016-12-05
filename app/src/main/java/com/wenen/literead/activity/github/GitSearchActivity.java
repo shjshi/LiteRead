@@ -18,7 +18,6 @@ import com.wenen.literead.presenter.activity.github.GitSearchPresenter;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
  * Created by Wen_en on 16/9/6.
@@ -26,8 +25,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 public class GitSearchActivity extends BaseActivity implements GitSearchContract.View {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     @Bind(R.id.et_username)
     AppCompatEditText etUsername;
     @Bind(R.id.btn_login)
@@ -39,7 +36,7 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
     public void gitLogin() {
         username = etUsername.getText().toString();
         if ("".equals(username))
-            showSnackBar(indeterminateHorizontalProgressToolbar, "账户名为空!", null);
+            showSnackBar(toolbar, "账户名为空!", null);
         else
             getData();
     }
@@ -95,7 +92,7 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
 
     @Override
     public void showError(String s, View.OnClickListener listener) {
-        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+        showSnackBar(toolbar, s, listener);
     }
 
     @Override
@@ -108,8 +105,4 @@ public class GitSearchActivity extends BaseActivity implements GitSearchContract
 
     }
 
-    @Override
-    public MaterialProgressBar getProgressBar() {
-        return indeterminateHorizontalProgressToolbar;
-    }
 }

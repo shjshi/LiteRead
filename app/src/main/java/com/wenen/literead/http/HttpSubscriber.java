@@ -1,9 +1,12 @@
 package com.wenen.literead.http;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 
-
+import com.wenen.literead.R;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 
@@ -14,24 +17,27 @@ import rx.Subscriber;
  * Created by Wen_en on 16/9/2.
  */
 public class HttpSubscriber<T> extends Subscriber<T> {
+    private Context context;
+    private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
     private View view;
     private static final String TAG = "HttpSubscriber";
 
     public HttpSubscriber() {
     }
-    public HttpSubscriber(View view) {
-        this.view = view;
-        setProgressBarISvisible(view, true);
+    public HttpSubscriber(Context context) {
+        this.context = context;
+        creatProgressDialog();
     }
 
     @Override
     public void onCompleted() {
-        setProgressBarISvisible(view, false);
+        cancelProgressDialog();
     }
 
     @Override
     public void onError(Throwable e) {
-        setProgressBarISvisible(view, false);
+        cancelProgressDialog();
         if (e instanceof SocketTimeoutException) {
             Log.e(TAG, e.toString());
         } else if (e instanceof HttpException) {
@@ -54,12 +60,14 @@ public class HttpSubscriber<T> extends Subscriber<T> {
     public void onNext(T t) {
     }
 
-    public void setProgressBarISvisible(View view, boolean iSvisible) {
-        if (view != null)
-            if (iSvisible) {
-                view.setVisibility(View.VISIBLE);
-            } else {
-                view.setVisibility(View.GONE);
-            }
+    public void creatProgressDialog() {
+        if (progressDialog == null) {
+          progressDialog=ProgressDialog.show(context,"提示","正在加载中...");
+        }
+    }
+
+    public void cancelProgressDialog() {
+        if (progressDialog != null) progressDialog.dismiss();
+        if (alertDialog!=null)alertDialog.dismiss();
     }
 }

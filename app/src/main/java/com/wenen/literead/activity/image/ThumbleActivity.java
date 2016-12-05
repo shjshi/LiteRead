@@ -2,7 +2,6 @@ package com.wenen.literead.activity.image;
 
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
@@ -23,13 +22,10 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 public class ThumbleActivity extends BaseActivity implements ThumbleContract.View {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     @Bind(R.id.rcl_image_list)
     RecyclerView rclImageList;
     @Bind(R.id.nsv_parent)
@@ -127,7 +123,7 @@ public class ThumbleActivity extends BaseActivity implements ThumbleContract.Vie
 
     @Override
     public void showError(String s, View.OnClickListener listener) {
-        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+        showSnackBar(toolbar, s, listener);
     }
 
     @Override
@@ -140,8 +136,4 @@ public class ThumbleActivity extends BaseActivity implements ThumbleContract.Vie
 
     }
 
-    @Override
-    public MaterialProgressBar getProgressBar() {
-        return indeterminateHorizontalProgressToolbar;
-    }
 }

@@ -3,7 +3,6 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/news_list_card_view"
-    android:layout_margin="@dimen/card_view_margin"
     card_view:cardCornerRadius="4dp"
     card_view:cardElevation="4dp"
     style="@style/cardStyle"

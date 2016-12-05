@@ -18,18 +18,18 @@
             android:src="@mipmap/ic_action_bug"
             android:visibility="gone" />
 
-        <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        <ProgressBar
             android:id="@+id/progressBar"
-            style="@style/Widget.MaterialProgressBar.ProgressBar.Small"
+            style="?android:attr/progressBarStyleSmallInverse"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app:mpb_progressStyle="circular" />
+             />
 
         <TextView
             android:id="@+id/tv_msg"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="正在加载更多..." />
+            android:text="正在加载..." />
     </LinearLayout>
 </FrameLayout>

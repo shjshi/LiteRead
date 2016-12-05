@@ -28,7 +28,7 @@ public class ThumblePresenter extends BasePresenter implements ThumbleContract.P
 
     @Override
     public void getImage(final int id) {
-        subscriber = new HttpSubscriber<ImageModel>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<ImageModel>(context) {
             @Override
             public void onCompleted() {
                 super.onCompleted();

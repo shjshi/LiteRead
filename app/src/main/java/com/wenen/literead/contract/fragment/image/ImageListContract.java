@@ -20,6 +20,6 @@ public interface ImageListContract {
     }
 
     interface Presenter {
-        void getImgThumbleList(int id, int page, int rows,boolean b);
+        void getImgThumbleList(int id, int page, int rows);
     }
 }

@@ -14,14 +14,11 @@ import com.wenen.literead.utils.MD5;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import rx.Subscriber;
 
 public class VideoPlayerActivity extends BaseActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     @Bind(R.id.iv_image)
     ImageView ivImage;
     @Bind(R.id.tv_text)

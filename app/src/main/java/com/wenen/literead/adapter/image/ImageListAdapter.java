@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
 import com.wenen.literead.adapter.ClickResponseListener;
-import com.wenen.literead.adapter.LoadMoreViewHolder;
 import com.wenen.literead.api.APIUrl;
 import com.wenen.literead.model.image.ImageListModel;
 import com.wenen.literead.activity.image.ThumbleActivity;
@@ -25,9 +24,6 @@ import java.util.ArrayList;
  */
 public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private ArrayList<ImageListModel.TngouEntity> list;
-    private static final int LOAD_MORE = 0;
-    private static final int NO_LOAD_MORE = 1;
-    private boolean needLoadMore;
 
     public ImageListAdapter(ArrayList<ImageListModel.TngouEntity> list) {
         this.list = list;
@@ -45,29 +41,17 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
     @Override
     public long getItemId(int position) {
-        if (position == getItemCount() - 1)
-            return position;
-        else
             return list.get(position).hashCode();
 
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if ( getItemCount() > 1&&position == getItemCount() - 1) {
-            needLoadMore = true;
-            return LOAD_MORE;
-        } else {
-            needLoadMore = false;
-            return NO_LOAD_MORE;
-        }
-    }
+
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final Context context = parent.getContext();
         View itemView = null;
-        if (viewType != LOAD_MORE) {
+
             itemView = LayoutInflater.from(context).inflate(R.layout.image_list_item, parent, false);
             return new CardViewHolder(itemView, new ClickResponseListener() {
                 @Override
@@ -81,15 +65,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     }
                 }
             });
-        } else {
-            itemView = LayoutInflater.from(context).inflate(R.layout.load_more_view, parent, false);
-            return new LoadMoreViewHolder(itemView, new ClickResponseListener() {
-                @Override
-                public void onWholeClick(int position) {
-
-                }
-            });
-        }
     }
 
     @Override
@@ -105,7 +80,7 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public int getItemCount() {
         if (!list.isEmpty())
-            return list.size() + 1;
+            return list.size();
         else return 0;
     }
 
@@ -130,10 +105,4 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         }
     }
 
-    public boolean needLoadMore() {
-        return needLoadMore;
-    }
-    public void setIsLoadMore(boolean needLoadMore) {
-        this.needLoadMore = needLoadMore;
-    }
 }

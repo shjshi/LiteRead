@@ -24,7 +24,7 @@ public class ImageListPresenter extends BasePresenter implements ImageListContra
     }
 
     @Override
-    public void getImgThumbleList(int id, int page, int rows, final boolean loadMore) {
+    public void getImgThumbleList(int id, int page, int rows) {
         subscriber = new Subscriber<ImageListModel>() {
             @Override
             public void onCompleted() {
@@ -38,8 +38,7 @@ public class ImageListPresenter extends BasePresenter implements ImageListContra
 
             @Override
             public void onNext(ImageListModel imageListModel) {
-                if (!loadMore)
-                    list.clear();
+
                 for (ImageListModel.TngouEntity tnEntity : imageListModel.tngou
                         ) {
                     list.add(tnEntity);

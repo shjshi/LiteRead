@@ -39,7 +39,7 @@ public class VideoListPresenter extends BasePresenter implements VideoListContra
 
     @Override
     public void getVideoList() {
-        subscriber = new HttpSubscriber<Element>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<Element>(context) {
             @Override
             public void onCompleted() {
                 super.onCompleted();

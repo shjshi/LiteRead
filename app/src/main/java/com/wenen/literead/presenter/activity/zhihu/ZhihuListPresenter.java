@@ -33,7 +33,7 @@ this.view=view;
 
     @Override
     public void getZhihuList() {
-        subscriber = new HttpSubscriber<ZhihuListModel>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<ZhihuListModel>(context) {
             @Override
             public void onCompleted() {
                 super.onCompleted();

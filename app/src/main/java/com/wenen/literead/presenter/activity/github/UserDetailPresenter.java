@@ -25,7 +25,7 @@ public class UserDetailPresenter extends BasePresenter implements UserDetailCont
             subscriber.unsubscribe();
             subscriber=null;
         }
-        subscriber = new HttpSubscriber<GithubLoginModel>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<GithubLoginModel>(context) {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);

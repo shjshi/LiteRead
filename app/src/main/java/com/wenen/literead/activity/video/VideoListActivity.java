@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 import rx.Subscriber;
 
 public class VideoListActivity extends BaseActivity implements VideoListContract.View {
@@ -29,8 +28,6 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
     Toolbar toolbar;
     @Bind(R.id.main_pager_tabs)
     TabLayout mainPagerTabs;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     @Bind(R.id.app_bar)
     AppBarLayout appBar;
     @Bind(R.id.main_pager)
@@ -118,7 +115,7 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
 
     @Override
     public void showError(String s, View.OnClickListener listener) {
-        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+        showSnackBar(toolbar, s, listener);
     }
 
     @Override
@@ -131,9 +128,5 @@ public class VideoListActivity extends BaseActivity implements VideoListContract
         videoListPresenter.addTaskListener(this);
     }
 
-    @Override
-    public MaterialProgressBar getProgressBar() {
-        return indeterminateHorizontalProgressToolbar;
-    }
 
 }

@@ -22,7 +22,9 @@
     </style>
 
     <style name="cardStyle">
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:layout_margin">@dimen/card_view_margin</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
@@ -58,5 +60,8 @@
 
     <style name="FullscreenActionBarStyle" parent="android:Widget.Holo.ActionBar">
         <item name="android:background">@color/black_overlay</item>
+    </style>
+    <style name="ProgressDialog" parent="AlertDialog.AppCompat.Light">
+
     </style>
 </resources>

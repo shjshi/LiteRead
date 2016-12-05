@@ -21,7 +21,7 @@ public class GitSearchPresenter extends BasePresenter implements GitSearchContra
 
     @Override
     public void githubLogin(String s) {
-        subscriber = new HttpSubscriber<GithubLoginModel>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<GithubLoginModel>(context) {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);

@@ -1,6 +1,5 @@
 package com.wenen.literead.activity.zhihu;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -33,7 +32,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 
 public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailContract.View {
@@ -53,8 +51,6 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     AppCompatTextView tvZhihuDetail;
     @Bind(R.id.iv_imageView)
     ImageView ivImageView;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     private int id;
     private String title;
     private String imgurl;
@@ -175,7 +171,7 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
 
     @Override
     public void showError(String s, View.OnClickListener listener) {
-        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+        showSnackBar(toolbar, s, listener);
     }
 
     @Override
@@ -189,10 +185,6 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
         zhihuDetailPresenter.addTaskListener(this);
     }
 
-    @Override
-    public MaterialProgressBar getProgressBar() {
-        return indeterminateHorizontalProgressToolbar;
-    }
 
     @Override
     protected void onDestroy() {

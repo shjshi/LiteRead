@@ -39,23 +39,6 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.CollapsingToolbarLayout>
-
-        <android.support.design.widget.CoordinatorLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-                android:id="@+id/indeterminate_horizontal_progress_toolbar"
-                style="@style/Widget.MaterialProgressBar.ProgressBar.Horizontal.NoPadding"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:indeterminate="true"
-                android:visibility="gone"
-                app:mpb_progressStyle="horizontal"
-                app:mpb_showTrack="false"
-                app:mpb_useIntrinsicPadding="false" />
-        </android.support.design.widget.CoordinatorLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView

@@ -20,7 +20,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
  * Created by Wen_en on 16/9/5.
@@ -32,8 +31,6 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
     RecyclerView rclZhihu;
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
 
     private ZhihuListAdapter zhihuListAdapter;
     private List<ZhihuListModel.StoriesEntity> list = new ArrayList<>();
@@ -86,7 +83,7 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
     public void showError(String s, View.OnClickListener listener) {
         if (swipeRefreshLayout != null)
             swipeRefreshLayout.setRefreshing(false);
-        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+        showSnackBar(toolbar, s, listener);
     }
     @Override
     public void getData() {
@@ -98,10 +95,6 @@ public class ZhihuListActivity extends BaseActivity implements SwipeRefreshLayou
         zhihuListPresenter.addTaskListener(this);
     }
 
-    @Override
-    public MaterialProgressBar getProgressBar() {
-        return indeterminateHorizontalProgressToolbar;
-    }
 
     @Override
     protected void onDestroy() {

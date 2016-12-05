@@ -26,7 +26,6 @@ import com.wenen.literead.view.CircleImageView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 
 /**
  * Created by Wen_en on 16/9/7.
@@ -34,8 +33,6 @@ import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
 public class UserDetailActivity extends BaseActivity implements UserDetailContract.View {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.indeterminate_horizontal_progress_toolbar)
-    MaterialProgressBar indeterminateHorizontalProgressToolbar;
     @Bind(R.id.iv_avatar)
     CircleImageView ivAvatar;
     @Bind(R.id.tv_bio)
@@ -130,7 +127,7 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
 
     @Override
     public void showError(String s, View.OnClickListener listener) {
-        showSnackBar(indeterminateHorizontalProgressToolbar, s, listener);
+        showSnackBar(toolbar, s, listener);
     }
 
     @Override
@@ -142,10 +139,6 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
     public void addTaskListener() {
     }
 
-    @Override
-    public MaterialProgressBar getProgressBar() {
-        return indeterminateHorizontalProgressToolbar;
-    }
 
     class GithubPageAdapter extends FragmentStatePagerAdapter {
 

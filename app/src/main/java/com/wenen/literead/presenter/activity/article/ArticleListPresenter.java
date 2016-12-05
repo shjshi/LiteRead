@@ -22,7 +22,7 @@ public class ArticleListPresenter extends BasePresenter implements ArticleListCo
     }
     @Override
     public void getArticleList(final String typePath, final int pageCount, final int page) {
-        subscriber = new HttpSubscriber<ArticleListModel>(indeterminateHorizontalProgressToolbar) {
+        subscriber = new HttpSubscriber<ArticleListModel>() {
             @Override
             public void onCompleted() {
                 super.onCompleted();

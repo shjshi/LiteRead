@@ -1,6 +1,6 @@
 package com.wenen.literead.contract.activity;
 
-import me.zhanghai.android.materialprogressbar.MaterialProgressBar;
+import android.content.Context;
 
 /**
  * Created by Wen_en on 16/9/14.
@@ -13,7 +13,7 @@ public interface BaseContract {
 
         void addTaskListener();
 
-        MaterialProgressBar getProgressBar();
+        Context getContext();
 
         void cancelHttp();
     }
