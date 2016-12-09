@@ -49,7 +49,6 @@
     <style name="mainPagerStyle" parent="baseLayoutParam">
         <item name="android:layout_height">wrap_content</item>
     </style>
-
     <style name="FullscreenTheme" parent="Theme.LiteReade.Light.NoActionBar">
         <item name="android:actionBarStyle">@style/FullscreenActionBarStyle</item>
         <item name="android:windowActionBarOverlay">true</item>
@@ -64,4 +63,5 @@
     <style name="ProgressDialog" parent="AlertDialog.AppCompat.Light">
 
     </style>
+
 </resources>

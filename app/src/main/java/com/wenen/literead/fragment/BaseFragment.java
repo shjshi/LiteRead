@@ -46,6 +46,6 @@ public class BaseFragment extends Fragment implements BaseContract.View {
   @Override public void onDestroy() {
     super.onDestroy();
     RefWatcher refWatcher = LiteReadApplication.getRefWatcher(getActivity());
-    refWatcher.watch(this);
+    if (refWatcher != null) refWatcher.watch(this);
   }
 }

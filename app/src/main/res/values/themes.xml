@@ -14,6 +14,21 @@
             @style/Theme.LiteReade.PopupMenuTextAppearanceLarge
         </item>
     </style>
+    <style name="Theme.LiteReade.Splash" parent="@style/Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@mipmap/bg_splash</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="popupTheme">@style/Widget.AppCompat.Light.PopupMenu.Overflow</item>
+        <item name="textAppearanceLargePopupMenu">
+            @style/Theme.LiteReade.PopupMenuTextAppearanceLarge
+        </item>
+        <item name="android:textAppearanceLargePopupMenu">
+            @style/Theme.LiteReade.PopupMenuTextAppearanceLarge
+        </item>
+    </style>
     <style name="Theme.LiteReade.Prefs" parent="Theme.LiteReade.Light.NoActionBar">
         <item name="android:textColor">@color/white</item>
     </style>

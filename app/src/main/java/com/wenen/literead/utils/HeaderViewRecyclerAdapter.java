@@ -215,7 +215,7 @@ public class HeaderViewRecyclerAdapter extends RecyclerView.Adapter<RecyclerView
 
       notifyItemRangeChanged(positionStart + getHeaderCount(), itemCount);
     }
-    
+
     @Override
     public void onItemRangeInserted(int positionStart, int itemCount) {
 

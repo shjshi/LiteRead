@@ -95,16 +95,15 @@ public class ImageListFragment extends BaseFragment
     @Override public void onLoadMore(int currentPage) {
       page = currentPage;
       Log.e(TAG, "onLoadMore: "+page );
+      if (imageListPresenter!=null)
       imageListPresenter.getImgThumbleList(id, page, rows);
     }
   }
-
   private void createLoadMoreView() {
     View loadMoreView =
         LayoutInflater.from(getActivity()).inflate(R.layout.load_more_view, rclImageList, false);
     headerViewRecyclerAdapter.addFooterView(loadMoreView);
   }
-
   @Override public void onResume() {
     super.onResume();
   }
@@ -121,6 +120,7 @@ public class ImageListFragment extends BaseFragment
 
   private void doRefresh() {
     page = 1;
+    if (imageListPresenter!=null)
     imageListPresenter.getImgThumbleList(id, page, rows);
   }
 

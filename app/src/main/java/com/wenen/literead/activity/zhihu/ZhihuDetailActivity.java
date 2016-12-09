@@ -90,16 +90,13 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
         outState.putInt("id", id);
         outState.putString("imgUrl", imgurl);
     }
-
     @Override
     protected void onResume() {
         super.onResume();
-        Log.e("title", title);
         toolbarLayout.setTitle(title);
         ImageLoaderConfig.imageLoader.displayImage(imgurl, ivImageView,
                 ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
     }
-
     @Override
     public void showData(Document document) {
         myOnImageClickListener = new MyOnImageClickListener();

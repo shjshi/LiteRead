@@ -42,16 +42,11 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public long getItemId(int position) {
             return list.get(position).hashCode();
-
     }
-
-
-
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         final Context context = parent.getContext();
         View itemView = null;
-
             itemView = LayoutInflater.from(context).inflate(R.layout.image_list_item, parent, false);
             return new CardViewHolder(itemView, new ClickResponseListener() {
                 @Override
@@ -66,7 +61,6 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }
             });
     }
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof CardViewHolder && getItemCount() > 1) {
@@ -74,16 +68,13 @@ public class ImageListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             ((CardViewHolder) holder).thumbleCount.setText("照片数量:" + list.get(position).size + "");
             ((CardViewHolder) holder).thumbleTitle.setText(list.get(position).title);
         }
-
     }
-
     @Override
     public int getItemCount() {
         if (!list.isEmpty())
             return list.size();
         else return 0;
     }
-
     public static class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView thumbleImg;
         public TextView thumbleTitle;

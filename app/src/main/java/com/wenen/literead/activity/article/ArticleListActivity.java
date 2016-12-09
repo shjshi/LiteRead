@@ -36,7 +36,7 @@ public class ArticleListActivity extends BaseActivity
   private int page = 1;
   private String type = "Android";
   private int pagecount = 5;
-  private RecyclerViewOnScrollListener recyclerViewOnScrollListener;
+  private EndlessRecyclerOnScrollListener recyclerViewOnScrollListener;
   private ArticleListPresenter articleListPresenter;
   private HeaderViewRecyclerAdapter headerViewRecyclerAdapter;
 
@@ -75,6 +75,7 @@ public class ArticleListActivity extends BaseActivity
     }
     @Override public void onLoadMore(int currentPage) {
       page=currentPage;
+      if (articleListPresenter!=null)
       articleListPresenter.getArticleList(type, pagecount, page);
     }
   }
@@ -123,6 +124,7 @@ public class ArticleListActivity extends BaseActivity
   }
 
   @Override public void getData() {
+    if (articleListPresenter!=null)
     articleListPresenter.getArticleList(type, pagecount, page);
   }
 

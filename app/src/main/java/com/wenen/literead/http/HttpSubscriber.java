@@ -19,8 +19,6 @@ import rx.Subscriber;
 public class HttpSubscriber<T> extends Subscriber<T> {
     private Context context;
     private ProgressDialog progressDialog;
-    private AlertDialog alertDialog;
-    private View view;
     private static final String TAG = "HttpSubscriber";
 
     public HttpSubscriber() {
@@ -68,6 +66,5 @@ public class HttpSubscriber<T> extends Subscriber<T> {
 
     public void cancelProgressDialog() {
         if (progressDialog != null) progressDialog.dismiss();
-        if (alertDialog!=null)alertDialog.dismiss();
     }
 }

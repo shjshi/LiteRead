@@ -42,19 +42,19 @@ public class HttpClient {
     private File httpCacheDirectory;
     private int cacheSize;
     private Cache cache;
-
     private HttpClient() {
         httpCacheDirectory = new File(LiteReadApplication.mContext.getCacheDir(), "responses");
         cacheSize = 30 * 1024 * 1024; // 30 MiB
         cache = new Cache(httpCacheDirectory, cacheSize);
+        HttpLoggingInterceptor loggingInterceptor=new HttpLoggingInterceptor();
+        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
         client = new OkHttpClient.Builder()
-                .addInterceptor(new HttpLoggingInterceptor())
+                .addInterceptor(loggingInterceptor)
                 .cache(cache).build();
     }
     private static class SingletonHolder {
         private static HttpClient INSTANCE = new HttpClient();
     }
-
     public static HttpClient getSingle(String url) {
         BASE_URL=url;
         Log.e(TAG, BASE_URL);
@@ -67,7 +67,6 @@ public class HttpClient {
                 .baseUrl(BASE_URL)//主机地址
                 .build();
     }
-
     /**
      * 获取天狗图片分类
      */
@@ -128,7 +127,6 @@ public class HttpClient {
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
-
     public void getVideo(String roomid, String aid, String cdn, String client_sys, String time, String auth, Subscriber<Object> subscriber) {
         updateRetrofit();
         Video video = retrofit.create(Video.class);
@@ -136,7 +134,6 @@ public class HttpClient {
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
-
     public void getArticleList(String TypePath, int PageCount, int page, Subscriber<Object> subscriber) {
         updateRetrofit();
         ArticleList articleList = retrofit.create(ArticleList.class);
@@ -160,7 +157,6 @@ public class HttpClient {
                 .unsubscribeOn(Schedulers.io()).
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
     }
-
     public void GithubLogin(String path, String client_id, String client_secret, Subscriber<Object> subscriber) {
         updateRetrofit();
         GitHubLogin gitHubLogin = retrofit.create(GitHubLogin.class);
@@ -169,7 +165,6 @@ public class HttpClient {
                 observeOn(AndroidSchedulers.mainThread()).subscribe(subscriber);
 
     }
-
     public void getGitHubFollow(String name, String path, String client_id, String client_secret, Subscriber<Object> subscriber) {
         updateRetrofit();
         GithubFollow githubFollow = retrofit.create(GithubFollow.class);

@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.squareup.leakcanary.RefWatcher;
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.LiteReadApplication;
 import com.wenen.literead.R;
@@ -167,7 +168,8 @@ public class UserDetailActivity extends BaseActivity implements UserDetailContra
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    LiteReadApplication.getRefWatcher(getApplicationContext()).watch(objectAnimator);
+    RefWatcher refWatcher = LiteReadApplication.getRefWatcher(getApplicationContext());
+    if (refWatcher != null) refWatcher.watch(objectAnimator);
     userDetailPresenter = null;
     if (objectAnimator != null) {
       objectAnimator.cancel();

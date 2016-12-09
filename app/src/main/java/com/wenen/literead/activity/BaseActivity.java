@@ -39,13 +39,15 @@ public class BaseActivity extends AppCompatActivity implements IDelegate, BaseCo
 
   @Override protected void onResume() {
     super.onResume();
-    if (!b) {
-      toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-          onBackPressed();
-        }
-      });
-      toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
+    if (toolbar != null) {
+      if (!b) {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+          @Override public void onClick(View view) {
+            onBackPressed();
+          }
+        });
+        toolbar.setNavigationIcon(R.mipmap.ic_action_arrow_left);
+      }
     }
   }
 

@@ -28,88 +28,93 @@ import butterknife.ButterKnife;
  * Created by Wen_en on 16/9/8.
  */
 public class GitHubFollowAdapter extends RecyclerView.Adapter<GitHubFollowAdapter.ViewHolder> {
-    private List<Object> list;
-    private UserDetailContract.View githubView;
+  private List<Object> list;
+  private UserDetailContract.View githubView;
+  private Context appLicationContext;
+  private Context context;
 
-    public GitHubFollowAdapter(List<Object> list, UserDetailContract.View view) {
-        this.list = list;
-        this.githubView = view;
-    }
+  public GitHubFollowAdapter(List<Object> list, UserDetailContract.View view, Context context) {
+    this.list = list;
+    this.githubView = view;
+    this.appLicationContext = context;
+  }
 
-    public void setList(List<Object> list) {
-        this.list = list;
-    }
+  public void setList(List<Object> list) {
+    this.list = list;
+  }
 
-    public void updateList(List<Object> list) {
-        setList(list);
-        notifyDataSetChanged();
-    }
+  public void updateList(List<Object> list) {
+    setList(list);
+    notifyDataSetChanged();
+  }
 
-    @Override
-    public GitHubFollowAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final Context context = parent.getContext();
-        final View view = LayoutInflater.from(context).inflate(R.layout.github_list_item, null, false);
-        return new ViewHolder(view, new ClickResponseListener() {
-            @Override
-            public void onWholeClick(int position) {
-                if (list.get(position) instanceof GithubFollowModel) {
-                    githubView.refreashData(((GithubFollowModel) list.get(position)).login);
-                } else
-                    new FinestWebView.Builder(context).statusBarColorRes(R.color.colorPrimary)
-                            .progressBarColorRes(R.color.colorPrimary).toolbarColorRes(R.color.colorPrimary).titleColorRes(R.color.white)
-                            .menuColorRes(R.color.white).iconDefaultColorRes(R.color.white)
-                            .show(((StartedModel) list.get(position)).html_url);
-            }
-        });
-    }
-
-    @Override
-    public void onBindViewHolder(GitHubFollowAdapter.ViewHolder holder, int position) {
+  @Override
+  public GitHubFollowAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    context = parent.getContext();
+    final View view = LayoutInflater.from(context).inflate(R.layout.github_list_item, null, false);
+    return new ViewHolder(view, new ClickResponseListener() {
+      @Override public void onWholeClick(int position) {
         if (list.get(position) instanceof GithubFollowModel) {
-            ImageLoaderConfig.imageLoader.displayImage(((GithubFollowModel) list.get(position)).avatar_url,
-                    holder.ivAvatar, ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
-            holder.tvFollowerName.setText(((GithubFollowModel) list.get(position)).login);
-            holder.tvFollowerUrl.setText(((GithubFollowModel) list.get(position)).html_url);
+          githubView.refreashData(((GithubFollowModel) list.get(position)).login);
         } else {
-            ImageLoaderConfig.imageLoader.displayImage(((StartedModel) list.get(position)).owner.avatar_url, holder.ivAvatar,
-                    ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
-            holder.tvFollowerName.setText(((StartedModel) list.get(position)).full_name);
-            holder.tvFollowerUrl.setText(((StartedModel) list.get(position)).html_url);
+          new FinestWebView.Builder(appLicationContext).statusBarColorRes(R.color.colorPrimary)
+              .progressBarColorRes(R.color.colorPrimary)
+              .toolbarColorRes(R.color.colorPrimary)
+              .titleColorRes(R.color.white)
+              .menuColorRes(R.color.white)
+              .iconDefaultColorRes(R.color.white)
+              .show(((StartedModel) list.get(position)).html_url);
         }
+      }
+    });
+  }
+
+  @Override public void onBindViewHolder(GitHubFollowAdapter.ViewHolder holder, int position) {
+    if (list.get(position) instanceof GithubFollowModel) {
+      ImageLoaderConfig.imageLoader.displayImage(
+          ((GithubFollowModel) list.get(position)).avatar_url, holder.ivAvatar,
+          ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
+      holder.tvFollowerName.setText(((GithubFollowModel) list.get(position)).login);
+      holder.tvFollowerUrl.setText(((GithubFollowModel) list.get(position)).html_url);
+    } else {
+      ImageLoaderConfig.imageLoader.displayImage(
+          ((StartedModel) list.get(position)).owner.avatar_url, holder.ivAvatar,
+          ImageLoaderConfig.options, ImageLoaderConfig.animateFirstListener);
+      holder.tvFollowerName.setText(((StartedModel) list.get(position)).full_name);
+      holder.tvFollowerUrl.setText(((StartedModel) list.get(position)).html_url);
     }
+  }
 
-    @Override
-    public int getItemCount() {
-        if (list != null)
-            return list.size();
-        else
-            return 0;
+  @Override public int getItemCount() {
+    if (list != null) {
+      return list.size();
+    } else {
+      return 0;
     }
+  }
 
-    @Override
-    public long getItemId(int position) {
-        return list.get(position).hashCode();
+  @Override public long getItemId(int position) {
+    return list.get(position).hashCode();
+  }
+
+  static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    @Bind(R.id.iv_avatar) ImageView ivAvatar;
+    @Bind(R.id.tv_follower_name) AppCompatTextView tvFollowerName;
+    @Bind(R.id.tv_follower_url) AppCompatTextView tvFollowerUrl;
+    ClickResponseListener clickResponseListener;
+
+    ViewHolder(View view, ClickResponseListener clickResponseListener) {
+      super(view);
+      ButterKnife.bind(this, view);
+      this.clickResponseListener = clickResponseListener;
+      view.setOnClickListener(this);
     }
-
-    static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @Bind(R.id.iv_avatar)
-        ImageView ivAvatar;
-        @Bind(R.id.tv_follower_name)
-        AppCompatTextView tvFollowerName;
-        @Bind(R.id.tv_follower_url)
-        AppCompatTextView tvFollowerUrl;
-        ClickResponseListener clickResponseListener;
-
-        ViewHolder(View view, ClickResponseListener clickResponseListener) {
-            super(view);
-            ButterKnife.bind(this, view);
-            this.clickResponseListener = clickResponseListener;
-            view.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            clickResponseListener.onWholeClick(getAdapterPosition());
-        }
+    @Override public void onClick(View view) {
+      clickResponseListener.onWholeClick(getAdapterPosition());
     }
+  }
+  public void releaseContext() {
+    appLicationContext = null;
+    context=null;
+  }
 }

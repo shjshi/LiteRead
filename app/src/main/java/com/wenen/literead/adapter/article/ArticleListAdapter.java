@@ -22,16 +22,19 @@ import butterknife.ButterKnife;
  */
 public class ArticleListAdapter extends RecyclerView.Adapter<ArticleListAdapter.ViewHolder> {
   private ArrayList<ArticleListModel.ResultsEntity> list;
-private Context appLicationcontext;
-  public ArticleListAdapter(ArrayList<ArticleListModel.ResultsEntity> list,Context context) {
+  private Context appLicationcontext;
+  private Context context;
+
+  public ArticleListAdapter(ArrayList<ArticleListModel.ResultsEntity> list, Context context) {
     this.list = list;
-    this.appLicationcontext=context;
+    this.appLicationcontext = context;
     setHasStableIds(true);
   }
 
   public void setModel(ArrayList<ArticleListModel.ResultsEntity> list) {
     this.list = list;
   }
+
   public void updateModel(ArrayList<ArticleListModel.ResultsEntity> list) {
     setModel(list);
     notifyDataSetChanged();
@@ -39,19 +42,19 @@ private Context appLicationcontext;
 
   @Override
   public ArticleListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-     Context context=parent.getContext();
-      View view = LayoutInflater.from(context).inflate(R.layout.article_list_item, null, false);
-      return new ViewHolder(view, new ClickResponseListener() {
-        @Override public void onWholeClick(int position) {
-           new FinestWebView.Builder(appLicationcontext).statusBarColorRes(R.color.colorPrimary)
-              .progressBarColorRes(R.color.colorPrimary)
-              .toolbarColorRes(R.color.colorPrimary)
-              .titleColorRes(R.color.white)
-              .menuColorRes(R.color.white)
-              .iconDefaultColorRes(R.color.white)
-              .show(list.get(position).url);
-        }
-      });
+    context = parent.getContext();
+    View view = LayoutInflater.from(context).inflate(R.layout.article_list_item, null, false);
+    return new ViewHolder(view, new ClickResponseListener() {
+      @Override public void onWholeClick(int position) {
+        new FinestWebView.Builder(appLicationcontext).statusBarColorRes(R.color.colorPrimary)
+            .progressBarColorRes(R.color.colorPrimary)
+            .toolbarColorRes(R.color.colorPrimary)
+            .titleColorRes(R.color.white)
+            .menuColorRes(R.color.white)
+            .iconDefaultColorRes(R.color.white)
+            .show(list.get(position).url);
+      }
+    });
   }
 
   @Override public void onBindViewHolder(ArticleListAdapter.ViewHolder holder, int position) {
@@ -69,9 +72,7 @@ private Context appLicationcontext;
   }
 
   @Override public long getItemId(int position) {
-
-      return list.get(position).hashCode();
-
+    return list.get(position).hashCode();
   }
 
   static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -86,12 +87,12 @@ private Context appLicationcontext;
       this.clickResponseListener = clickResponseListener;
       view.setOnClickListener(this);
     }
-
     @Override public void onClick(View view) {
       clickResponseListener.onWholeClick(getAdapterPosition());
     }
   }
-  public void releaseContext(){
-    this.appLicationcontext=null;
+  public void releaseContext() {
+    this.appLicationcontext = null;
+    context = null;
   }
 }

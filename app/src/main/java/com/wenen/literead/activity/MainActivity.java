@@ -30,155 +30,144 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MainContract.View {
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.main_pager_tabs)
-    TabLayout mainPagerTabs;
-    @Bind(R.id.main_pager)
-    ViewPager mainPager;
-    @Bind(R.id.nav_view)
-    NavigationView navView;
-    @Bind(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
-    private ArrayList<Fragment> fragments = new ArrayList<>();
-    private ArrayList<String> titleList = new ArrayList<>();
-    private MainPageViewAdapter mainPageViewAdapter;
-    private MainPresenter mainPresenter;
+    implements NavigationView.OnNavigationItemSelectedListener, MainContract.View {
+  @Bind(R.id.toolbar) Toolbar toolbar;
+  @Bind(R.id.main_pager_tabs) TabLayout mainPagerTabs;
+  @Bind(R.id.main_pager) ViewPager mainPager;
+  @Bind(R.id.nav_view) NavigationView navView;
+  @Bind(R.id.drawer_layout) DrawerLayout drawerLayout;
+  private ArrayList<Fragment> fragments = new ArrayList<>();
+  private ArrayList<String> titleList = new ArrayList<>();
+  private MainPageViewAdapter mainPageViewAdapter;
+  private MainPresenter mainPresenter;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        create(R.layout.activity_main, null, savedInstanceState);
-        setContentView(getRootView());
-        ButterKnife.bind(this);
-        mainPageViewAdapter = new MainPageViewAdapter(getSupportFragmentManager());
-        mainPresenter = new MainPresenter(this);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.setDrawerListener(toggle);
-        toggle.syncState();
-        navView.setNavigationItemSelectedListener(this);
-        assert mainPagerTabs != null;
-        assert mainPager != null;
-        mainPagerTabs.setupWithViewPager(mainPager);
-        mainPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        if (savedInstanceState == null) {
-            getData();
-        } else {
-            titleList = savedInstanceState.getStringArrayList("titleList");
-            if (mainPager.getAdapter() == null) {
-                mainPager.setAdapter(mainPageViewAdapter);
-            } else
-                mainPager.getAdapter().notifyDataSetChanged();
-            mainPager.setOffscreenPageLimit(titleList.size());
-        }
+  @Override protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    create(R.layout.activity_main, null, savedInstanceState);
+    setContentView(getRootView());
+    ButterKnife.bind(this);
+    mainPageViewAdapter = new MainPageViewAdapter(getSupportFragmentManager());
+    mainPresenter = new MainPresenter(this);
+    ActionBarDrawerToggle toggle =
+        new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close);
+    drawerLayout.setDrawerListener(toggle);
+    toggle.syncState();
+    navView.setNavigationItemSelectedListener(this);
+    assert mainPagerTabs != null;
+    assert mainPager != null;
+    mainPagerTabs.setupWithViewPager(mainPager);
+    mainPager.setPageTransformer(true, new ZoomOutPageTransformer());
+    if (savedInstanceState == null) {
+      getData();
+    } else {
+      titleList = savedInstanceState.getStringArrayList("titleList");
+      if (mainPager.getAdapter() == null) {
+        mainPager.setAdapter(mainPageViewAdapter);
+      } else {
+        mainPager.getAdapter().notifyDataSetChanged();
+      }
+      mainPager.setOffscreenPageLimit(titleList.size());
     }
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putStringArrayList("titleList", titleList);
+  }
+
+  @Override public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putStringArrayList("titleList", titleList);
+  }
+
+  @Override protected void onResume() {
+    canTSetToolBar(true);
+    super.onResume();
+    toolbar.setTitle(getString(R.string.app_name));
+  }
+
+  @Override public void onBackPressed() {
+    super.onBackPressed();
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    if (drawer.isDrawerOpen(GravityCompat.START)) {
+      drawer.closeDrawer(GravityCompat.START);
+    } else {
+      moveTaskToBack(true);
     }
-    @Override
-    protected void onResume() {
-        canTSetToolBar(true);
-        super.onResume();
-        toolbar.setTitle(getString(R.string.app_name));
+  }
+
+  @Override public boolean onNavigationItemSelected(MenuItem item) {
+    int id = item.getItemId();
+    Intent intent = new Intent();
+    switch (id) {
+      case R.id.nav_video:
+        intent.setClass(this, VideoListActivity.class);
+        intent.putExtra("title", getString(R.string.video));
+        break;
+      case R.id.nav_android:
+        intent.setClass(this, ArticleListActivity.class);
+        intent.putExtra("title", getString(R.string.android_dev));
+        intent.putExtra("type", "Android");
+        break;
+      case R.id.nav_zhihu:
+        intent.setClass(this, ZhihuListActivity.class);
+        intent.putExtra("title", getString(R.string.zhihu_daily));
+        break;
+      case R.id.nav_git:
+        intent.setClass(this, GitSearchActivity.class);
+        intent.putExtra("title", getString(R.string.github));
+        break;
+      case R.id.nav_ios:
+        intent.setClass(this, ArticleListActivity.class);
+        intent.putExtra("title", getString(R.string.ios_develop));
+        intent.putExtra("type", "iOS");
+        break;
     }
-    @Override
-    public void onBackPressed() {
-       super.onBackPressed();
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-           moveTaskToBack(true);
-        }
+    startActivity(intent);
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+    drawer.closeDrawer(GravityCompat.START);
+    return true;
+  }
+
+  @Override public void showData(ArrayList<Fragment> fragments, ArrayList<String> titleList) {
+    this.fragments = fragments;
+    this.titleList = titleList;
+    if (mainPager.getAdapter() == null) {
+      mainPager.setAdapter(mainPageViewAdapter);
+    } else {
+      mainPager.getAdapter().notifyDataSetChanged();
     }
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        Intent intent = new Intent();
-        switch (id) {
-            case R.id.nav_video:
-                intent.setClass(this, VideoListActivity.class);
-                intent.putExtra("title", getString(R.string.video));
-                break;
-            case R.id.nav_android:
-                intent.setClass(this, ArticleListActivity.class);
-                intent.putExtra("title", getString(R.string.android_dev));
-                intent.putExtra("type", "Android");
-                break;
-            case R.id.nav_zhihu:
-                intent.setClass(this, ZhihuListActivity.class);
-                intent.putExtra("title", getString(R.string.zhihu_daily));
-                break;
-            case R.id.nav_git:
-                intent.setClass(this, GitSearchActivity.class);
-                intent.putExtra("title", getString(R.string.github));
-                break;
-            case R.id.nav_ios:
-                intent.setClass(this, ArticleListActivity.class);
-                intent.putExtra("title", getString(R.string.ios_develop));
-                intent.putExtra("type", "iOS");
-                break;
-        }
-        startActivity(intent);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+    mainPager.setOffscreenPageLimit(titleList.size());
+  }
+
+  @Override public void showError(String s, View.OnClickListener listener) {
+    showSnackBar(toolbar, s, listener);
+  }
+
+  @Override public void getData() {
+    mainPresenter.getIMGTypeList();
+  }
+
+  @Override public void addTaskListener() {
+    mainPresenter.addTaskListener(this);
+  }
+
+  public class MainPageViewAdapter extends FragmentStatePagerAdapter {
+    public MainPageViewAdapter(FragmentManager fm) {
+      super(fm);
     }
 
-    @Override
-    public void showData(ArrayList<Fragment> fragments, ArrayList<String> titleList) {
-        this.fragments = fragments;
-        this.titleList = titleList;
-        if (mainPager.getAdapter() == null) {
-            mainPager.setAdapter(mainPageViewAdapter);
-        } else
-            mainPager.getAdapter().notifyDataSetChanged();
-        mainPager.setOffscreenPageLimit(titleList.size());
-    }
-    @Override
-    public void showError(String s, View.OnClickListener listener) {
-        showSnackBar(toolbar, s, listener);
-    }
-    @Override
-    public void getData() {
-        mainPresenter.getIMGTypeList();
+    @Override public Fragment getItem(int position) {
+      return fragments.get(position);
     }
 
-    @Override
-    public void addTaskListener() {
-        mainPresenter.addTaskListener(this);
+    @Override public int getCount() {
+      return titleList.size();
     }
 
-
-    public class MainPageViewAdapter extends FragmentStatePagerAdapter {
-
-        public MainPageViewAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return fragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return titleList.size();
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return titleList.get(position);
-        }
+    @Override public CharSequence getPageTitle(int position) {
+      return titleList.get(position);
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mainPresenter = null;
-    }
+  }
+
+  @Override protected void onDestroy() {
+    super.onDestroy();
+    mainPresenter = null;
+  }
 }
