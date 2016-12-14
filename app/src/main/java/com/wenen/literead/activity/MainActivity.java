@@ -139,15 +139,12 @@ public class MainActivity extends BaseActivity
   @Override public void showError(String s, View.OnClickListener listener) {
     showSnackBar(toolbar, s, listener);
   }
-
   @Override public void getData() {
     mainPresenter.getIMGTypeList();
   }
-
-  @Override public void addTaskListener() {
+  @Override public void addTaskListener()  {
     mainPresenter.addTaskListener(this);
   }
-
   public class MainPageViewAdapter extends FragmentStatePagerAdapter {
     public MainPageViewAdapter(FragmentManager fm) {
       super(fm);
@@ -165,7 +162,6 @@ public class MainActivity extends BaseActivity
       return titleList.get(position);
     }
   }
-
   @Override protected void onDestroy() {
     super.onDestroy();
     mainPresenter = null;

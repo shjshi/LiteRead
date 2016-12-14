@@ -40,6 +40,8 @@ public class ImageDetailPresenter extends BasePresenter implements ImageDetailCo
   }
 
   private class DownLoadAsyncTask extends AsyncTask<String, Void, String> {
+    private Listener listener;
+
     @Override protected String doInBackground(String... params) {
       try {
         return downLoad(params[0]);
@@ -52,9 +54,19 @@ public class ImageDetailPresenter extends BasePresenter implements ImageDetailCo
 
     @Override protected void onPostExecute(String s) {
       super.onPostExecute(s);
-      view.showError(s, null);
+      if (listener != null) {
+        listener.onSuccess(s);
+      }
       //downLoadAsyncTask = null;
     }
+
+    public void setListener(Listener listener) {
+      this.listener = listener;
+    }
+  }
+
+  interface Listener {
+    void onSuccess(String s);
   }
 
   private String downLoad(String url) throws Exception {
@@ -84,18 +96,31 @@ public class ImageDetailPresenter extends BasePresenter implements ImageDetailCo
 
   @Override public void downLoadFile(String url) {
     downLoadAsyncTask = new DownLoadAsyncTask();
+    downLoadAsyncTask.setListener(createListener());
     downLoadAsyncTask.execute(url, null, null);
   }
 
-  public File createPictureDir() {
+  private File createPictureDir() {
     File pictureDir = new File(PICTURE_DIR);
     if (!pictureDir.exists()) {
       pictureDir.mkdirs();
     }
     return pictureDir;
   }
+
+  private Listener createListener() {
+    return new Listener() {
+      @Override public void onSuccess(String s) {
+        view.showError(s, null);
+      }
+    };
+  }
+
   public void cancelAsyncTask() {
-    if (downLoadAsyncTask != null) downLoadAsyncTask.cancel(true);
-    downLoadAsyncTask=null;
+    if (downLoadAsyncTask != null) {
+      downLoadAsyncTask.setListener(null);
+      downLoadAsyncTask.cancel(true);
+    }
+    downLoadAsyncTask = null;
   }
 }
