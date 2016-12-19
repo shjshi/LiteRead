@@ -27,7 +27,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
     private List<Integer> mHeights;
     private ArrayList<String> listUrls = new ArrayList<>();
     private String title;
-
+    private static boolean fromZhihu = true;
     public ImageAdapter(ArrayList<ImageModel.ListEntity> listEntities, String title) {
         this.listEntities = listEntities;
         this.title = title;
@@ -64,6 +64,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
                 intent.putStringArrayListExtra("listUrls", listUrls);
                 intent.putExtra("title", title);
                 intent.putExtra("position", position);
+                intent.putExtra("type",!fromZhihu);
                 context.startActivity(intent);
             }
         });

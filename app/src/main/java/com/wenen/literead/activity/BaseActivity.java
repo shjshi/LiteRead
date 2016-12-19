@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.wenen.literead.LiteReadApplication;
 import com.wenen.literead.R;
 import com.wenen.literead.contract.activity.BaseContract;
 import com.wenen.literead.elegate.IDelegate;
@@ -78,13 +79,13 @@ public class BaseActivity extends AppCompatActivity implements IDelegate, BaseCo
 
   public void creatProgressDialog() {
     if (progressDialog == null) {
-      progressDialog = ProgressDialog.show(context, "提示", "正在加载中...");
+      progressDialog = ProgressDialog.show(this, "提示", "正在加载中...");
     }
   }
 
   public void creatProgressDialog(@NonNull String msg) {
     if (progressDialog == null) {
-      progressDialog = ProgressDialog.show(context, "提示", msg);
+      progressDialog = ProgressDialog.show(this, "提示", msg);
     }
   }
 

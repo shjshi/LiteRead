@@ -71,6 +71,7 @@ public class MainActivity extends BaseActivity
     }
   }
 
+
   @Override public void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
     outState.putStringArrayList("titleList", titleList);

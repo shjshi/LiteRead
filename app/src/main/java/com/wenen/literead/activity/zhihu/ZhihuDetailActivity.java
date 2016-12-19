@@ -59,6 +59,7 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
     private MyOnImageClickListener myOnImageClickListener;
     private MyUrlClick myUrlClick;
     private ImageFixCallBack imageFixCallBack;
+    private static boolean fromZhihu = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,6 +163,7 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
             intent.putExtra("title", title);
             intent.putExtra("position", position);
             intent.putExtra("isNeadAddHead", false);
+            intent.putExtra("type",fromZhihu);
             startActivity(intent);
         }
     }

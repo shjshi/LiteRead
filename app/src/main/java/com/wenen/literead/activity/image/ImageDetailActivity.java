@@ -1,7 +1,12 @@
 package com.wenen.literead.activity.image;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -33,6 +38,7 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
 
   private ViewPagerChangListener viewPagerChangListener;
   private ImageDetailPresenter imageDetailPresenter;
+  private static boolean fromZhihu;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -54,11 +60,43 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
     mViewPager.setOffscreenPageLimit(listl.size());
     viewPagerChangListener = new ViewPagerChangListener();
     mViewPager.addOnPageChangeListener(viewPagerChangListener);
+    fromZhihu = getIntent().getBooleanExtra("type", false);
     fab.setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View view) {
-        getData();
+        checkPermission();
       }
     });
+  }
+
+  private void checkPermission() {
+    if (ContextCompat.checkSelfPermission(ImageDetailActivity.this,
+        Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+        || ContextCompat.checkSelfPermission(ImageDetailActivity.this,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+      ActivityCompat.requestPermissions(ImageDetailActivity.this, new String[] {
+          Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+      }, 0x123);
+    } else {
+      getData();
+    }
+  }
+
+  @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+      @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    if (requestCode == 0x123) {
+      if (grantResults.length > 0
+          && grantResults[0] == PackageManager.PERMISSION_GRANTED
+          && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+        getData();
+      } else {
+        showSnackBar(fab, "没有相关权限", new View.OnClickListener() {
+          @Override public void onClick(View view) {
+            checkPermission();
+          }
+        });
+      }
+    }
   }
 
   @Override public void showMsg(String msg) {
@@ -100,10 +138,12 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
 
   @Override public void getData() {
     creatProgressDialog("正在下载中...");
+    if (fromZhihu){
+      imageDetailPresenter.downLoadFile(listl.get(position));
+    }else
     imageDetailPresenter.downLoadFile(APIUrl.imgUrl + listl.get(position));
   }
 
   @Override public void addTaskListener() {
   }
-
 }
