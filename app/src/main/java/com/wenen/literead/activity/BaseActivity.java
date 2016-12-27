@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,7 +32,8 @@ public class BaseActivity extends AppCompatActivity implements IDelegate, BaseCo
   private boolean b;
   public Context context;
   private ProgressDialog progressDialog;
-
+  private static final String TAG = "BaseActivity";
+  private float x, y;
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     iDelegate = this;
@@ -56,6 +59,25 @@ public class BaseActivity extends AppCompatActivity implements IDelegate, BaseCo
     view = getLayoutInflater().inflate(layoutId, v, false);
     toolbar = (Toolbar) view.findViewById(R.id.toolbar);
     if (toolbar != null) setSupportActionBar(toolbar);
+    //view.setOnTouchListener(new View.OnTouchListener() {
+    //  @Override public boolean onTouch(View view, MotionEvent motionEvent) {
+    //    switch (motionEvent.getAction()) {
+    //      case MotionEvent.ACTION_DOWN:
+    //        x = motionEvent.getX();
+    //        y = motionEvent.getY();
+    //        Log.e(TAG, "onTouch: " + x + ' ' + y);
+    //        break;
+    //      case MotionEvent.ACTION_UP:
+    //        if (Math.abs(motionEvent.getX() - x) <= 100 && motionEvent.getY() - y >= 100) {
+    //          onBackPressed();
+    //        }
+    //        Log.e(TAG,
+    //            "onTouch2: " + Math.abs(motionEvent.getX() - x) + ' ' + (motionEvent.getY() - y));
+    //        break;
+    //    }
+    //    return false;
+    //  }
+    //});
   }
 
   @Override public View getRootView() {

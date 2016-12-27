@@ -33,15 +33,12 @@ public class ImageDetailPresenter extends BasePresenter implements ImageDetailCo
     super(view);
     addTaskListener(view);
   }
-
   public ImageDetailPresenter addTaskListener(ImageDetailContract.View view) {
     this.view = view;
     return this;
   }
-
   private class DownLoadAsyncTask extends AsyncTask<String, Void, String> {
     private Listener listener;
-
     @Override protected String doInBackground(String... params) {
       try {
         return downLoad(params[0]);
@@ -51,7 +48,6 @@ public class ImageDetailPresenter extends BasePresenter implements ImageDetailCo
         return "图片保存失败：" + e.toString();
       }
     }
-
     @Override protected void onPostExecute(String s) {
       super.onPostExecute(s);
       if (listener != null) {
