@@ -83,7 +83,7 @@ public class AboutActivity extends MaterialAboutActivity {
 
         .text("Wen_en")
 
-        .subText("Android Devloper")
+        .subText("Android Developer")
 
         .icon(R.mipmap.ic_about_person)
 
