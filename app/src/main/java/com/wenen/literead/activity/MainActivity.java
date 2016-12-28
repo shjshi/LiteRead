@@ -82,7 +82,6 @@ public class MainActivity extends BaseActivity
     super.onResume();
     toolbar.setTitle(getString(R.string.app_name));
   }
-
   @Override public void onBackPressed() {
     super.onBackPressed();
     DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -118,6 +117,9 @@ public class MainActivity extends BaseActivity
         intent.setClass(this, ArticleListActivity.class);
         intent.putExtra("title", getString(R.string.ios_develop));
         intent.putExtra("type", "iOS");
+        break;
+      case R.id.nav_about:
+        intent.setClass(this, AboutActivity.class);
         break;
     }
     startActivity(intent);

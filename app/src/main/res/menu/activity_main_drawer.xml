@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_video"
-            android:icon="@mipmap/ic_action_youtube"
-            android:title="直播" />
-        <item
-            android:id="@+id/nav_android"
-            android:icon="@mipmap/ic_action_android"
-            android:title="AndroidDev" />
-        <item
-            android:id="@+id/nav_ios"
-            android:icon="@mipmap/ic_phone_iphone"
-            android:title="IOSDev" />
-        <item
-            android:id="@+id/nav_zhihu"
-            android:icon="@mipmap/ic_action_news"
-            android:title="知乎日报" />
-        <item
-            android:id="@+id/nav_git"
-            android:icon="@mipmap/ic_action_github"
-            android:title="GitHub" />
-    </group>
-
+  <group android:checkableBehavior="single">
+    <item
+        android:id="@+id/nav_video"
+        android:icon="@mipmap/ic_action_youtube"
+        android:title="直播" />
+    <item
+        android:id="@+id/nav_android"
+        android:icon="@mipmap/ic_action_android"
+        android:title="AndroidDev" />
+    <item
+        android:id="@+id/nav_ios"
+        android:icon="@mipmap/ic_phone_iphone"
+        android:title="IOSDev" />
+    <item
+        android:id="@+id/nav_zhihu"
+        android:icon="@mipmap/ic_action_news"
+        android:title="知乎日报" />
+    <item
+        android:id="@+id/nav_git"
+        android:icon="@mipmap/ic_action_github"
+        android:title="GitHub" />
+    <item
+        android:id="@+id/nav_about"
+        android:icon="@mipmap/ic_action_github"
+        android:title="关于">
+    </item>
+  </group>
 </menu>

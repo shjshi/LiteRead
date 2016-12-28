@@ -40,7 +40,6 @@ public class BaseActivity extends AppCompatActivity implements IDelegate, BaseCo
     githubUser = GithubUser.getSingle();
     context = this;
   }
-
   @Override protected void onResume() {
     super.onResume();
     if (toolbar != null) {
@@ -54,7 +53,6 @@ public class BaseActivity extends AppCompatActivity implements IDelegate, BaseCo
       }
     }
   }
-
   @Override public void create(int layoutId, ViewGroup v, Bundle b) {
     view = getLayoutInflater().inflate(layoutId, v, false);
     toolbar = (Toolbar) view.findViewById(R.id.toolbar);
