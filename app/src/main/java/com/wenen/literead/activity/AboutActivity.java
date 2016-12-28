@@ -24,10 +24,11 @@ import com.wenen.literead.R;
 
 public class AboutActivity extends MaterialAboutActivity {
   Toolbar toolbar;
+
   @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
     this.setTitle("关于");
     super.onCreate(savedInstanceState);
-    toolbar= (Toolbar) findViewById(com.danielstone.materialaboutlibrary.R.id.mal_toolbar);
+    toolbar = (Toolbar) findViewById(com.danielstone.materialaboutlibrary.R.id.mal_toolbar);
   }
 
   @Override protected void onResume() {
@@ -44,15 +45,9 @@ public class AboutActivity extends MaterialAboutActivity {
 
   protected MaterialAboutList getMaterialAboutList() {
 
-
-
     MaterialAboutCard.Builder appCardBuilder = new MaterialAboutCard.Builder();
 
-
-
     // Add items to card
-
-
 
     appCardBuilder.addItem(new MaterialAboutTitleItem.Builder()
 
@@ -62,30 +57,24 @@ public class AboutActivity extends MaterialAboutActivity {
 
         .build());
 
-    appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-        .text("Version")
+    appCardBuilder.addItem(new MaterialAboutActionItem.Builder().text("Version")
         .subText(new PackageInfo().versionName)
-        .icon(R.drawable.ic_about_info)
+        .icon(R.mipmap.ic_about_info)
         .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
-          @Override
-
-          public void onClick() {
-            Toast.makeText(AboutActivity.this, new PackageInfo().versionName, Toast.LENGTH_SHORT).show();
+          @Override public void onClick() {
+            Toast.makeText(AboutActivity.this, new PackageInfo().versionName, Toast.LENGTH_SHORT)
+                .show();
           }
         })
         .build());
-    appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-        .text("Licenses")
-        .icon(R.drawable.ic_about_licenses)
+    appCardBuilder.addItem(new MaterialAboutActionItem.Builder().text("Licenses")
+        .icon(R.mipmap.ic_about_licenses)
         .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
-          @Override
-          public void onClick() {
+          @Override public void onClick() {
             Toast.makeText(AboutActivity.this, "Licenses Tapped", Toast.LENGTH_SHORT).show();
           }
         })
         .build());
-
-
 
     MaterialAboutCard.Builder authorCardBuilder = new MaterialAboutCard.Builder();
 
@@ -96,22 +85,20 @@ public class AboutActivity extends MaterialAboutActivity {
 
         .subText("Android Devloper")
 
-        .icon(R.drawable.ic_about_person)
+        .icon(R.mipmap.ic_about_person)
 
         .build());
-
-
 
     authorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
 
         .text("Fork on GitHub")
 
-        .icon(R.drawable.ic_about_github)
+        .icon(R.mipmap.ic_about_github)
 
         .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
-          @Override
-          public void onClick() {
-            new FinestWebView.Builder(getApplicationContext()).statusBarColorRes(R.color.colorPrimary)
+          @Override public void onClick() {
+            new FinestWebView.Builder(getApplicationContext()).statusBarColorRes(
+                R.color.colorPrimary)
                 .progressBarColorRes(R.color.colorPrimary)
                 .toolbarColorRes(R.color.colorPrimary)
                 .titleColorRes(R.color.white)
@@ -122,21 +109,11 @@ public class AboutActivity extends MaterialAboutActivity {
         })
 
         .build());
-
-
-
     MaterialAboutCard.Builder supportCardBuilder = new MaterialAboutCard.Builder();
-
     supportCardBuilder.title("Support Development");
-
-    supportCardBuilder.addItem(new MaterialAboutActionItem.Builder()
-
-        .text("Report Bugs")
-
+    supportCardBuilder.addItem(new MaterialAboutActionItem.Builder().text("Report Bugs")
         .subText("Report bugs or request new features.")
-
-        .icon(R.drawable.ic_about_bug)
-
+        .icon(R.mipmap.ic_about_bug)
         .setOnClickListener(new MaterialAboutActionItem.OnClickListener() {
 
           @Override
@@ -144,14 +121,10 @@ public class AboutActivity extends MaterialAboutActivity {
           public void onClick() {
 
             Toast.makeText(AboutActivity.this, "Bug report tapped", Toast.LENGTH_SHORT).show();
-
           }
-
         })
 
         .build());
-
-
 
     return new MaterialAboutList.Builder()
 
@@ -162,16 +135,12 @@ public class AboutActivity extends MaterialAboutActivity {
         .addCard(supportCardBuilder.build())
 
         .build();
-
   }
-
-
 
   @Override
 
   protected CharSequence getActivityTitle() {
 
     return getString(R.string.mal_title_about);
-
   }
 }
