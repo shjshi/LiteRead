@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.jrummyapps.android.util.HtmlBuilder;
 import com.thefinestartist.finestwebview.FinestWebView;
 import com.wenen.literead.ImageLoaderConfig.ImageLoaderConfig;
 import com.wenen.literead.R;
@@ -120,6 +121,9 @@ public class ZhihuDetailActivity extends BaseActivity implements ZhihuDetailCont
             tvZhihuDetailTitle.setVisibility(View.GONE);
             content = document.outerHtml();
         }
+        HtmlBuilder htmlBuilder=new HtmlBuilder();
+        htmlBuilder.p(content);
+        //tvZhihuDetail.setText(htmlBuilder.build());
         RichText.from(content).autoFix(false).fix(imageFixCallBack).clickable(true)
                 .imageClick(myOnImageClickListener).urlClick(myUrlClick).imageLongClick(null).into(tvZhihuDetail);
     }

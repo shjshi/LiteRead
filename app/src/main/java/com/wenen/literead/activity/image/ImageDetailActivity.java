@@ -1,6 +1,11 @@
 package com.wenen.literead.activity.image;
 
 import android.Manifest;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,12 +44,15 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
   private ViewPagerChangListener viewPagerChangListener;
   private ImageDetailPresenter imageDetailPresenter;
   private static boolean fromZhihu;
+  private CompleteReceiver completeReceiver;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     create(R.layout.activity_image_detail, null, savedInstanceState);
     setContentView(getRootView());
     ButterKnife.bind(this);
+    completeReceiver = new CompleteReceiver();
+    registerReceiver(completeReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
     imageDetailPresenter = new ImageDetailPresenter(this);
     listl = getIntent().getStringArrayListExtra("listUrls");
     title = getIntent().getStringExtra("title");
@@ -126,24 +134,37 @@ public class ImageDetailActivity extends BaseActivity implements ImageDetailCont
 
   @Override protected void onDestroy() {
     super.onDestroy();
-    imageDetailPresenter.cancelAsyncTask();
+    unregisterReceiver(completeReceiver);
     imageDetailPresenter = null;
     viewPagerChangListener = null;
   }
 
   @Override public void showError(String s, View.OnClickListener listener) {
-    cancelProgressDialog();
     showSnackBar(toolbar, s, listener);
   }
 
   @Override public void getData() {
-    creatProgressDialog("正在下载中...");
-    if (fromZhihu){
+    if (fromZhihu) {
       imageDetailPresenter.downLoadFile(listl.get(position));
-    }else
-    imageDetailPresenter.downLoadFile(APIUrl.imgUrl + listl.get(position));
+    } else {
+      imageDetailPresenter.downLoadFile(APIUrl.imgUrl + listl.get(position));
+    }
   }
 
   @Override public void addTaskListener() {
   }
+
+  class CompleteReceiver extends BroadcastReceiver {
+
+    @Override public void onReceive(Context context, Intent intent) {
+      long completeDownloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+      if (intent.getAction() == DownloadManager.ACTION_DOWNLOAD_COMPLETE) {
+        if (completeDownloadId == imageDetailPresenter.getDownloadId()) {
+          showMsg("下载成功");
+        }
+      }
+    }
+  }
+
+  ;
 }

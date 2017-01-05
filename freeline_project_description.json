@@ -1,0 +1,107 @@
+{
+    "android_gradle_plugin_version": "2.2.3",
+    "apk_path": "E:\\LiteRead\\app\\build\\outputs\\apk\\app-debug.apk",
+    "apt": {
+        
+    },
+    "apt_libraries": {
+        "dagger": false,
+        "butterknife": false
+    },
+    "auto_dependency": true,
+    "build_cache_dir": "E:\\LiteRead\\app\\build\\freeline",
+    "build_directory": "E:\\LiteRead\\app\\build",
+    "build_script": "gradlew.bat :app:assembleDebug",
+    "build_script_work_directory": "",
+    "build_tools_directory": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\build-tools\\25.0.0",
+    "build_tools_version": "25.0.0",
+    "compile_sdk_directory": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk\\platforms\\android-25",
+    "compile_sdk_version": "android-25",
+    "databinding": [
+        
+    ],
+    "databinding_compiler_jar": "",
+    "databinding_modules": [
+        
+    ],
+    "debug_package": "com.wenen.literead",
+    "exclude_dep_res_paths": [
+        
+    ],
+    "extra_dep_res_paths": [
+        
+    ],
+    "freeline_cache_dir": "E:\\LiteRead",
+    "freeline_gradle_plugin_version": "0.8.4",
+    "java_home": "C:\\Program Files\\Java\\jdk1.8.0_102",
+    "launcher": "com.wenen.literead.activity.SplashActivity",
+    "main_assets_directory": [
+        "E:\\LiteRead\\app\\src\\debug\\assets",
+        "E:\\LiteRead\\app\\src\\main\\assets"
+    ],
+    "main_jniLibs_directory": [
+        "E:\\LiteRead\\app\\src\\debug\\jniLibs",
+        "E:\\LiteRead\\app\\src\\main\\jniLibs"
+    ],
+    "main_jni_directory": [
+        "E:\\LiteRead\\app\\src\\debug\\jni",
+        "E:\\LiteRead\\app\\src\\main\\jni"
+    ],
+    "main_manifest_path": "E:\\LiteRead\\app\\src\\main\\AndroidManifest.xml",
+    "main_project_dir": "app",
+    "main_project_name": "app",
+    "main_r_path": "E:\\LiteRead\\app\\build\\generated\\source\\r\\debug\\R.java",
+    "main_res_directory": [
+        "E:\\LiteRead\\app\\src\\debug\\res",
+        "E:\\LiteRead\\app\\src\\main\\res"
+    ],
+    "main_src_directory": [
+        "E:\\LiteRead\\app\\src\\debug\\java",
+        "E:\\LiteRead\\app\\src\\main\\java"
+    ],
+    "module_dependencies": {
+        "app": [
+            
+        ]
+    },
+    "modules": [
+        {
+            "name": "app",
+            "path": "E:\\LiteRead\\app"
+        }
+    ],
+    "package": "com.wenen.literead",
+    "product_flavor": "",
+    "project_source_sets": {
+        "app": {
+            "main_assets_directory": [
+                "E:\\LiteRead\\app\\src\\debug\\assets",
+                "E:\\LiteRead\\app\\src\\main\\assets"
+            ],
+            "main_jniLibs_directory": [
+                "E:\\LiteRead\\app\\src\\debug\\jniLibs",
+                "E:\\LiteRead\\app\\src\\main\\jniLibs"
+            ],
+            "main_jni_directory": [
+                "E:\\LiteRead\\app\\src\\debug\\jni",
+                "E:\\LiteRead\\app\\src\\main\\jni"
+            ],
+            "main_manifest_path": "E:\\LiteRead\\app\\src\\main\\AndroidManifest.xml",
+            "main_res_directory": [
+                "E:\\LiteRead\\app\\src\\debug\\res",
+                "E:\\LiteRead\\app\\src\\main\\res"
+            ],
+            "main_src_directory": [
+                "E:\\LiteRead\\app\\src\\debug\\java",
+                "E:\\LiteRead\\app\\src\\main\\java"
+            ]
+        }
+    },
+    "project_type": "gradle",
+    "retrolambda": {
+        
+    },
+    "root_dir": "E:\\LiteRead",
+    "sdk_directory": "C:\\Users\\Administrator\\AppData\\Local\\Android\\Sdk",
+    "use_jdk8": true
+}
